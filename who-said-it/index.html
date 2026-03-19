@@ -237,16 +237,14 @@ body::before{
 /* fixed bottom nav bar — same position always regardless of content */
 .fixed-nav{
   position:fixed;
-  bottom:0; left:0; right:0;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
   z-index:50;
   background:linear-gradient(to top, rgba(15,10,26,1) 70%, rgba(15,10,26,0));
   padding:1rem 1.2rem 1.6rem;
-  max-width:580px;
-  margin:0 auto;
-  /* center it */
-  left:50%;
-  transform:translateX(-50%);
   width:100%;
+  max-width:580px;
 }
 .fixed-nav .nav-inner{display:flex;gap:.7rem;}
 .fixed-nav .btn-ghost{flex:0 0 auto;padding:.8rem 1.1rem;}
@@ -261,12 +259,12 @@ body::before{
 /* ── ANSWER CHOICES ── */
 .answer-grid{
   display:grid;grid-template-columns:1fr 1fr;
-  gap:.5rem;margin-top:1rem;
+  gap:.6rem;margin-top:1rem;
 }
 .answer-btn{
-  padding:.7rem .6rem;border-radius:10px;border:2px solid rgba(255,255,255,.12);
+  padding:.9rem .6rem;border-radius:10px;border:2px solid rgba(255,255,255,.12);
   background:rgba(255,255,255,.06);
-  color:#fff;font-family:inherit;font-size:.85rem;font-weight:600;
+  color:#fff;font-family:inherit;font-size:.95rem;font-weight:600;
   cursor:pointer;transition:all .15s;text-align:center;
 }
 .answer-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);}
@@ -274,30 +272,73 @@ body::before{
   background:rgba(236,72,153,.2);border-color:var(--hot);color:#fff;
 }
 
-/* ── LEADERBOARD ── */
-.podium{display:flex;align-items:flex-end;justify-content:center;gap:.6rem;margin:1.5rem 0;}
-.podium-slot{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1;max-width:140px;}
-.podium-name{font-weight:700;font-size:.85rem;text-align:center;word-break:break-word;line-height:1.2;}
-.podium-score{font-size:.75rem;color:rgba(255,255,255,.55);}
-.podium-block{
-  width:100%;border-radius:10px 10px 0 0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;
+/* ── LEADERBOARD REVEAL ── */
+.lb-reveal-list{
+  margin-top:1rem;
+  display:flex;flex-direction:column;gap:.6rem;
 }
-.podium-slot.first .podium-block{height:100px;background:linear-gradient(180deg,#f59e0b,#d97706);}
-.podium-slot.second .podium-block{height:74px;background:linear-gradient(180deg,#94a3b8,#64748b);}
-.podium-slot.third .podium-block{height:56px;background:linear-gradient(180deg,#cd7c3a,#a0522d);}
-.podium-rank{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);}
-
-.leaderboard-full{margin-top:1rem;}
-.lb-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.6rem .8rem;border-radius:8px;
-  background:rgba(255,255,255,.05);margin-bottom:.4rem;font-size:.9rem;
+.lb-reveal-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:.9rem 1.1rem;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  transition:all .4s cubic-bezier(.22,1,.36,1);
+  min-height:58px;
 }
-.lb-row .lb-rank{width:24px;font-weight:700;color:rgba(255,255,255,.4);}
-.lb-row .lb-name{flex:1;font-weight:600;padding:0 .5rem;}
-.lb-row .lb-pts{font-weight:700;color:var(--pink);}
+.lb-reveal-row.rank-1{
+  background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(217,119,6,.15));
+  border-color:rgba(245,158,11,.4);
+  padding:1.1rem 1.2rem;
+}
+.lb-reveal-row.rank-2{
+  background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(100,116,139,.1));
+  border-color:rgba(148,163,184,.3);
+}
+.lb-reveal-row.rank-3{
+  background:linear-gradient(135deg,rgba(205,124,58,.15),rgba(160,82,45,.1));
+  border-color:rgba(205,124,58,.3);
+}
+.lb-rank-num{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;
+  color:rgba(255,255,255,.3);
+  width:28px;flex-shrink:0;text-align:center;
+}
+.rank-1 .lb-rank-num{font-size:1.4rem;color:#f59e0b;}
+.rank-2 .lb-rank-num{color:#94a3b8;}
+.rank-3 .lb-rank-num{color:#cd7c3a;}
+.lb-reveal-name{
+  flex:1;font-weight:600;font-size:1rem;color:#fff;
+}
+.rank-1 .lb-reveal-name{font-size:1.3rem;font-weight:900;}
+.lb-reveal-pts{
+  font-size:.85rem;color:rgba(255,255,255,.5);font-weight:600;
+}
+.rank-1 .lb-reveal-pts{font-size:1rem;color:rgba(255,255,255,.7);}
+.lb-hidden{
+  opacity:0;pointer-events:none;
+}
+.lb-placeholder{
+  display:flex;align-items:center;gap:1rem;
+}
+.lb-placeholder-name{
+  height:14px;width:100px;
+  background:linear-gradient(90deg,rgba(255,255,255,.08) 25%,rgba(255,255,255,.14) 50%,rgba(255,255,255,.08) 75%);
+  background-size:400% 100%;
+  animation:shimmer 1.4s infinite;
+  border-radius:4px;flex:1;
+}
+.lb-tap-hint{
+  text-align:center;margin-top:1rem;
+  font-size:.78rem;color:rgba(255,255,255,.35);
+  letter-spacing:.05em;
+}
+.lb-all-done{
+  text-align:center;margin-top:1.2rem;
+  font-size:1.5rem;
+  animation:boing .5s cubic-bezier(.22,1,.36,1);
+}
 
 /* trophy corner btn */
 .trophy-btn{
@@ -360,6 +401,26 @@ body::before{
 </div>
 
 <!-- ════════════════════════════════════════════
+     SCREEN: MOD PASSWORD
+════════════════════════════════════════════ -->
+<div class="screen" id="screen-mod-password">
+  <div class="page-header">
+    <div class="eyebrow">Moderator</div>
+    <h1><em>Enter password</em></h1>
+  </div>
+  <div class="field">
+    <label>PASSWORD</label>
+    <input type="password" id="modPwInput" placeholder="••••" autocomplete="off"
+      onkeydown="if(event.key==='Enter')checkModPassword()">
+  </div>
+  <div class="pw-err" id="modPwErr"></div>
+  <br>
+  <button class="btn-primary" onclick="checkModPassword()">Enter →</button>
+  <br><br>
+  <button class="btn-ghost" style="width:100%" onclick="showScreen('landing')">← Back</button>
+</div>
+
+<!-- ════════════════════════════════════════════
      SCREEN: MOD SETUP (lobby)
 ════════════════════════════════════════════ -->
 <div class="screen" id="screen-mod-setup">
@@ -371,8 +432,12 @@ body::before{
     <div class="rc-label">Room code — share this with everyone</div>
     <div class="rc-code" id="modRoomCode">····</div>
   </div>
-  <div class="dark-card">
-    <div id="lobbyList"><div class="lobby-empty">Waiting for players to join…</div></div>
+  <div class="dark-card" style="padding:0;overflow:hidden;">
+    <div style="padding:.8rem 1.2rem .6rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:.72rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);">Quiz completed by</div>
+      <div id="lobbyCount" style="font-size:.72rem;font-weight:700;color:var(--pink);">0 submitted</div>
+    </div>
+    <div id="lobbyList" style="max-height:220px;overflow-y:auto;padding:.4rem .8rem .8rem;"><div class="lobby-empty">No submissions yet…</div></div>
   </div>
   <div class="lobby-actions">
     <button class="btn-primary" onclick="startModGame()">Start Slideshow →</button>
@@ -455,11 +520,14 @@ body::before{
 
 <script>
 /* ══════════════════════════════════════════════════════
-   DATA
+   TEST MODE — set to false when done testing
+   When true: players can advance without selecting an answer
 ══════════════════════════════════════════════════════ */
+const TEST_MODE = true; // ← flip to false when done testing
 const ALL_AUTHORS = [
-  'Francesca Ziccardi','Camila Ranta McWright','Leah Rock','Maggie Sudek',
-  'Hannah Sefton','Carmella Ziccardi Ellis','Jordie Lopez','Annie Brown','Morgan Blasetto'
+  'Francesca','Camila','Leah','Maggie',
+  'Hannah','Carmella','Jordie','Annie','Morgan',
+  'Dom','Corinne','Luisa','Abbey','Lucy','Diana'
 ];
 
 const POSTS = [
@@ -473,10 +541,9 @@ const POSTS = [
   {text:"i just choked on water and peanut butter :/... the worst experience of my life",date:"Sep 2, 2012",author:"Camila Ranta McWright",likes:5,comments:"1 share",tagged:"Maija Ranta"},
   {text:"Eatin a juicy ribeye steak!!!!!!! Mmmmmmm",date:"Mar 2, 2012",author:"Leah Rock",likes:null,comments:null,tagged:null},
   {text:"Lets make the most of the night like we're gonna die young!",date:"Oct 13, 2012",author:"Leah Rock",likes:null,comments:"1 comment",tagged:null},
-  {text:"I love abbey",date:"Apr 27, 2012",author:"Maggie Sudek",likes:null,comments:null,tagged:null},
-  {text:"Abbey Murphy is actually so cute....why do i love her so much",date:"Mar 12, 2012",author:"Maggie Sudek",likes:null,comments:null,tagged:null},
   {text:"does anyione know who to friend people on wekinz",date:"Feb 26, 2012",author:"Maggie Sudek",likes:null,comments:null,tagged:null},
   {text:"LIVE LIFE AS IF YOU'LL DIE TOMORROW\nDREAM AS IF YOU'LL LIVE FOREVER",date:"Sep 10, 2010",author:"Maggie Sudek",likes:null,comments:null,tagged:null},
+  {text:"Abbey Murphy is actually so cute....why do i love her so much",date:"Mar 12, 2012",author:"Maggie Sudek",likes:null,comments:null,tagged:null},
   {text:"I absolutley hate shots!......",date:"Jul 25, 2012",author:"Hannah Sefton",likes:3,comments:"4 comments",tagged:"Alexa Roudabush"},
   {text:"theres nothing like getting shitted on by a bird...",date:"Apr 20, 2011",author:"Carmella Ziccardi Ellis",likes:null,comments:"8 comments",tagged:null},
   {text:"bachelorette... craziness but predictable",date:"Aug 2, 2010",author:"Jordie Lopez",likes:null,comments:"1 comment",tagged:null},
@@ -485,16 +552,41 @@ const POSTS = [
   {text:"Where there is love there is life",date:"Jan 29, 2012",author:"Carmella Ziccardi Ellis",likes:3,comments:null,tagged:null},
   {text:'girls need to start looking for guys who have goals, ambitions, and an education because 10 years from now "swag" isn\'t going to pay the bills.',date:"Mar 18, 2012",author:"Morgan Blasetto",likes:7,comments:null,tagged:null},
   {text:"dancing isn't a hobby, its a dream",date:"May 18, 2012",author:"Morgan Blasetto",likes:5,comments:"6 comments",tagged:null},
+  {text:"Every one should go to legends of the fog tonite.",date:"Oct 19, 2012",author:"Dominic Venanzi",likes:5,comments:"2 comments",tagged:null},
+  {text:"Who wants to come over and swim ? Text me if u want to.",date:"May 27, 2012",author:"Dominic Venanzi",likes:11,comments:"1 comment",tagged:null},
+  {text:"At the airport bored someone text me.",date:"Mar 17, 2012",author:"Dominic Venanzi",likes:3,comments:"2 comments",tagged:null},
+  {text:"to the people above me: thank you for keeping me up all night with the bed shaking and moaning. sounded like two rhinos have sex. congrats",date:"Feb 11, 2011",author:"Corinne Ziccardi Maddux",likes:17,comments:"2 comments",tagged:null},
+  {text:"treats and snoozin. snoozin and treats. lol",date:"Jan 8, 2012",author:"Luisa Mangione",likes:null,comments:null,tagged:null},
+  {text:"my lunch box smells like honey mustard everywhere......",date:"Apr 30, 2011",author:"Luisa Mangione",likes:1,comments:null,tagged:null},
 ];
 
 const EMOJI = {
   'Francesca Ziccardi':'👰','Camila Ranta McWright':'💃','Leah Rock':'🥩',
   'Maggie Sudek':'🐾','Hannah Sefton':'💉','Carmella Ziccardi Ellis':'🐦',
   'Jordie Lopez':'👑','Annie Brown':'🥂','Morgan Blasetto':'💊',
+  'Dominic Venanzi':'🌊','Corinne Ziccardi Maddux':'😂','Luisa Mangione':'🍱',
+};
+
+const FIRST_TO_FULL = {
+  'Francesca':'Francesca Ziccardi',
+  'Camila':'Camila Ranta McWright',
+  'Leah':'Leah Rock',
+  'Maggie':'Maggie Sudek',
+  'Hannah':'Hannah Sefton',
+  'Carmella':'Carmella Ziccardi Ellis',
+  'Jordie':'Jordie Lopez',
+  'Annie':'Annie Brown',
+  'Morgan':'Morgan Blasetto',
+  'Dom':'Dominic Venanzi',
+  'Corinne':'Corinne Ziccardi Maddux',
+  'Luisa':'Luisa Mangione',
+  'Abbey':'Abbey Murphy',
+  'Lucy':'Lucy Marshall',
+  'Diana':'Diana Ready',
 };
 
 /* SVGs */
-const LIKE_FILLED=`<svg viewBox="0 0 24 24"><path d="M14 9h3l1-4-6-5v4H6C4.9 4 4 4.9 4 6v12c0 1.1.9 2 2 2h9c.8 0 1.6-.5 1.9-1.3l3-7.1V9h-6z"/></svg>`;
+const LIKE_FILLED=`<svg viewBox="0 0 16 16"><path fill="#fff" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm3.6 9.2c0 .1 0 .2-.1.3L10.4 11c-.1.1-.3.2-.4.2H6.7c-.3 0-.5-.2-.5-.5V7.1c0-.1.1-.3.1-.3L7.6 5c.2-.3.5-.3.7-.1l.3.3c.2.2.2.5.1.8l-.4 1.1H11c.3 0 .6.3.6.6v1.5ZM5.5 7H4.9c-.2 0-.4.2-.4.4v3.4c0 .2.2.4.4.4h.6c.2 0 .4-.2.4-.4V7.4c0-.2-.2-.4-.4-.4Z"/></svg>`;
 const LIKE_OUT=`<svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>`;
 const COMMENT=`<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`;
 const SEND=`<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>`;
@@ -505,7 +597,8 @@ const FRIENDS=`<svg viewBox="0 0 16 16" style="fill:#65676b"><path d="M8 8a3 3 0
    STATE
 ══════════════════════════════════════════════════════ */
 let roomCode = null;
-let deck = [];           // shuffled post order (indices into POSTS)
+let deck = [];
+let choices = []; // pre-generated 4-option choices per question, same for all players
 let modCurrent = 0;
 let modRevealedState = [];
 let playerName = null;
@@ -543,6 +636,78 @@ function shuffle(a) {
     }
   }
   return b;
+}
+
+// Hardcoded 4 choices per post — in same order as POSTS array
+// First name is always the correct answer. Edit any you want to change!
+const HARDCODED_CHOICES = [
+  // 0: "im pretty sure i have a concussion.."
+  ['Francesca','Abbey','Leah','Hannah'],
+  // 1: "being single doesnt mean no one wants you... Taylor Swift"
+  ['Francesca','Maggie','Morgan','Diana'],
+  // 2: "watching justin bieber on tlc <3 my babbyy (:"
+  ['Francesca','Leah','Annie','Morgan'],
+  // 3: "im sexy and i know it *i work out*! (:"
+  ['Francesca','Jordie','Abbey','Camila'],
+  // 4: "some people just really get on my nerves."
+  ['Francesca','Hannah','Corinne','Leah'],
+  // 5: "italian job <333333333333333333"
+  ['Camila','Francesca','Luisa','Lucy'],
+  // 6: "Burping is my passion"
+  ['Camila','Abbey','Jordie','Maggie'],
+  // 7: "i just choked on water and peanut butter"
+  ['Camila','Corinne','Hannah','Leah'],
+  // 8: "Eatin a juicy ribeye steak!!!!!!! Mmmmmmm"
+  ['Leah','Dom','Luisa','Jordie'],
+  // 9: "Lets make the most of the night like we're gonna die young!"
+  ['Leah','Annie','Carmella','Francesca'],
+  // 10: "does anyione know who to friend people on wekinz"
+  ['Maggie','Lucy','Dom','Camila'],
+  // 11: "LIVE LIFE AS IF YOU'LL DIE TOMORROW..."
+  ['Maggie','Morgan','Corinne','Diana'],
+  // 12: "Abbey Murphy is actually so cute....why do i love her so much"
+  ['Maggie','Annie','Luisa','Lucy'],
+  // 13: "I absolutley hate shots!......"
+  ['Hannah','Abbey','Luisa','Carmella'],
+  // 14: "theres nothing like getting shitted on by a bird..."
+  ['Carmella','Camila','Dom','Maggie'],
+  // 15: "bachelorette... craziness but predictable"
+  ['Jordie','Corinne','Francesca','Carmella'],
+  // 16: "IM THE SHIT"
+  ['Jordie','Diana','Dom','Corinne'],
+  // 17: "I love my girllsssssss <3 mixerrrrr partyyyy"
+  ['Annie','Maggie','Abbey','Luisa'],
+  // 18: "Where there is love there is life"
+  ['Carmella','Maggie','Morgan','Abbey'],
+  // 19: "girls need to start looking for guys who have goals..."
+  ['Morgan','Lucy','Hannah','Carmella'],
+  // 20: "dancing isn't a hobby, its a dream"
+  ['Morgan','Luisa','Maggie','Diana'],
+  // 21: "Every one should go to legends of the fog tonite."
+  ['Dom','Jordie','Carmella','Annie'],
+  // 22: "Who wants to come over and swim ? Text me if u want to."
+  ['Dom','Maggie','Hannah','Leah'],
+  // 23: "At the airport bored someone text me."
+  ['Dom','Jordie','Morgan','Hannah'],
+  // 24: "two rhinos have sex. congrats"
+  ['Corinne','Carmella','Jordie','Abbey'],
+  // 25: "treats and snoozin. snoozin and treats. lol"
+  ['Luisa','Maggie','Francesca','Diana'],
+  // 26: "my lunch box smells like honey mustard everywhere......"
+  ['Luisa','Camila','Maggie','Diana'],
+];
+
+function generateChoices(shuffledDeck) {
+  // Map hardcoded choices through the shuffled deck order
+  return shuffledDeck.map(postIdx => {
+    const choices = [...HARDCODED_CHOICES[postIdx]];
+    // shuffle the 4 so correct answer isn't always first/same position
+    for (let i = choices.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [choices[i],choices[j]] = [choices[j],choices[i]];
+    }
+    return choices;
+  });
 }
 
 function genRoomCode() {
@@ -608,39 +773,67 @@ function buildFbCard(post, isRevealed) {
 const GAME_KEY = 'game'; // single fixed Firebase key, room code stored inside
 
 function chooseMod() {
+  showScreen('mod-password');
+  setTimeout(() => document.getElementById('modPwInput').focus(), 100);
+}
+
+function checkModPassword() {
+  const val = document.getElementById('modPwInput').value;
+  if (val === '123') {
+    document.getElementById('modPwInput').value = '';
+    loadModGame();
+  } else {
+    const err = document.getElementById('modPwErr');
+    err.textContent = 'Wrong password — try again!';
+    document.getElementById('modPwInput').value = '';
+    document.getElementById('modPwInput').focus();
+    setTimeout(() => { err.textContent = ''; }, 3000);
+  }
+}
+
+function loadModGame() {
   modCurrent = 0;
   roomRef = db.ref(GAME_KEY);
 
   roomRef.once('value', snap => {
     if (snap.exists() && snap.val().roomCode && snap.val().deck) {
-      // Reuse existing game
       roomCode = snap.val().roomCode;
       deck = snap.val().deck;
+      choices = snap.val().choices || generateChoices(deck);
     } else {
-      // First time ever — generate code and deck
       roomCode = genRoomCode();
       deck = shuffle([...Array(POSTS.length).keys()]);
-      roomRef.set({ roomCode, deck, active: true, createdAt: Date.now() });
+      choices = generateChoices(deck);
+      roomRef.set({ roomCode, deck, choices, active: true, createdAt: Date.now() });
     }
     modRevealedState = new Array(deck.length).fill(false);
     document.getElementById('modRoomCode').textContent = roomCode;
     showScreen('mod-setup');
+    renderLobby(); // render immediately from whatever cachedGameData already has
   });
 }
 
 function renderLobby() {
   const list = document.getElementById('lobbyList');
+  const countEl = document.getElementById('lobbyCount');
   if (!list) return;
-  const players = Object.values((cachedGameData && cachedGameData.players) || {});
-  if (players.length === 0) {
-    list.innerHTML = '<div class="lobby-empty">Waiting for players to join…</div>';
+  const allPlayers = Object.values((cachedGameData && cachedGameData.players) || {});
+  const completed = allPlayers.filter(p => p.done);
+
+  if (countEl) countEl.textContent = `${completed.length} submitted`;
+
+  if (completed.length === 0) {
+    list.innerHTML = '<div class="lobby-empty">No submissions yet…</div>';
     return;
   }
-  list.innerHTML = `<ul class="lobby-list">${players.map(p => `
-    <li>
-      <span class="p-name">${p.name}</span>
-      <span class="p-status ${p.done ? 'done' : 'waiting'}">${p.done ? '✓ Done' : 'In progress…'}</span>
-    </li>`).join('')}</ul>`;
+  completed.sort((a,b) => (a.submittedAt||0) - (b.submittedAt||0));
+  list.innerHTML = `<ul class="lobby-list">
+    ${completed.map(p => `
+      <li>
+        <span class="p-name">${p.name}</span>
+        <span class="p-status done">✓ Done</span>
+      </li>`).join('')}
+  </ul>`;
 }
 
 function startModGame() {
@@ -748,6 +941,7 @@ async function joinRoom() {
 
   roomCode = gameData.roomCode;
   deck = gameData.deck;
+  choices = gameData.choices || generateChoices(deck);
   playerName = name;
   playerAnswers = new Array(deck.length).fill(null);
   playerCurrent = 0;
@@ -762,11 +956,12 @@ function renderPlayerCard() {
   setPlayerProgress(playerCurrent);
 
   const currentAnswer = playerAnswers[playerCurrent];
+  const questionChoices = (choices && choices[playerCurrent]) || ALL_AUTHORS.slice(0,4);
 
-  const answerBtns = ALL_AUTHORS.map(a => `
+  const answerBtns = questionChoices.map(a => `
     <button class="answer-btn ${currentAnswer===a?'selected':''}"
-      onclick="selectAnswer('${a.replace(/'/g,"\\'")}')">
-      ${a.split(' ')[0]}${a.includes(' ') ? ' ' + a.split(' ').slice(1).join(' ') : ''}
+      onclick="selectAnswer('${a}')">
+      ${a}
     </button>`).join('');
 
   area.innerHTML = `
@@ -790,7 +985,7 @@ function renderPlayerCard() {
       <button class="btn-ghost" onclick="playerPrev()" ${playerCurrent===0?'disabled':''}>←</button>
       <button class="btn-primary"
         onclick="${playerCurrent<deck.length-1?'playerNext()':'submitAnswers()'}"
-        ${currentAnswer===null?'disabled':''}>
+        ${(!TEST_MODE && currentAnswer===null)?'disabled':''}>
         ${playerCurrent<deck.length-1?'Next →':'Submit Answers 🎉'}
       </button>
     </div>
@@ -818,9 +1013,11 @@ function setPlayerProgress(cur) {
 
 async function submitAnswers() {
   const playerKey = playerName.toLowerCase().replace(/[^a-z0-9]/g,'_') + '_' + Date.now();
+  // Replace nulls with empty string so Firebase stores a proper dense array, not a sparse object
+  const denseAnswers = playerAnswers.map(a => a || '');
   await db.ref(GAME_KEY + '/players/' + playerKey).set({
     name: playerName,
-    answers: playerAnswers,
+    answers: denseAnswers,
     done: true,
     submittedAt: Date.now()
   });
@@ -834,8 +1031,10 @@ function confirmReset() {
   if (confirm('Clear all player data and generate a new room code? This cannot be undone.')) {
     roomCode = genRoomCode();
     const freshDeck = shuffle([...Array(POSTS.length).keys()]);
-    db.ref(GAME_KEY).set({ roomCode, deck: freshDeck, active: true, createdAt: Date.now() });
+    const freshChoices = generateChoices(freshDeck);
+    db.ref(GAME_KEY).set({ roomCode, deck: freshDeck, choices: freshChoices, active: true, createdAt: Date.now() });
     deck = freshDeck;
+    choices = freshChoices;
     modRevealedState = new Array(deck.length).fill(false);
     modCurrent = 0;
     playersSnapshot = {};
@@ -868,6 +1067,7 @@ let cachedGameData = null;
   db.ref(GAME_KEY).on('value', snap => {
     if (snap.exists()) {
       cachedGameData = snap.val();
+      if (cachedGameData.choices) choices = cachedGameData.choices;
       // update lobby if visible
       if (document.getElementById('screen-mod-setup').classList.contains('active')) {
         playersSnapshot = cachedGameData.players || {};
@@ -880,6 +1080,9 @@ let cachedGameData = null;
     }
   });
 })();
+
+let leaderboardTiers = [];
+let leaderboardRevealed = 0;
 
 function renderFromCache() {
   const area = document.getElementById('podiumArea');
@@ -895,39 +1098,83 @@ function renderFromCache() {
   if (players.length === 0) { area.innerHTML = `<div class="lobby-empty">No players have submitted yet.</div>`; return; }
 
   const total = liveDeck.length;
+
+  // Score all players
   const scored = players.map(p => {
-    const answers = Array.isArray(p.answers) ? p.answers : Object.values(p.answers || {});
+    const rawAnswers = p.answers || {};
+    const answers = Array.isArray(rawAnswers)
+      ? rawAnswers
+      : liveDeck.map((_, i) => rawAnswers[i] || null);
     let pts = 0;
     liveDeck.forEach((postIdx, i) => {
-      if (answers[i] === POSTS[postIdx].author) pts++;
+      const fullAnswer = FIRST_TO_FULL[answers[i]] || answers[i];
+      if (fullAnswer && fullAnswer === POSTS[postIdx].author) pts++;
     });
     return { name: p.name, pts };
   }).sort((a,b) => b.pts - a.pts);
 
-  const top3 = scored.slice(0, 3);
-  const podiumOrder = [top3[1], top3[0], top3[2]];
-  const podiumClass = ['second','first','third'];
-  const podiumEmoji = ['🥈','🥇','🥉'];
+  // Build exactly 3 tiers (1st, 2nd, 3rd)
+  // Group consecutive players with same score, assign ranks 1/2/3 in order
+  const uniqueScores = [...new Set(scored.map(p => p.pts))];
+  leaderboardTiers = [0,1,2].map(i => {
+    const pts = uniqueScores[i] !== undefined ? uniqueScores[i] : null;
+    const names = pts !== null ? scored.filter(p => p.pts === pts).map(p => p.name) : [];
+    return { rank: i+1, pts, names, total };
+  });
+
+  leaderboardRevealed = 0;
+  renderLeaderboardState();
+}
+
+function renderLeaderboardState() {
+  const area = document.getElementById('podiumArea');
+  if (!area) return;
+
+  const tiers = leaderboardTiers;
+  const allRevealed = leaderboardRevealed >= tiers.length;
+  const medals = ['🥇','🥈','🥉'];
+
+  // Rows reversed so 3rd reveals first, 1st reveals last
+  const rows = tiers.map((tier, i) => {
+    const revealIndex = tiers.length - i;
+    const isRevealed = leaderboardRevealed >= revealIndex;
+    const rankClass = `rank-${tier.rank}`;
+    const nameStr = tier.names.length > 0 ? tier.names.join(' & ') : '—';
+
+    if (isRevealed) {
+      return `
+        <div class="lb-reveal-row ${rankClass}" style="animation:cardIn .4s cubic-bezier(.22,1,.36,1) both">
+          <div class="lb-rank-num">${medals[i]}</div>
+          <div class="lb-reveal-name">${nameStr}</div>
+          <div class="lb-reveal-pts">${tier.pts !== null ? `${tier.pts}/${tier.total}` : '—'}</div>
+        </div>`;
+    } else {
+      return `
+        <div class="lb-reveal-row ${rankClass}">
+          <div class="lb-rank-num">${tier.rank}</div>
+          <div class="lb-placeholder"><div class="lb-placeholder-name"></div></div>
+          <div class="lb-reveal-pts">?/?</div>
+        </div>`;
+    }
+  }).reverse();
+
+  const nextRank = tiers.length - leaderboardRevealed;
+  const hint = allRevealed
+    ? `<div class="lb-all-done">🎉 Congratulations!</div>`
+    : `<div class="lb-tap-hint">${leaderboardRevealed === 0 ? 'Tap anywhere to start the reveal ↓' : `Tap to reveal #${nextRank} ↓`}</div>`;
 
   area.innerHTML = `
-    <div class="podium">
-      ${podiumOrder.map((p,i) => p ? `
-        <div class="podium-slot ${podiumClass[i]}">
-          <div class="podium-name">${p.name}</div>
-          <div class="podium-score">${p.pts}/${total} pts</div>
-          <div class="podium-block">${podiumEmoji[i]}</div>
-          <div class="podium-rank">${i===1?'1st':i===0?'2nd':'3rd'}</div>
-        </div>` : `<div class="podium-slot ${podiumClass[i]}"></div>`
-      ).join('')}
+    <div class="lb-reveal-list" onclick="revealNextLeaderboard()"
+      style="cursor:${allRevealed?'default':'pointer'}">
+      ${rows.join('')}
     </div>
-    <div class="leaderboard-full">
-      ${scored.map((p,i) => `
-        <div class="lb-row">
-          <span class="lb-rank">${i+1}</span>
-          <span class="lb-name">${p.name}</span>
-          <span class="lb-pts">${p.pts}/${total}</span>
-        </div>`).join('')}
-    </div>`;
+    ${hint}`;
+}
+
+function revealNextLeaderboard() {
+  if (leaderboardRevealed >= leaderboardTiers.length) return;
+  leaderboardRevealed++;
+  renderLeaderboardState();
 }
 </script>
 </body>
