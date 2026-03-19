@@ -17,6 +17,7 @@
   const firebaseConfig = {
     apiKey: "AIzaSyCvu_sz4GkRipzNy1Ut_07y56Unazh-Foo",
     authDomain: "fran-bach-who-said-it.firebaseapp.com",
+    databaseURL: "https://fran-bach-who-said-it-default-rtdb.firebaseio.com",
     projectId: "fran-bach-who-said-it",
     storageBucket: "fran-bach-who-said-it.firebasestorage.app",
     messagingSenderId: "372525733290",
@@ -227,11 +228,35 @@ body::before{
 .rev-hint{font-size:.7rem;color:#ec4899;letter-spacing:.05em;}
 
 /* mod nav */
-.mod-nav{display:flex;gap:.7rem;margin-top:1rem;}
+.mod-nav{display:flex;gap:.7rem;}
 .mod-nav .btn-ghost{flex:0 0 auto;padding:.8rem 1.1rem;}
 .mod-nav .btn-primary{flex:1;}
 .mod-nav .btn-primary:disabled{opacity:.45;}
-.post-ctr{text-align:center;margin-top:.8rem;font-size:.72rem;color:rgba(255,255,255,.25);letter-spacing:.1em;}
+.post-ctr{text-align:center;margin-top:.6rem;font-size:.72rem;color:rgba(255,255,255,.25);letter-spacing:.1em;}
+
+/* fixed bottom nav bar — same position always regardless of content */
+.fixed-nav{
+  position:fixed;
+  bottom:0; left:0; right:0;
+  z-index:50;
+  background:linear-gradient(to top, rgba(15,10,26,1) 70%, rgba(15,10,26,0));
+  padding:1rem 1.2rem 1.6rem;
+  max-width:580px;
+  margin:0 auto;
+  /* center it */
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+}
+.fixed-nav .nav-inner{display:flex;gap:.7rem;}
+.fixed-nav .btn-ghost{flex:0 0 auto;padding:.8rem 1.1rem;}
+.fixed-nav .btn-primary{flex:1;}
+.fixed-nav .btn-primary:disabled{opacity:.45;}
+.fixed-nav .post-ctr{text-align:center;margin-top:.4rem;font-size:.72rem;color:rgba(255,255,255,.25);letter-spacing:.1em;}
+
+/* extra bottom padding on game screens so content doesn't hide behind fixed nav */
+#screen-mod-game{ padding-bottom:120px; }
+#screen-player-quiz{ padding-bottom:160px; }
 
 /* ── ANSWER CHOICES ── */
 .answer-grid{
@@ -309,31 +334,12 @@ body::before{
 <body>
 
 <div class="bg-float" id="bgFloat"></div>
-<button class="trophy-btn" id="trophyBtn" onclick="showScreen('mod-leaderboard')" title="Leaderboard">🏆</button>
-
-<!-- ════════════════════════════════════════════
-     SCREEN: PASSWORD GATE
-════════════════════════════════════════════ -->
-<div class="screen active" id="screen-password">
-  <div class="page-header">
-    <div class="eyebrow">Bachelorette Edition ✨</div>
-    <h1>Fran Bach<br><em>Who Said It?</em></h1>
-    <p class="sub">Enter the password to play 🔒</p>
-  </div>
-  <div class="field">
-    <label>PASSWORD</label>
-    <input type="password" id="pwInput" placeholder="••••••••••••" autocomplete="off"
-      onkeydown="if(event.key==='Enter')checkPassword()">
-  </div>
-  <div class="pw-err" id="pwErr"></div>
-  <br>
-  <button class="btn-primary" onclick="checkPassword()">Enter →</button>
-</div>
+<button class="trophy-btn" id="trophyBtn" onclick="showLeaderboard()" title="Leaderboard">🏆</button>
 
 <!-- ════════════════════════════════════════════
      SCREEN: LANDING
 ════════════════════════════════════════════ -->
-<div class="screen" id="screen-landing">
+<div class="screen active" id="screen-landing">
   <div class="page-header">
     <div class="eyebrow">Bachelorette Edition ✨</div>
     <h1>Fran Bach<br><em>Who Said It?</em></h1>
@@ -354,26 +360,25 @@ body::before{
 </div>
 
 <!-- ════════════════════════════════════════════
-     SCREEN: MOD SETUP (create room)
+     SCREEN: MOD SETUP (lobby)
 ════════════════════════════════════════════ -->
 <div class="screen" id="screen-mod-setup">
   <div class="page-header">
-    <div class="eyebrow">Moderator Setup</div>
-    <h1><em>Create a room</em></h1>
+    <div class="eyebrow">Moderator</div>
+    <h1><em>Lobby</em></h1>
   </div>
   <div class="room-code-display">
-    <div class="rc-label">Your room code</div>
+    <div class="rc-label">Room code — share this with everyone</div>
     <div class="rc-code" id="modRoomCode">····</div>
   </div>
-  <p class="hint">Share this code with the girls so they can join on their phones.</p>
-  <br>
   <div class="dark-card">
     <div id="lobbyList"><div class="lobby-empty">Waiting for players to join…</div></div>
   </div>
   <div class="lobby-actions">
-    <button class="btn-primary" onclick="startModGame()" id="startGameBtn">Start Slideshow →</button>
+    <button class="btn-primary" onclick="startModGame()">Start Slideshow →</button>
   </div>
-  <p class="hint" style="margin-top:.6rem">You can start at any time — players can still finish after you begin.</p>
+  <p class="hint" style="margin-top:.6rem">Players can join and submit before or after you start.</p>
+  <button class="reset-btn" onclick="confirmReset()">↺ Clear all data &amp; reset room</button>
 </div>
 
 <!-- ════════════════════════════════════════════
@@ -397,7 +402,6 @@ body::before{
     <p class="sub">Who knows Fran best?</p>
   </div>
   <div id="podiumArea"></div>
-  <button class="reset-btn" onclick="confirmReset()">↺ Reset everything</button>
 </div>
 
 <!-- ════════════════════════════════════════════
@@ -406,7 +410,7 @@ body::before{
 <div class="screen" id="screen-player-join">
   <div class="page-header">
     <div class="eyebrow">Player Mode</div>
-    <h1><em>Join a room</em></h1>
+    <h1><em>Join the game</em></h1>
   </div>
   <div class="field">
     <label>YOUR NAME</label>
@@ -414,12 +418,13 @@ body::before{
   </div>
   <div class="field">
     <label>ROOM CODE</label>
-    <input type="text" id="playerRoomCode" placeholder="4-digit code" maxlength="4" autocomplete="off"
-      oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+    <input type="text" id="playerRoomCode" placeholder="Ask the moderator" maxlength="6" autocomplete="off"
+      oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
+      onkeydown="if(event.key==='Enter')joinRoom()">
   </div>
   <div id="joinErr" class="err"></div>
   <br>
-  <button class="btn-primary" onclick="joinRoom()">Join Game →</button>
+  <button class="btn-primary" onclick="joinRoom()">Let's Go →</button>
   <br><br>
   <button class="btn-ghost" style="width:100%" onclick="showScreen('landing')">← Back</button>
 </div>
@@ -516,6 +521,11 @@ function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('screen-' + name);
   if (el) { el.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  // hide fixed navs when not on game screens
+  const modNav = document.getElementById('fixedModNav');
+  const playerNav = document.getElementById('fixedPlayerNav');
+  if (modNav) modNav.style.display = (name === 'mod-game') ? 'block' : 'none';
+  if (playerNav) playerNav.style.display = (name === 'player-quiz') ? 'block' : 'none';
 }
 
 function shuffle(a) {
@@ -589,62 +599,39 @@ function buildFbCard(post, isRevealed) {
 }
 
 /* ══════════════════════════════════════════════════════
-   PASSWORD GATE
+   PASSWORD GATE — removed, keeping function stub for safety
 ══════════════════════════════════════════════════════ */
-function checkPassword() {
-  const val = document.getElementById('pwInput').value;
-  if (val === 'Venanzi2026!') {
-    showScreen('landing');
-  } else {
-    const err = document.getElementById('pwErr');
-    err.textContent = 'Wrong password — try again!';
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwInput').focus();
-    setTimeout(() => { err.textContent = ''; }, 3000);
-  }
-}
 
 /* ══════════════════════════════════════════════════════
    MODERATOR FLOW
 ══════════════════════════════════════════════════════ */
+const GAME_KEY = 'game'; // single fixed Firebase key, room code stored inside
+
 function chooseMod() {
-  roomCode = genRoomCode();
-  deck = shuffle([...Array(POSTS.length).keys()]);
-  modRevealedState = new Array(POSTS.length).fill(false);
   modCurrent = 0;
+  roomRef = db.ref(GAME_KEY);
 
-  // Write room to Firebase
-  roomRef = db.ref('rooms/' + roomCode);
-  roomRef.set({
-    deck: deck,
-    active: true,
-    createdAt: Date.now()
-  });
-
-  // Clean up old rooms (older than 12 hours) — best-effort
-  db.ref('rooms').once('value', snap => {
-    const now = Date.now();
-    snap.forEach(child => {
-      const data = child.val();
-      if (data.createdAt && (now - data.createdAt) > 43200000) {
-        db.ref('rooms/' + child.key).remove();
-      }
-    });
-  });
-
-  document.getElementById('modRoomCode').textContent = roomCode;
-  showScreen('mod-setup');
-
-  // Listen for players joining
-  db.ref('rooms/' + roomCode + '/players').on('value', snap => {
-    playersSnapshot = snap.val() || {};
-    renderLobby();
+  roomRef.once('value', snap => {
+    if (snap.exists() && snap.val().roomCode && snap.val().deck) {
+      // Reuse existing game
+      roomCode = snap.val().roomCode;
+      deck = snap.val().deck;
+    } else {
+      // First time ever — generate code and deck
+      roomCode = genRoomCode();
+      deck = shuffle([...Array(POSTS.length).keys()]);
+      roomRef.set({ roomCode, deck, active: true, createdAt: Date.now() });
+    }
+    modRevealedState = new Array(deck.length).fill(false);
+    document.getElementById('modRoomCode').textContent = roomCode;
+    showScreen('mod-setup');
   });
 }
 
 function renderLobby() {
   const list = document.getElementById('lobbyList');
-  const players = Object.values(playersSnapshot);
+  if (!list) return;
+  const players = Object.values((cachedGameData && cachedGameData.players) || {});
   if (players.length === 0) {
     list.innerHTML = '<div class="lobby-empty">Waiting for players to join…</div>';
     return;
@@ -669,9 +656,19 @@ function renderModCard() {
   const revLabel = isRev ? '✅ Revealed!' : '👀 Reveal Who Said It';
   setModProgress(modCurrent);
 
-  area.innerHTML = `
-    ${buildFbCard(p, isRev)}
-    <div class="mod-nav">
+  area.innerHTML = `${buildFbCard(p, isRev)}`;
+
+  // render fixed nav separately so it never moves
+  let fixedNav = document.getElementById('fixedModNav');
+  if (!fixedNav) {
+    fixedNav = document.createElement('div');
+    fixedNav.id = 'fixedModNav';
+    fixedNav.className = 'fixed-nav';
+    document.body.appendChild(fixedNav);
+  }
+  fixedNav.style.display = 'block';
+  fixedNav.innerHTML = `
+    <div class="nav-inner">
       <button class="btn-ghost" onclick="modPrev()" ${modCurrent===0?'disabled':''}>←</button>
       <button class="btn-primary" id="modRevBtn" onclick="modReveal()" ${isRev?'disabled':''} style="${isRev?'opacity:.45':''}">
         ${revLabel}
@@ -718,45 +715,7 @@ function setModProgress(cur) {
 ══════════════════════════════════════════════════════ */
 function showLeaderboard() {
   showScreen('mod-leaderboard');
-  const players = Object.values(playersSnapshot);
-
-  // Score each player
-  const scored = players.map(p => {
-    const answers = p.answers || [];
-    let pts = 0;
-    deck.forEach((postIdx, i) => {
-      if (answers[i] === POSTS[postIdx].author) pts++;
-    });
-    return { name: p.name, pts };
-  }).sort((a,b) => b.pts - a.pts);
-
-  if (scored.length === 0) {
-    document.getElementById('podiumArea').innerHTML = `<div class="lobby-empty" style="padding:2rem">No players have submitted answers yet.</div>`;
-    return;
-  }
-
-  // Top 3
-  const top3 = scored.slice(0, 3);
-  const total = deck.length;
-
-  // Podium order: 2nd, 1st, 3rd
-  const podiumOrder = [top3[1], top3[0], top3[2]];
-  const podiumClass = ['second','first','third'];
-  const podiumEmoji = ['🥈','🥇','🥉'];
-
-  const podiumHTML = `
-    <div class="podium">
-      ${podiumOrder.map((p,i) => p ? `
-        <div class="podium-slot ${podiumClass[i]}">
-          <div class="podium-name">${p.name}</div>
-          <div class="podium-score">${p.pts}/${total} pts</div>
-          <div class="podium-block">${podiumEmoji[i]}</div>
-          <div class="podium-rank">${podiumClass[i] === 'first' ? '1st' : podiumClass[i] === 'second' ? '2nd' : '3rd'}</div>
-        </div>` : `<div class="podium-slot ${podiumClass[i]}"></div>`
-      ).join('')}
-    </div>`;
-
-  document.getElementById('podiumArea').innerHTML = podiumHTML;
+  setTimeout(() => renderFromCache(), 50);
 }
 
 /* ══════════════════════════════════════════════════════
@@ -768,24 +727,27 @@ function choosePlayer() {
 
 async function joinRoom() {
   const name = document.getElementById('playerName').value.trim();
-  const code = document.getElementById('playerRoomCode').value.trim().toUpperCase();
+  const enteredCode = document.getElementById('playerRoomCode').value.trim().toUpperCase();
   const errEl = document.getElementById('joinErr');
   errEl.textContent = '';
 
   if (!name) { errEl.textContent = 'Please enter your name.'; return; }
-  if (code.length !== 4) { errEl.textContent = 'Please enter a 4-character room code.'; return; }
+  if (!enteredCode) { errEl.textContent = 'Please enter the room code.'; return; }
 
-  // Check if room exists
-  const snap = await db.ref('rooms/' + code).once('value');
+  const snap = await db.ref(GAME_KEY).once('value');
   if (!snap.exists() || !snap.val().active) {
-    errEl.textContent = "Room not found. Double-check the code!";
+    errEl.textContent = "Game not set up yet — ask the moderator to open the site first!";
     return;
   }
 
-  // Load shared deck from room
-  roomCode = code;
-  roomRef = db.ref('rooms/' + code);
-  deck = snap.val().deck;
+  const gameData = snap.val();
+  if (enteredCode !== gameData.roomCode) {
+    errEl.textContent = "Wrong room code — check with the moderator!";
+    return;
+  }
+
+  roomCode = gameData.roomCode;
+  deck = gameData.deck;
   playerName = name;
   playerAnswers = new Array(deck.length).fill(null);
   playerCurrent = 0;
@@ -812,10 +774,21 @@ function renderPlayerCard() {
     <div style="margin-top:1rem;">
       <div style="font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.4rem;">Who posted this?</div>
       <div class="answer-grid">${answerBtns}</div>
-    </div>
-    <div class="nav-row" style="margin-top:1rem;">
+    </div>`;
+
+  // fixed bottom nav
+  let fixedNav = document.getElementById('fixedPlayerNav');
+  if (!fixedNav) {
+    fixedNav = document.createElement('div');
+    fixedNav.id = 'fixedPlayerNav';
+    fixedNav.className = 'fixed-nav';
+    document.body.appendChild(fixedNav);
+  }
+  fixedNav.style.display = 'block';
+  fixedNav.innerHTML = `
+    <div class="nav-inner">
       <button class="btn-ghost" onclick="playerPrev()" ${playerCurrent===0?'disabled':''}>←</button>
-      <button class="btn-primary" id="playerNextBtn"
+      <button class="btn-primary"
         onclick="${playerCurrent<deck.length-1?'playerNext()':'submitAnswers()'}"
         ${currentAnswer===null?'disabled':''}>
         ${playerCurrent<deck.length-1?'Next →':'Submit Answers 🎉'}
@@ -844,9 +817,8 @@ function setPlayerProgress(cur) {
 }
 
 async function submitAnswers() {
-  // Save to Firebase
   const playerKey = playerName.toLowerCase().replace(/[^a-z0-9]/g,'_') + '_' + Date.now();
-  await db.ref('rooms/' + roomCode + '/players/' + playerKey).set({
+  await db.ref(GAME_KEY + '/players/' + playerKey).set({
     name: playerName,
     answers: playerAnswers,
     done: true,
@@ -859,20 +831,25 @@ async function submitAnswers() {
    RESET
 ══════════════════════════════════════════════════════ */
 function confirmReset() {
-  if (confirm('Reset everything? This will clear all player scores and start a new game.')) {
-    if (roomRef) roomRef.remove();
-    document.getElementById('trophyBtn').style.display = 'none';
-    roomCode = null; deck = []; modCurrent = 0;
-    modRevealedState = []; playerName = null;
-    playerAnswers = []; playerCurrent = 0;
+  if (confirm('Clear all player data and generate a new room code? This cannot be undone.')) {
+    roomCode = genRoomCode();
+    const freshDeck = shuffle([...Array(POSTS.length).keys()]);
+    db.ref(GAME_KEY).set({ roomCode, deck: freshDeck, active: true, createdAt: Date.now() });
+    deck = freshDeck;
+    modRevealedState = new Array(deck.length).fill(false);
+    modCurrent = 0;
     playersSnapshot = {};
-    showScreen('landing');
+    document.getElementById('modRoomCode').textContent = roomCode;
+    renderLobby();
+    showScreen('mod-setup');
   }
 }
 
 /* ══════════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════════ */
+let cachedGameData = null;
+
 (function init() {
   const bg = document.getElementById('bgFloat');
   const pool = ['💍','💕','🥂','✨','🌸','💗','👰','🎀','💞'];
@@ -885,7 +862,73 @@ function confirmReset() {
     s.style.animationDelay = (Math.random()*18)+'s';
     bg.appendChild(s);
   }
+
+  // Set up a persistent real-time listener on the whole game node
+  // This fires immediately on load and on every change
+  db.ref(GAME_KEY).on('value', snap => {
+    if (snap.exists()) {
+      cachedGameData = snap.val();
+      // update lobby if visible
+      if (document.getElementById('screen-mod-setup').classList.contains('active')) {
+        playersSnapshot = cachedGameData.players || {};
+        renderLobby();
+      }
+      // update leaderboard if visible
+      if (document.getElementById('screen-mod-leaderboard').classList.contains('active')) {
+        renderFromCache();
+      }
+    }
+  });
 })();
+
+function renderFromCache() {
+  const area = document.getElementById('podiumArea');
+  if (!area) return;
+
+  const gameData = cachedGameData;
+  if (!gameData) { area.innerHTML = `<div class="lobby-empty">No data yet.</div>`; return; }
+
+  const liveDeck = gameData.deck;
+  const players = Object.values(gameData.players || {});
+
+  if (!liveDeck || liveDeck.length === 0) { area.innerHTML = `<div class="lobby-empty">❌ Deck missing.</div>`; return; }
+  if (players.length === 0) { area.innerHTML = `<div class="lobby-empty">No players have submitted yet.</div>`; return; }
+
+  const total = liveDeck.length;
+  const scored = players.map(p => {
+    const answers = Array.isArray(p.answers) ? p.answers : Object.values(p.answers || {});
+    let pts = 0;
+    liveDeck.forEach((postIdx, i) => {
+      if (answers[i] === POSTS[postIdx].author) pts++;
+    });
+    return { name: p.name, pts };
+  }).sort((a,b) => b.pts - a.pts);
+
+  const top3 = scored.slice(0, 3);
+  const podiumOrder = [top3[1], top3[0], top3[2]];
+  const podiumClass = ['second','first','third'];
+  const podiumEmoji = ['🥈','🥇','🥉'];
+
+  area.innerHTML = `
+    <div class="podium">
+      ${podiumOrder.map((p,i) => p ? `
+        <div class="podium-slot ${podiumClass[i]}">
+          <div class="podium-name">${p.name}</div>
+          <div class="podium-score">${p.pts}/${total} pts</div>
+          <div class="podium-block">${podiumEmoji[i]}</div>
+          <div class="podium-rank">${i===1?'1st':i===0?'2nd':'3rd'}</div>
+        </div>` : `<div class="podium-slot ${podiumClass[i]}"></div>`
+      ).join('')}
+    </div>
+    <div class="leaderboard-full">
+      ${scored.map((p,i) => `
+        <div class="lb-row">
+          <span class="lb-rank">${i+1}</span>
+          <span class="lb-name">${p.name}</span>
+          <span class="lb-pts">${p.pts}/${total}</span>
+        </div>`).join('')}
+    </div>`;
+}
 </script>
 </body>
 </html>
