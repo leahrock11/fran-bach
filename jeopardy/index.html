@@ -483,6 +483,31 @@
     opacity: 0.55;
   }
 
+  .reset-game-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    z-index: 10;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(184,100,120,0.3);
+    background: rgba(255,252,249,0.7);
+    color: var(--rose-deep);
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .reset-game-btn:hover {
+    background: var(--blush-soft);
+    border-color: var(--rose);
+    transform: translateY(-1px);
+  }
+
 
   /* ── TIMER BAR ── */
   .timer-bar-wrap {
@@ -974,6 +999,7 @@
 
 <!-- HERO -->
 <header class="hero">
+  <button class="reset-game-btn" onclick="resetGame()">↺ Reset Game</button>
   <div class="hero-text">
     <p class="hero-eyebrow">Bachelorette Edition</p>
     <h1 class="hero-title">Francesca's Bach Jeopardy</h1>
@@ -1143,6 +1169,7 @@ function resetScore(t) {
   if (confirm('Reset Team ' + t + ' score to zero?')) {
     scores[t-1] = 0;
     document.getElementById('s' + t).textContent = '0';
+    saveState();
   }
 }
 
@@ -1266,7 +1293,6 @@ function pauseTimer() {
   clearTimeout(timerTimeout);
   clearInterval(timerInterval);
   const bar = document.getElementById('timerBar');
-  // Freeze bar visually
   const computedWidth = bar.getBoundingClientRect().width;
   const wrapWidth = bar.parentElement.getBoundingClientRect().width;
   timerBarWidthAtPause = wrapWidth > 0 ? (computedWidth / wrapWidth) * 100 : timerBarWidthAtPause;
@@ -1365,6 +1391,7 @@ function fireTimesUp(questionText) {
     const el = document.getElementById('c' + current.col + '_' + current.row);
     if (el) el.classList.add('used');
     current = null;
+    saveState();
   }
   const tq = document.getElementById('timesupQ');
   tq.innerHTML = '';
@@ -1427,8 +1454,68 @@ function popConfetti() {
   }
 }
 
+// ── PERSISTENCE ─────────────────────────
+const STORAGE_KEY = 'bach_jeopardy_state';
+
+function saveState() {
+  const usedCards = [];
+  document.querySelectorAll('.card.used').forEach(el => usedCards.push(el.id));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ scores, usedCards }));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (state.scores) {
+      scores = state.scores;
+      document.getElementById('s1').textContent = scores[0].toLocaleString();
+      document.getElementById('s2').textContent = scores[1].toLocaleString();
+    }
+    if (state.usedCards) {
+      state.usedCards.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('used');
+      });
+    }
+  } catch(e) {}
+}
+
+function resetGame() {
+  if (!confirm('Reset the entire game? This will clear all scores and used cards.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  scores = [0, 0];
+  document.getElementById('s1').textContent = '0';
+  document.getElementById('s2').textContent = '0';
+  document.querySelectorAll('.card.used').forEach(el => el.classList.remove('used'));
+}
+
+// Patch addPts to save after every score change
+const _addPts = addPts;
+function addPts(i, v) {
+  scores[i] = Math.max(0, scores[i] + v);
+  document.getElementById('s' + (i+1)).textContent = scores[i].toLocaleString();
+  if (v > 0) popConfetti();
+  saveState();
+}
+
+// Patch closeModal to save used cards
+const _closeModal = closeModal;
+function closeModal() {
+  clearTimer();
+  document.getElementById('overlay').classList.remove('open');
+  if (current) {
+    const el = document.getElementById('c' + current.col + '_' + current.row);
+    if (el) el.classList.add('used');
+    current = null;
+  }
+  saveState();
+}
+
 buildScoreBtns();
 buildBoard();
+loadState();
 
 function goToFinal() {
   const s1 = scores[0] || 0;
