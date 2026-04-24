@@ -659,6 +659,7 @@
 <!-- ════════════════════════════════════
      MAIN BOARD PAGE
 ═════════════════════════════════════ -->
+<div id="page-board">
 <header class="hero">
   <button class="reset-game-btn" onclick="resetGame()">↺ Reset Game</button>
   <div class="hero-text">
@@ -731,6 +732,7 @@
   <button id="finalJeopardyBtn" style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;padding:1rem 2.8rem;border-radius:40px;border:none;cursor:pointer;background:linear-gradient(135deg,#b86478,#d98fa0);color:white;box-shadow:0 4px 22px rgba(184,100,120,0.35);transition:all 0.22s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(184,100,120,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 22px rgba(184,100,120,0.35)'" onclick="goToFinalJeopardy()">✦ &nbsp; Final Jeopardy &nbsp; ✦</button>
 </div>
 <footer>Cheers to Francesca &amp; Dom &mdash; forever starts here</footer>
+</div><!-- end #page-board -->
 
 <!-- ══════════════════════════════════════════════════
      PAGE 2: FINAL JEOPARDY — HYPE
@@ -984,15 +986,19 @@ function startGame() {
 const FJ_PAGES = ['page-fj-hype','page-fj-wager','page-fj-question','page-fj-results'];
 
 function showFJPage(id) {
+  // Hide main board
+  document.getElementById('page-board').style.display = 'none';
+  document.querySelectorAll('.cutout').forEach(el => el.style.display = 'none');
+  // Hide all FJ pages then show the right one
   FJ_PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  // Hide main board cutouts and footer when on FJ pages
-  document.querySelectorAll('.cutout').forEach(el => el.style.display = 'none');
 }
 
 function hideFJ() {
+  // Hide all FJ pages
   FJ_PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
-  // Restore cutouts
+  // Show main board
+  document.getElementById('page-board').style.display = '';
   document.querySelectorAll('.cutout').forEach(el => el.style.display = '');
 }
 
