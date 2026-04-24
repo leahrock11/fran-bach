@@ -35,24 +35,15 @@
     position: relative;
   }
 
-  /* ── PAGE SECTIONS ── */
-  .page {
-    display: none;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-  .page.active { display: flex; }
-
-  /* ════════════════════════════════
-     CUTOUTS (shared)
-  ════════════════════════════════ */
+  /* ── SCATTERED CUTOUT ILLUSTRATIONS ── */
   .cutout {
     position: fixed;
     pointer-events: none;
     z-index: 0;
     opacity: 0.82;
   }
-  /* Main board cutout positions */
+
+  /* Each cutout's position, size, rotation */
   #ico-palm     { bottom: -10px; left: -18px;  width: 210px; transform: rotate(-6deg); opacity: 0.75; }
   #ico-palm2    { top: 30px;     right: -20px; width: 170px; transform: rotate(8deg) scaleX(-1); opacity: 0.65; }
   #ico-flute1   { top: 140px;    left: 28px;   width: 70px;  transform: rotate(-12deg); }
@@ -72,9 +63,7 @@
   #ico-starfish { bottom: 180px; left: 260px;  width: 50px;  transform: rotate(22deg); opacity: 0.6; }
   #ico-moon     { top: 50px;     left: 220px;  width: 48px;  transform: rotate(-15deg); opacity: 0.5; }
 
-  /* ════════════════════════════════
-     MAIN BOARD STYLES
-  ════════════════════════════════ */
+  /* ── HERO ── */
   .hero {
     position: relative;
     z-index: 1;
@@ -85,161 +74,557 @@
     background: linear-gradient(160deg, #f5e6d8 0%, #faeade 40%, #fdf7f2 100%);
     overflow: visible;
   }
-  .hero-text { position: relative; z-index: 2; text-align: center; padding: 0 2rem; }
-  .hero-eyebrow { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.5em; text-transform: uppercase; color: var(--rose); opacity: 0.85; margin-bottom: 1rem; }
-  .hero-title { font-family: 'Dancing Script', cursive; font-weight: 700; font-size: clamp(2.8rem, 7.5vw, 5.8rem); color: var(--rose-deep); line-height: 1; text-shadow: 0 2px 30px rgba(184,100,120,0.18); margin-bottom: 0.7rem; }
-  .hero-line { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--rose), transparent); margin: 0.9rem auto; }
-  .hero-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(0.85rem, 1.8vw, 1.05rem); color: var(--warm); letter-spacing: 0.06em; opacity: 0.85; }
 
-  .scoreboard { position: relative; z-index: 1; background: var(--dark); display: flex; justify-content: center; align-items: center; gap: 0; }
-  .team-panel { flex: 1; max-width: 320px; padding: 0.9rem 2rem 0.8rem; text-align: center; }
-  .vs-sep { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(232,212,168,0.35); padding: 0 1rem; flex-shrink: 0; }
-  .team-tag { font-size: 0.52rem; font-weight: 500; letter-spacing: 0.44em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.15rem; }
-  .team-score { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--champagne); line-height: 1; margin-bottom: 0.55rem; }
-  .pts-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem; margin-bottom: 0.35rem; }
-  .pt-btn { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.06em; padding: 0.26rem 0.55rem; border-radius: 20px; border: 1px solid rgba(201,169,110,0.3); background: transparent; color: var(--gold); cursor: pointer; transition: all 0.18s; }
-  .pt-btn:hover { background: rgba(201,169,110,0.15); border-color: var(--gold); color: var(--champagne); transform: translateY(-1px); }
-  .pt-btn.sub { border-color: rgba(217,143,160,0.28); color: rgba(217,143,160,0.65); }
-  .pt-btn.sub:hover { background: rgba(217,143,160,0.1); border-color: var(--rose); color: var(--rose); }
-  .reset-txt { font-size: 0.48rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(201,169,110,0.22); cursor: pointer; transition: color 0.2s; display: inline-block; }
+  .hero-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--rose);
+    opacity: 0.85;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 7.5vw, 5.8rem);
+    color: var(--rose-deep);
+    line-height: 1;
+    text-shadow: 0 2px 30px rgba(184,100,120,0.18);
+    margin-bottom: 0.7rem;
+  }
+
+  .hero-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rose), transparent);
+    margin: 0.9rem auto;
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+    color: var(--warm);
+    letter-spacing: 0.06em;
+    opacity: 0.85;
+  }
+
+  /* ── SCOREBOARD ── */
+  .scoreboard {
+    position: relative;
+    z-index: 1;
+    background: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+
+  .team-panel {
+    flex: 1;
+    max-width: 320px;
+    padding: 0.9rem 2rem 0.8rem;
+    text-align: center;
+  }
+
+  .vs-sep {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(232,212,168,0.35);
+    padding: 0 1rem;
+    flex-shrink: 0;
+  }
+
+  .team-tag {
+    font-size: 0.52rem;
+    font-weight: 500;
+    letter-spacing: 0.44em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 0.15rem;
+  }
+
+  .team-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--champagne);
+    line-height: 1;
+    margin-bottom: 0.55rem;
+  }
+
+  .pts-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .pt-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 0.26rem 0.55rem;
+    border-radius: 20px;
+    border: 1px solid rgba(201,169,110,0.3);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .pt-btn:hover {
+    background: rgba(201,169,110,0.15);
+    border-color: var(--gold);
+    color: var(--champagne);
+    transform: translateY(-1px);
+  }
+
+  .pt-btn.sub {
+    border-color: rgba(217,143,160,0.28);
+    color: rgba(217,143,160,0.65);
+  }
+
+  .pt-btn.sub:hover {
+    background: rgba(217,143,160,0.1);
+    border-color: var(--rose);
+    color: var(--rose);
+  }
+
+  .reset-txt {
+    font-size: 0.48rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(201,169,110,0.22);
+    cursor: pointer;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+
   .reset-txt:hover { color: rgba(201,169,110,0.55); }
 
-  .board-wrap { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 2rem 1.2rem 3.5rem; }
-  .board-label { text-align: center; margin-bottom: 1.3rem; font-size: 0.54rem; letter-spacing: 0.44em; text-transform: uppercase; color: var(--text-soft); opacity: 0.55; font-weight: 400; }
-  .board { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  /* ── BOARD ── */
+  .board-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 2rem 1.2rem 3.5rem;
+  }
 
-  .cat-head { border-radius: 10px; min-height: 80px; display: flex; align-items: center; justify-content: center; padding: 0.85rem 0.5rem; text-align: center; position: relative; overflow: hidden; }
+  .board-label {
+    text-align: center;
+    margin-bottom: 1.3rem;
+    font-size: 0.54rem;
+    letter-spacing: 0.44em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    opacity: 0.55;
+    font-weight: 400;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+
+  .cat-head {
+    border-radius: 10px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 0.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
   .cat-head:nth-child(1) { background: linear-gradient(145deg, #b8667a, #9a4a62); }
   .cat-head:nth-child(2) { background: linear-gradient(145deg, #a07060, #7a5248); }
   .cat-head:nth-child(3) { background: linear-gradient(145deg, #c98880, #a86060); }
   .cat-head:nth-child(4) { background: linear-gradient(145deg, #8a7868, #6a5c4e); }
   .cat-head:nth-child(5) { background: linear-gradient(145deg, #b0907a, #8a6860); }
   .cat-head:nth-child(6) { background: linear-gradient(145deg, #c4a07a, #9a7848); }
-  .cat-head::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23ffffff' fill-opacity='0.07'/%3E%3C/svg%3E"); pointer-events: none; }
-  .cat-head-name { position: relative; font-family: 'DM Sans', sans-serif; font-size: clamp(0.54rem, 1vw, 0.7rem); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,252,249,0.93); line-height: 1.35; }
 
-  .card { background: var(--white); border: 1px solid rgba(184,102,122,0.13); border-radius: 10px; height: 94px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1); box-shadow: 0 2px 10px rgba(62,38,32,0.055); position: relative; overflow: hidden; }
-  .card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(250,232,232,0.55) 0%, transparent 60%); opacity: 0; transition: opacity 0.25s; }
-  .card:hover:not(.used) { transform: translateY(-4px) scale(1.025); border-color: var(--rose); box-shadow: 0 10px 28px rgba(184,100,120,0.17); background: var(--blush-soft); }
-  .card:hover:not(.used)::after { opacity: 1; }
-  .card-val { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 2.3vw, 1.85rem); font-weight: 700; color: var(--rose-deep); position: relative; z-index: 1; }
-  .card.used { background: rgba(232,221,208,0.28); border-color: rgba(200,180,165,0.13); box-shadow: none; cursor: default; }
-  .card.used .card-val { opacity: 0.07; }
+  .cat-head::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 3h1v1H1V3zm2-2h1v1H3V1z' fill='%23ffffff' fill-opacity='0.07'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
 
-  /* ── QUESTION MODAL ── */
-  .overlay { position: fixed; inset: 0; background: rgba(30,18,14,0.7); backdrop-filter: blur(14px) saturate(0.75); display: flex; align-items: center; justify-content: center; z-index: 400; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 1.5rem; }
-  .overlay.open { opacity: 1; pointer-events: all; }
-  .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 580px; overflow: hidden; transform: scale(0.93) translateY(20px); transition: transform 0.38s cubic-bezier(0.22,1,0.36,1); box-shadow: 0 40px 100px rgba(30,18,14,0.3); position: relative; }
-  .overlay.open .modal { transform: scale(1) translateY(0); }
-  .modal-top { height: 8px; background: linear-gradient(90deg, var(--blush), var(--rose), var(--peach), var(--champagne)); }
-  .modal-body { padding: 2.2rem 2.5rem 2.2rem; text-align: center; }
-  .modal-pts-badge { display: inline-block; font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700; color: var(--rose-deep); line-height: 1; margin-bottom: 0.35rem; }
-  .modal-cat-label { font-size: 0.56rem; font-weight: 500; letter-spacing: 0.4em; text-transform: uppercase; color: var(--rose); margin-bottom: 1.4rem; display: block; }
-  .modal-question { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 400; font-style: italic; color: var(--text); line-height: 1.55; margin-bottom: 1.8rem; }
-  .answer-box { border-top: 1px solid var(--sand); padding-top: 1.4rem; margin-bottom: 1.7rem; display: none; animation: riseUp 0.38s ease both; }
-  .answer-box.show { display: block; }
-  @keyframes riseUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
-  .ans-eyebrow { font-size: 0.5rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--text-soft); opacity: 0.5; margin-bottom: 0.55rem; font-weight: 400; }
-  .ans-text { font-family: 'Dancing Script', cursive; font-size: 2.1rem; font-weight: 600; color: var(--rose-deep); line-height: 1.2; }
-  .modal-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-  .mbtn { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.82rem 1.9rem; border-radius: 40px; border: none; cursor: pointer; transition: all 0.2s; }
-  .mbtn-fill { background: var(--rose-deep); color: white; box-shadow: 0 4px 18px rgba(184,100,120,0.28); }
-  .mbtn-fill:hover { background: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,100,120,0.38); }
-  .mbtn-outline { background: transparent; border: 1px solid var(--sand); color: var(--text-soft); }
-  .mbtn-outline:hover { border-color: var(--warm); background: var(--peach-soft); }
+  .cat-head-name {
+    position: relative;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.54rem, 1vw, 0.7rem);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,252,249,0.93);
+    line-height: 1.35;
+  }
 
-  /* ════════════════════════════════
-     FINAL JEOPARDY SCREENS
-  ════════════════════════════════ */
-  .fj-page {
-    background: linear-gradient(160deg, #1a0e0c 0%, #2e1e1a 100%);
-    min-height: 100vh;
-    flex-direction: column;
+  .card {
+    background: var(--white);
+    border: 1px solid rgba(184,102,122,0.13);
+    border-radius: 10px;
+    height: 94px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1.5rem 4rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34,1.4,0.64,1);
+    box-shadow: 0 2px 10px rgba(62,38,32,0.055);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(250,232,232,0.55) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover:not(.used) {
+    transform: translateY(-4px) scale(1.025);
+    border-color: var(--rose);
+    box-shadow: 0 10px 28px rgba(184,100,120,0.17);
+    background: var(--blush-soft);
+  }
+
+  .card:hover:not(.used)::after { opacity: 1; }
+
+  .card-val {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 2.3vw, 1.85rem);
+    font-weight: 700;
+    color: var(--rose-deep);
+    position: relative;
+    z-index: 1;
+  }
+
+  .card.used {
+    background: rgba(232,221,208,0.28);
+    border-color: rgba(200,180,165,0.13);
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .card.used .card-val { opacity: 0.07; }
+
+  /* ── MODAL ── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(30,18,14,0.7);
+    backdrop-filter: blur(14px) saturate(0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 1.5rem;
+  }
+
+  .overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 580px;
+    transform: scale(0.93) translateY(20px);
+    transition: transform 0.38s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 40px 100px rgba(30,18,14,0.3);
+    position: relative;
+  }
+
+  .overlay.open .modal { transform: scale(1) translateY(0); }
+
+  /* Colored top bar instead of photo */
+  .modal-top {
+    height: 8px;
+    background: linear-gradient(90deg, var(--blush), var(--rose), var(--peach), var(--champagne));
+    border-radius: 20px 20px 0 0;
+  }
+
+  .modal-body {
+    padding: 2.2rem 2.5rem 2.2rem;
     text-align: center;
   }
 
-  /* hype screen */
-  .hype-eyebrow { font-size: 0.58rem; letter-spacing: 0.55em; text-transform: uppercase; color: var(--gold); opacity: 0.8; margin-bottom: 1.2rem; font-weight: 400; }
-  .hype-title { font-family: 'Black Han Sans', sans-serif; font-size: clamp(3rem, 9vw, 7rem); letter-spacing: 0.04em; line-height: 0.92; margin-bottom: 0.5rem; background: linear-gradient(135deg, #f5dda8 0%, #c9a96e 30%, #f0e0b0 55%, #b8882a 75%, #f5dda8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 3s ease-in-out infinite alternate; background-size: 200%; }
-  @keyframes shimmer { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
-  .hype-sub { font-family: 'Dancing Script', cursive; font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--rose); margin-bottom: 2.5rem; font-weight: 600; }
-  .hype-card { background: rgba(255,252,249,0.06); border: 1px solid rgba(201,169,110,0.25); border-radius: 16px; padding: 2rem 2.5rem; max-width: 520px; width: 100%; margin-bottom: 2.5rem; position: relative; overflow: hidden; }
-  .hype-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-  .hype-beat-label { font-size: 0.52rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); opacity: 0.6; margin-bottom: 1.2rem; font-weight: 400; }
-  .hype-lines { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
-  .hype-line { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--champagne); line-height: 1.4; opacity: 0; transform: translateX(-16px); transition: opacity 0.5s ease, transform 0.5s ease; }
-  .hype-line.visible { opacity: 1; transform: translateX(0); }
-  .hype-line .accent { color: var(--gold); font-style: normal; font-weight: 700; }
-  .score-chips { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
-  .score-chip { background: rgba(255,252,249,0.07); border: 1px solid rgba(201,169,110,0.3); border-radius: 10px; padding: 0.7rem 1.8rem; text-align: center; }
-  .chip-label { font-size: 0.5rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--rose); display: block; margin-bottom: 0.2rem; }
-  .chip-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--champagne); }
+  .modal-pts-badge {
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--rose-deep);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
 
-  /* wager screen */
-  .wager-title { font-family: 'Dancing Script', cursive; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 700; color: var(--champagne); margin-bottom: 0.5rem; }
-  .wager-subtitle { font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 2.5rem; }
-  .wager-rules { background: rgba(255,252,249,0.05); border: 1px solid rgba(201,169,110,0.2); border-radius: 14px; padding: 1.5rem 2rem; max-width: 480px; width: 100%; margin-bottom: 2.2rem; }
-  .wager-rule { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(201,169,110,0.1); font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(0.9rem, 2vw, 1.1rem); color: var(--champagne); }
-  .wager-rule:last-child { border-bottom: none; }
-  .rule-badge { background: var(--gold); color: var(--dark); font-family: 'DM Sans', sans-serif; font-style: normal; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.25rem 0.65rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
-  .wager-teams { display: flex; gap: 1.5rem; max-width: 520px; width: 100%; margin-bottom: 2.2rem; flex-wrap: wrap; justify-content: center; }
-  .wager-team-box { flex: 1; min-width: 200px; background: rgba(255,252,249,0.05); border: 1px solid rgba(201,169,110,0.22); border-radius: 14px; padding: 1.3rem 1.5rem; text-align: center; }
-  .wager-team-label { font-size: 0.52rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--rose); display: block; margin-bottom: 0.3rem; }
-  .wager-current-score { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--champagne); margin-bottom: 0.8rem; }
-  .wager-input-wrap { display: flex; align-items: center; background: rgba(255,252,249,0.08); border: 1px solid rgba(201,169,110,0.3); border-radius: 8px; overflow: hidden; }
-  .wager-currency { padding: 0 0.6rem; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
-  .wager-input { flex: 1; background: transparent; border: none; outline: none; color: var(--champagne); font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; padding: 0.6rem 0.5rem 0.6rem 0; width: 100%; text-align: center; }
-  .wager-input::placeholder { color: rgba(232,212,168,0.3); }
+  .modal-cat-label {
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 1.4rem;
+    display: block;
+  }
 
-  /* question screen */
-  .q-eyebrow { font-size: 0.55rem; letter-spacing: 0.5em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 1.5rem; }
-  .q-instructions { font-family: 'Playfair Display', serif; font-style: italic; color: rgba(232,212,168,0.6); font-size: 0.95rem; margin-bottom: 2rem; max-width: 560px; }
-  .lyric-block { max-width: 680px; width: 100%; text-align: left; margin-bottom: 2rem; }
-  .lyric-line { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.4vw, 1.25rem); font-style: italic; color: var(--champagne); line-height: 1.9; letter-spacing: 0.01em; }
-  .blank-wrap { display: inline-flex; align-items: baseline; gap: 0.3rem; vertical-align: baseline; }
-  .blank-num { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 700; font-style: normal; color: var(--gold); opacity: 0.85; letter-spacing: 0; line-height: 1; flex-shrink: 0; }
-  .blank { display: inline-block; background: rgba(201,169,110,0.15); border-bottom: 2px solid var(--gold); border-radius: 2px; min-width: 80px; padding: 0 0.4rem; text-align: center; color: transparent; font-style: normal; font-weight: 700; cursor: default; transition: all 0.4s ease; vertical-align: baseline; }
-  .blank.revealed { background: rgba(184,100,120,0.18); border-bottom-color: var(--rose); color: var(--champagne); }
-  .music-status { display: flex; align-items: center; gap: 0.7rem; font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); opacity: 0.75; margin-bottom: 1.8rem; }
-  .music-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); animation: pulse 1.2s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+  .modal-question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 1.8rem;
+  }
 
-  /* results screen */
-  .results-title { font-family: 'Dancing Script', cursive; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 700; margin-bottom: 2rem; background: linear-gradient(135deg, #f5dda8, #c9a96e, #f0e0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .results-grid { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; max-width: 560px; width: 100%; }
-  .result-card { flex: 1; min-width: 200px; background: rgba(255,252,249,0.06); border: 1px solid rgba(201,169,110,0.25); border-radius: 14px; padding: 1.4rem 1.5rem; text-align: center; }
-  .result-team { font-size: 0.5rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--rose); display: block; margin-bottom: 0.3rem; }
-  .result-wager-row { font-size: 0.7rem; color: rgba(232,212,168,0.5); margin-bottom: 0.2rem; }
-  .result-score-label { font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.7; display: block; margin-top: 0.8rem; margin-bottom: 0.2rem; }
-  .result-score-val { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--champagne); }
-  .correct-btn-group { display: flex; flex-direction: column; gap: 0.3rem; align-items: center; }
-  .correct-label { font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.6; }
-  .correct-counter { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,252,249,0.07); border: 1px solid rgba(201,169,110,0.2); border-radius: 8px; padding: 0.3rem 0.7rem; }
-  .counter-btn { background: none; border: none; color: var(--gold); font-size: 1.2rem; cursor: pointer; line-height: 1; padding: 0 0.2rem; transition: color 0.2s; }
-  .counter-btn:hover { color: var(--champagne); }
-  .counter-val { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--champagne); min-width: 28px; text-align: center; }
+  .modal-question .q-main {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.9rem;
+  }
 
-  /* shared buttons */
-  .btn { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.95rem 2.4rem; border-radius: 40px; border: none; cursor: pointer; transition: all 0.22s; display: inline-block; text-decoration: none; }
-  .btn-gold { background: linear-gradient(135deg, var(--gold), #e8c47a, var(--gold)); background-size: 200%; color: var(--dark); box-shadow: 0 4px 20px rgba(201,169,110,0.35); font-weight: 700; }
-  .btn-gold:hover { background-position: right; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,169,110,0.5); }
-  .btn-outline { background: transparent; border: 1px solid rgba(201,169,110,0.35); color: var(--champagne); }
-  .btn-outline:hover { border-color: var(--gold); background: rgba(201,169,110,0.08); transform: translateY(-2px); }
-  .btn-rose { background: linear-gradient(135deg, var(--rose-deep), var(--rose)); color: white; box-shadow: 0 4px 18px rgba(184,100,120,0.3); }
-  .btn-rose:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,100,120,0.45); }
-  .btn-row { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; }
-  .gold-line { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 1.2rem auto; }
+  .modal-question .q-options {
+    display: inline-block;
+    text-align: left;
+    margin: 0 auto;
+  }
 
-  /* confetti */
-  .spark { position: fixed; pointer-events: none; z-index: 999; animation: sparkDrop linear forwards; border-radius: 50%; }
-  @keyframes sparkDrop { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(105vh) rotate(540deg); opacity:0; } }
+  .modal-question .q-option {
+    display: block;
+    line-height: 1.7;
+  }
 
-  footer { position: relative; z-index: 1; border-top: 1px solid var(--sand); padding: 1.5rem 1rem 3rem; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.85rem; color: var(--text-soft); opacity: 0.55; }
+  .modal-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
 
-  @media (max-width: 700px) {
+  .mbtn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.82rem 1.9rem;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.6;
+  }
+
+  .mbtn-fill {
+    background: var(--rose-deep);
+    color: white;
+    box-shadow: 0 4px 18px rgba(184,100,120,0.28);
+  }
+
+  .mbtn-fill:hover { background: var(--rose); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(184,100,120,0.38); }
+
+  .mbtn-outline {
+    background: transparent;
+    border: 1px solid var(--sand);
+    color: var(--text-soft);
+  }
+
+  .mbtn-outline:hover { border-color: var(--warm); background: var(--peach-soft); }
+
+  /* ── CONFETTI ── */
+  .spark {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    animation: sparkDrop linear forwards;
+    border-radius: 50%;
+  }
+
+  @keyframes sparkDrop {
+    0%   { transform: translateY(0) rotate(0deg); opacity:1; }
+    100% { transform: translateY(105vh) rotate(540deg); opacity:0; }
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--sand);
+    padding: 1.5rem 1rem 3rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    opacity: 0.55;
+  }
+
+
+  /* ── TIMER BAR ── */
+  .timer-bar-wrap {
+    height: 14px;
+    background: var(--sand);
+    border-radius: 0 0 20px 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .timer-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--rose-deep), var(--rose), var(--peach));
+    transform-origin: left;
+    transition: none;
+  }
+  .timer-bar.running {
+    transition: width linear;
+  }
+  .timer-bar.urgent {
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+    animation: urgentPulse 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes urgentPulse {
+    from { opacity: 1; }
+    to   { opacity: 0.6; }
+  }
+  .timer-countdown {
+    position: absolute;
+    bottom: 18px;
+    left: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--sand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-soft);
+    z-index: 10;
+    transition: color 0.3s, border-color 0.3s, font-weight 0.3s;
+    pointer-events: none;
+  }
+  .timer-countdown.urgent {
+    color: #c0392b;
+    border-color: #e74c3c;
+    font-weight: 700;
+  }
+
+  /* ── TIME'S UP OVERLAY ── */
+  .timesup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(30,18,14,0.85);
+    backdrop-filter: blur(16px) saturate(0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 1.5rem;
+  }
+  .timesup-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .timesup-modal {
+    background: var(--dark);
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 560px;
+    overflow: hidden;
+    transform: scale(0.9) translateY(24px);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+  }
+  .timesup-overlay.open .timesup-modal {
+    transform: scale(1) translateY(0);
+  }
+  .timesup-top {
+    height: 5px;
+    background: linear-gradient(90deg, #c0392b, #e74c3c, var(--rose), var(--champagne));
+  }
+  .timesup-body {
+    padding: 2.5rem 2.5rem 2.2rem;
+    text-align: center;
+  }
+  .timesup-emoji {
+    font-size: 2.8rem;
+    margin-bottom: 0.6rem;
+    animation: shake 0.5s ease both;
+  }
+  @keyframes shake {
+    0%,100% { transform: rotate(0deg); }
+    20%      { transform: rotate(-12deg); }
+    40%      { transform: rotate(12deg); }
+    60%      { transform: rotate(-8deg); }
+    80%      { transform: rotate(8deg); }
+  }
+  .timesup-title {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(2.2rem, 7vw, 3.8rem);
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, #f5dda8, #c9a96e, #f0e0b0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  .timesup-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0.8rem auto;
+  }
+  .timesup-sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-weight: 600;
+    color: var(--rose);
+    margin-bottom: 1.4rem;
+  }
+  .timesup-q {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+    color: rgba(232,212,168,0.75);
+    line-height: 1.6;
+    background: rgba(255,252,249,0.05);
+    border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 10px;
+    padding: 1rem 1.3rem;
+  }
+
+
     .board { gap: 6px; }
     .card { height: 72px; }
     .modal-body { padding: 1.8rem 1.4rem 1.8rem; }
@@ -250,31 +635,44 @@
 </head>
 <body>
 
-<!-- ═══ CUTOUT ILLUSTRATIONS (always in DOM, shown only on main board page) ═══ -->
+<!-- ═══════════════════════════════════════════
+     SCATTERED CUTOUT SVG ILLUSTRATIONS
+     All transparent background, no fill behind shapes
+════════════════════════════════════════════ -->
+
+<!-- PALM TREE left -->
 <svg id="ico-palm" class="cutout" viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg">
+  <!-- trunk -->
   <path d="M95 320 Q88 260 82 200 Q78 160 85 120" stroke="#8B6914" stroke-width="10" fill="none" stroke-linecap="round"/>
   <path d="M105 320 Q110 255 115 195 Q120 155 112 118" stroke="#A07820" stroke-width="8" fill="none" stroke-linecap="round"/>
   <path d="M100 315 Q101 240 100 180 Q100 145 100 118" stroke="#C49A28" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- trunk rings -->
   <ellipse cx="96" cy="250" rx="9" ry="3" fill="#A07820" opacity="0.5" transform="rotate(-5 96 250)"/>
   <ellipse cx="98" cy="210" rx="9" ry="3" fill="#A07820" opacity="0.5" transform="rotate(-3 98 210)"/>
   <ellipse cx="100" cy="170" rx="8" ry="3" fill="#A07820" opacity="0.4"/>
+  <!-- left leaves -->
   <path d="M100 118 Q55 95 20 108 Q40 88 100 95" fill="#4a9c5e"/>
   <path d="M100 118 Q42 82 10 60 Q38 68 100 95" fill="#3d8a52"/>
   <path d="M100 118 Q60 60 48 25 Q72 52 100 90" fill="#4a9c5e"/>
   <path d="M100 118 Q80 50 90 10 Q95 55 100 90" fill="#56a86a"/>
+  <!-- right leaves -->
   <path d="M100 118 Q145 95 180 108 Q160 88 100 95" fill="#4a9c5e"/>
   <path d="M100 118 Q158 82 190 60 Q162 68 100 95" fill="#3d8a52"/>
   <path d="M100 118 Q140 60 152 25 Q128 52 100 90" fill="#4a9c5e"/>
   <path d="M100 118 Q120 50 110 10 Q105 55 100 90" fill="#56a86a"/>
+  <!-- coconuts -->
   <circle cx="95" cy="122" r="8" fill="#8B5E3C"/>
   <circle cx="107" cy="118" r="7" fill="#7A5230"/>
   <circle cx="100" cy="128" r="7" fill="#9A6840"/>
 </svg>
+
+<!-- PALM TREE right (mirrored) -->
 <svg id="ico-palm2" class="cutout" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
   <path d="M95 300 Q88 240 82 185 Q78 148 87 115" stroke="#8B6914" stroke-width="10" fill="none" stroke-linecap="round"/>
   <path d="M105 300 Q110 238 115 182 Q120 145 110 113" stroke="#A07820" stroke-width="8" fill="none" stroke-linecap="round"/>
   <path d="M100 300 Q100 230 100 170 Q100 140 100 113" stroke="#C49A28" stroke-width="6" fill="none" stroke-linecap="round"/>
   <ellipse cx="96" cy="235" rx="9" ry="3" fill="#A07820" opacity="0.5" transform="rotate(-5 96 235)"/>
+  <ellipse cx="98" cy="198" rx="9" ry="3" fill="#A07820" opacity="0.5"/>
   <path d="M100 113 Q55 90 20 103 Q40 83 100 90" fill="#4a9c5e"/>
   <path d="M100 113 Q42 78 10 56 Q38 64 100 90" fill="#3d8a52"/>
   <path d="M100 113 Q60 55 48 20 Q72 47 100 85" fill="#4a9c5e"/>
@@ -286,62 +684,117 @@
   <circle cx="95" cy="117" r="8" fill="#8B5E3C"/>
   <circle cx="107" cy="113" r="7" fill="#7A5230"/>
 </svg>
+
+<!-- CHAMPAGNE FLUTE left -->
 <svg id="ico-flute1" class="cutout" viewBox="0 0 60 160" xmlns="http://www.w3.org/2000/svg">
   <path d="M18 10 L14 75 Q14 90 30 90 Q46 90 46 75 L42 10 Z" fill="#f0e0b8" stroke="#c9a96e" stroke-width="1.5"/>
   <path d="M18 10 L14 55 Q22 70 30 68 Q38 70 46 55 L42 10 Z" fill="#fdf0c8" opacity="0.7"/>
+  <!-- bubbles -->
   <circle cx="24" cy="70" r="2" fill="white" opacity="0.8"/>
   <circle cx="30" cy="55" r="1.5" fill="white" opacity="0.7"/>
   <circle cx="36" cy="65" r="1.8" fill="white" opacity="0.6"/>
+  <circle cx="28" cy="42" r="1.2" fill="white" opacity="0.7"/>
+  <!-- stem -->
   <rect x="28.5" y="90" width="3" height="45" fill="#c9a96e"/>
+  <!-- base -->
+  <ellipse cx="30" cy="136" rx="16" ry="4" fill="#c9a96e" opacity="0.6"/>
   <ellipse cx="30" cy="136" rx="14" ry="3" fill="#e8d4a8"/>
+  <!-- sparkle on glass -->
+  <line x1="22" y1="20" x2="22" y2="28" stroke="white" stroke-width="1" opacity="0.6"/>
+  <line x1="19" y1="24" x2="25" y2="24" stroke="white" stroke-width="1" opacity="0.6"/>
 </svg>
+
+<!-- CHAMPAGNE FLUTE right -->
 <svg id="ico-flute2" class="cutout" viewBox="0 0 60 160" xmlns="http://www.w3.org/2000/svg">
   <path d="M18 10 L14 75 Q14 90 30 90 Q46 90 46 75 L42 10 Z" fill="#f0e0b8" stroke="#c9a96e" stroke-width="1.5"/>
   <path d="M18 10 L14 55 Q22 70 30 68 Q38 70 46 55 L42 10 Z" fill="#fdf0c8" opacity="0.7"/>
   <circle cx="26" cy="68" r="2" fill="white" opacity="0.8"/>
+  <circle cx="32" cy="52" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="24" cy="40" r="1.2" fill="white" opacity="0.6"/>
   <rect x="28.5" y="90" width="3" height="45" fill="#c9a96e"/>
+  <ellipse cx="30" cy="136" rx="16" ry="4" fill="#c9a96e" opacity="0.6"/>
   <ellipse cx="30" cy="136" rx="14" ry="3" fill="#e8d4a8"/>
+  <line x1="22" y1="20" x2="22" y2="28" stroke="white" stroke-width="1" opacity="0.6"/>
+  <line x1="19" y1="24" x2="25" y2="24" stroke="white" stroke-width="1" opacity="0.6"/>
 </svg>
+
+<!-- DIAMOND RING top right -->
 <svg id="ico-ring" class="cutout" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+  <!-- band -->
   <path d="M15 58 Q20 78 45 82 Q70 78 75 58" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M15 58 Q10 42 30 35" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M75 58 Q80 42 60 35" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- diamond setting -->
   <polygon points="45,8 58,28 72,28 60,45 65,62 45,52 25,62 30,45 18,28 32,28" fill="#d4eef8" stroke="#a8d4e8" stroke-width="1"/>
   <polygon points="45,8 58,28 45,22 32,28" fill="#e8f4fc" opacity="0.9"/>
   <polygon points="45,22 58,28 45,42 32,28" fill="#b8dff0" opacity="0.8"/>
+  <polygon points="45,42 60,45 65,62 45,52 25,62 30,45" fill="#90c8e0" opacity="0.6"/>
+  <!-- sparkles -->
   <line x1="8" y1="10" x2="8" y2="18" stroke="#c9a96e" stroke-width="1.5"/>
   <line x1="4" y1="14" x2="12" y2="14" stroke="#c9a96e" stroke-width="1.5"/>
+  <line x1="78" y1="6" x2="78" y2="12" stroke="#c9a96e" stroke-width="1.5"/>
+  <line x1="75" y1="9" x2="81" y2="9" stroke="#c9a96e" stroke-width="1.5"/>
 </svg>
+
+<!-- SMALL RING lower left -->
 <svg id="ico-ring2" class="cutout" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
   <path d="M15 58 Q20 78 45 82 Q70 78 75 58" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M15 58 Q10 42 30 35" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
   <path d="M75 58 Q80 42 60 35" stroke="#c9a96e" stroke-width="4" fill="none" stroke-linecap="round"/>
   <polygon points="45,8 58,28 72,28 60,45 65,62 45,52 25,62 30,45 18,28 32,28" fill="#fde8f0" stroke="#d98fa0" stroke-width="1"/>
+  <polygon points="45,8 58,28 45,22 32,28" fill="#fef0f5" opacity="0.9"/>
+  <polygon points="45,22 58,28 45,42 32,28" fill="#f5c4d0" opacity="0.8"/>
 </svg>
+
+<!-- SILK PAJAMAS / ROBE -->
 <svg id="ico-pj" class="cutout" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left panel -->
   <path d="M50 20 L20 35 L10 100 L48 100 L48 50 Z" fill="#f5b8c8" stroke="#e090a8" stroke-width="1.5"/>
+  <!-- Right panel -->
   <path d="M50 20 L80 35 L90 100 L52 100 L52 50 Z" fill="#f0a8bc" stroke="#e090a8" stroke-width="1.5"/>
+  <!-- Lapels -->
   <path d="M50 20 L32 45 L48 50 Z" fill="#faeef3"/>
   <path d="M50 20 L68 45 L52 50 Z" fill="#faeef3"/>
+  <!-- Belt -->
   <rect x="12" y="72" width="76" height="6" rx="3" fill="#e090a8"/>
   <rect x="42" y="70" width="16" height="10" rx="3" fill="#c87090"/>
+  <!-- Left sleeve -->
   <path d="M20 35 L2 55 L8 60 L24 44" fill="#f5b8c8" stroke="#e090a8" stroke-width="1.5"/>
+  <!-- Right sleeve -->
   <path d="M80 35 L98 55 L92 60 L76 44" fill="#f0a8bc" stroke="#e090a8" stroke-width="1.5"/>
+  <!-- Collar detail -->
+  <path d="M38 45 Q50 55 62 45" stroke="#e090a8" stroke-width="1" fill="none"/>
+  <!-- Bottom hem -->
+  <path d="M10 100 Q50 108 90 100" stroke="#e090a8" stroke-width="1.5" fill="none"/>
+  <!-- Sheen lines -->
+  <line x1="28" y1="55" x2="35" y2="95" stroke="white" stroke-width="1" opacity="0.4"/>
+  <line x1="65" y1="58" x2="60" y2="92" stroke="white" stroke-width="1" opacity="0.3"/>
 </svg>
+
+<!-- SHELL 1 -->
 <svg id="ico-shell1" class="cutout" viewBox="0 0 70 65" xmlns="http://www.w3.org/2000/svg">
   <path d="M35 60 Q5 50 8 25 Q12 5 35 8 Q58 5 62 25 Q65 50 35 60Z" fill="#f5ddb4" stroke="#c4956a" stroke-width="1.5"/>
   <path d="M35 8 Q35 25 35 60" stroke="#c4956a" stroke-width="1.2" fill="none"/>
   <path d="M20 12 Q25 35 28 58" stroke="#d4a87a" stroke-width="1" fill="none" opacity="0.7"/>
   <path d="M50 12 Q45 35 42 58" stroke="#d4a87a" stroke-width="1" fill="none" opacity="0.7"/>
+  <path d="M12 22 Q22 30 35 30 Q48 30 58 22" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.5"/>
+  <path d="M10 35 Q22 38 35 38 Q48 38 60 35" stroke="#c4956a" stroke-width="1" fill="none" opacity="0.4"/>
+  <ellipse cx="35" cy="61" rx="12" ry="4" fill="#d4a87a" opacity="0.5"/>
 </svg>
+
+<!-- SHELL 2 smaller spiral -->
 <svg id="ico-shell2" class="cutout" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
   <circle cx="30" cy="30" r="26" fill="#f0d4a0" stroke="#c4956a" stroke-width="1.5"/>
   <path d="M30 30 Q38 22 44 28 Q50 34 42 42 Q34 50 24 44 Q14 38 18 28 Q22 18 32 18 Q40 18 44 28" fill="none" stroke="#c4956a" stroke-width="1.5"/>
+  <path d="M30 30 Q34 28 36 30 Q38 33 35 36 Q31 38 28 35 Q25 32 27 29" fill="#e0b87a" opacity="0.5"/>
   <circle cx="30" cy="30" r="3" fill="#c4956a" opacity="0.7"/>
 </svg>
+
+<!-- SUN -->
 <svg id="ico-sun" class="cutout" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
   <circle cx="50" cy="50" r="22" fill="#f5c842" opacity="0.9"/>
   <circle cx="50" cy="50" r="17" fill="#f8d860"/>
+  <!-- rays -->
   <line x1="50" y1="8"  x2="50" y2="22"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
   <line x1="50" y1="78" x2="50" y2="92"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
   <line x1="8"  y1="50" x2="22" y2="50"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
@@ -350,124 +803,209 @@
   <line x1="71" y1="71" x2="81" y2="81"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
   <line x1="81" y1="19" x2="71" y2="29"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
   <line x1="19" y1="81" x2="29" y2="71"  stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="50" cy="50" r="8" fill="#fff8d0" opacity="0.7"/>
 </svg>
+
+<!-- SLEEP MASK -->
 <svg id="ico-mask" class="cutout" viewBox="0 0 110 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- mask body -->
   <path d="M5 30 Q5 10 30 10 Q42 10 45 22 Q50 28 55 22 Q58 10 80 10 Q105 10 105 30 Q105 48 80 48 Q58 48 55 36 Q50 30 45 36 Q42 48 30 48 Q5 48 5 30Z" fill="#d98fa0"/>
+  <!-- silk sheen -->
+  <path d="M12 18 Q30 14 45 22" stroke="white" stroke-width="2" fill="none" opacity="0.35" stroke-linecap="round"/>
+  <path d="M65 22 Q80 14 98 18" stroke="white" stroke-width="2" fill="none" opacity="0.35" stroke-linecap="round"/>
+  <!-- eye cutouts (darker) -->
   <ellipse cx="33" cy="30" rx="14" ry="11" fill="#c07088"/>
   <ellipse cx="77" cy="30" rx="14" ry="11" fill="#c07088"/>
+  <!-- strap ends -->
+  <path d="M5 30 Q0 26 0 20" stroke="#d98fa0" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M105 30 Q110 26 110 20" stroke="#d98fa0" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- bow on top -->
   <path d="M55 8 Q48 2 42 6 Q48 10 55 8Z" fill="#b86478"/>
   <path d="M55 8 Q62 2 68 6 Q62 10 55 8Z" fill="#b86478"/>
   <circle cx="55" cy="8" r="4" fill="#d98fa0"/>
 </svg>
+
+<!-- CANDLE -->
 <svg id="ico-candle" class="cutout" viewBox="0 0 50 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- flame -->
   <path d="M25 18 Q18 8 22 2 Q26 -2 30 2 Q34 8 25 18Z" fill="#f5c842"/>
+  <path d="M25 18 Q20 11 23 6 Q27 3 25 18Z" fill="#f8a020" opacity="0.8"/>
+  <path d="M25 18 Q28 12 26 8 Q27 12 25 18Z" fill="white" opacity="0.6"/>
+  <!-- wick -->
   <line x1="25" y1="18" x2="25" y2="25" stroke="#3a2a1a" stroke-width="1.5"/>
+  <!-- candle body -->
   <rect x="14" y="25" width="22" height="60" rx="4" fill="#f5e8d8"/>
+  <rect x="14" y="25" width="22" height="8" rx="2" fill="#ecdcc8"/>
+  <!-- drips -->
+  <path d="M18 30 Q16 38 18 42 Q20 38 18 30Z" fill="#f0d8c0" opacity="0.8"/>
+  <path d="M32 33 Q34 40 32 44 Q30 40 32 33Z" fill="#f0d8c0" opacity="0.7"/>
+  <!-- sheen -->
   <line x1="20" y1="30" x2="20" y2="80" stroke="white" stroke-width="1.5" opacity="0.4"/>
+  <!-- base plate -->
   <ellipse cx="25" cy="85" rx="18" ry="5" fill="#e8d4a8" opacity="0.8"/>
+  <!-- glow -->
+  <circle cx="25" cy="14" r="10" fill="#f5c842" opacity="0.12"/>
 </svg>
+
+<!-- BUBBLES / SPARKLES near flute -->
 <svg id="ico-bubbles" class="cutout" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
   <circle cx="30" cy="65" r="5" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.8"/>
   <circle cx="42" cy="50" r="4" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.7"/>
   <circle cx="20" cy="42" r="6" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.65"/>
   <circle cx="38" cy="28" r="3" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.7"/>
   <circle cx="18" cy="18" r="5" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="46" cy="12" r="4" fill="none" stroke="#c9a96e" stroke-width="1.5" opacity="0.55"/>
+  <!-- sparkle star -->
+  <line x1="10" y1="70" x2="10" y2="78" stroke="#d98fa0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="6"  y1="74" x2="14" y2="74" stroke="#d98fa0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="50" y1="60" x2="50" y2="66" stroke="#d98fa0" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="47" y1="63" x2="53" y2="63" stroke="#d98fa0" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
-<svg id="ico-dog" class="cutout" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
-  <path d="M140 75 Q165 55 158 38 Q152 30 145 38 Q152 48 138 65" fill="#c9a050" stroke="#b08840" stroke-width="1.5"/>
-  <ellipse cx="95" cy="82" rx="48" ry="32" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <path d="M60 68 Q65 62 70 68" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  <path d="M75 62 Q80 56 85 62" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  <path d="M90 60 Q95 54 100 60" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  <path d="M58 68 Q50 55 52 45" stroke="#d4aa5a" stroke-width="14" fill="none" stroke-linecap="round"/>
-  <ellipse cx="48" cy="36" rx="28" ry="26" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <ellipse cx="36" cy="46" rx="14" ry="10" fill="#e0bc78"/>
-  <ellipse cx="32" cy="43" rx="6" ry="4" fill="#3a2a1a"/>
-  <ellipse cx="31" cy="42" rx="2" ry="1.5" fill="white" opacity="0.5"/>
-  <circle cx="44" cy="32" r="6" fill="#3a2a1a"/>
-  <circle cx="58" cy="30" r="6" fill="#3a2a1a"/>
-  <circle cx="46" cy="30" r="2" fill="white" opacity="0.7"/>
-  <circle cx="60" cy="28" r="2" fill="white" opacity="0.7"/>
-  <path d="M40 18 Q45 12 50 18" stroke="#b89040" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M52 20 Q57 14 62 20" stroke="#b89040" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <path d="M22 30 Q8 34 10 52 Q14 62 26 56 Q22 44 28 36Z" fill="#c49848" stroke="#b08838" stroke-width="1.5"/>
-  <path d="M72 26 Q84 28 86 44 Q84 56 74 54 Q76 42 70 34Z" fill="#c49848" stroke="#b08838" stroke-width="1.5"/>
-  <rect x="62" y="104" width="14" height="24" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <rect x="80" y="106" width="14" height="22" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <rect x="106" y="104" width="14" height="24" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <rect x="122" y="106" width="14" height="22" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
-  <path d="M28 50 Q32 54 36 50" stroke="#3a2a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-  <path d="M30 52 Q32 58 34 52" fill="#e87878"/>
-</svg>
+
+<!-- BOW / RIBBON -->
 <svg id="ico-bow" class="cutout" viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+  <!-- left loop -->
   <path d="M40 25 Q20 5 8 12 Q0 18 8 28 Q18 38 40 25Z" fill="#f2c4c4" stroke="#d98fa0" stroke-width="1.5"/>
+  <!-- right loop -->
   <path d="M40 25 Q60 5 72 12 Q80 18 72 28 Q62 38 40 25Z" fill="#f2c4c4" stroke="#d98fa0" stroke-width="1.5"/>
+  <!-- inner sheen -->
+  <path d="M40 25 Q25 12 14 15 Q22 18 40 25Z" fill="white" opacity="0.3"/>
+  <path d="M40 25 Q55 12 66 15 Q58 18 40 25Z" fill="white" opacity="0.3"/>
+  <!-- center knot -->
   <ellipse cx="40" cy="25" rx="7" ry="6" fill="#d98fa0"/>
   <ellipse cx="40" cy="25" rx="4" ry="3.5" fill="#e8a0b4"/>
+  <!-- tails -->
   <path d="M37 28 Q30 38 22 44" stroke="#d98fa0" stroke-width="3" fill="none" stroke-linecap="round"/>
   <path d="M43 28 Q50 38 58 44" stroke="#d98fa0" stroke-width="3" fill="none" stroke-linecap="round"/>
 </svg>
+
+<!-- STARFISH -->
 <svg id="ico-starfish" class="cutout" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
   <path d="M35 5 L40 28 L62 18 L46 35 L62 52 L40 42 L35 65 L30 42 L8 52 L24 35 L8 18 L30 28 Z" fill="#f5a878" stroke="#e08858" stroke-width="1.5"/>
   <circle cx="35" cy="35" r="8" fill="#e08858"/>
   <circle cx="35" cy="35" r="5" fill="#f5b890"/>
+  <!-- texture dots -->
+  <circle cx="35" cy="18" r="1.5" fill="#e08858" opacity="0.6"/>
+  <circle cx="47" cy="25" r="1.5" fill="#e08858" opacity="0.6"/>
+  <circle cx="47" cy="45" r="1.5" fill="#e08858" opacity="0.6"/>
+  <circle cx="35" cy="52" r="1.5" fill="#e08858" opacity="0.6"/>
+  <circle cx="23" cy="45" r="1.5" fill="#e08858" opacity="0.6"/>
+  <circle cx="23" cy="25" r="1.5" fill="#e08858" opacity="0.6"/>
 </svg>
+
+<!-- CRESCENT MOON -->
 <svg id="ico-moon" class="cutout" viewBox="0 0 60 65" xmlns="http://www.w3.org/2000/svg">
   <path d="M42 8 Q20 12 16 32 Q12 52 34 58 Q16 56 12 38 Q8 18 28 8 Z" fill="#f5dda8" stroke="#c9a96e" stroke-width="1.5"/>
+  <!-- stars nearby -->
   <line x1="50" y1="15" x2="50" y2="21" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
   <line x1="47" y1="18" x2="53" y2="18" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="52" y1="35" x2="52" y2="39" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/>
+  <line x1="50" y1="37" x2="54" y2="37" stroke="#c9a96e" stroke-width="1" stroke-linecap="round"/>
+  <circle cx="44" cy="50" r="1.8" fill="#c9a96e" opacity="0.7"/>
 </svg>
+
+<!-- GOLDEN DOODLE DOG -->
+<svg id="ico-dog" class="cutout" viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- tail -->
+  <path d="M140 75 Q165 55 158 38 Q152 30 145 38 Q152 48 138 65" fill="#c9a050" stroke="#b08840" stroke-width="1.5"/>
+  <!-- body -->
+  <ellipse cx="95" cy="82" rx="48" ry="32" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <!-- curly fur texture on body -->
+  <path d="M60 68 Q65 62 70 68" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M75 62 Q80 56 85 62" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M90 60 Q95 54 100 60" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M105 63 Q110 57 115 63" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M55 80 Q60 74 65 80" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M120 70 Q125 64 130 70" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M68 90 Q73 84 78 90" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M108 86 Q113 80 118 86" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- neck -->
+  <path d="M58 68 Q50 55 52 45" stroke="#d4aa5a" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <!-- head -->
+  <ellipse cx="48" cy="36" rx="28" ry="26" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <!-- snout -->
+  <ellipse cx="36" cy="46" rx="14" ry="10" fill="#e0bc78"/>
+  <!-- nose -->
+  <ellipse cx="32" cy="43" rx="6" ry="4" fill="#3a2a1a"/>
+  <ellipse cx="31" cy="42" rx="2" ry="1.5" fill="white" opacity="0.5"/>
+  <!-- eyes -->
+  <circle cx="44" cy="32" r="6" fill="#3a2a1a"/>
+  <circle cx="58" cy="30" r="6" fill="#3a2a1a"/>
+  <circle cx="46" cy="30" r="2" fill="white" opacity="0.7"/>
+  <circle cx="60" cy="28" r="2" fill="white" opacity="0.7"/>
+  <!-- curly head fur -->
+  <path d="M28 22 Q33 16 38 22" stroke="#b89040" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M40 18 Q45 12 50 18" stroke="#b89040" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M52 20 Q57 14 62 20" stroke="#b89040" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M22 30 Q27 24 32 30" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M62 24 Q67 18 72 24" stroke="#b89040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- floppy ears -->
+  <path d="M22 30 Q8 34 10 52 Q14 62 26 56 Q22 44 28 36Z" fill="#c49848" stroke="#b08838" stroke-width="1.5"/>
+  <path d="M72 26 Q84 28 86 44 Q84 56 74 54 Q76 42 70 34Z" fill="#c49848" stroke="#b08838" stroke-width="1.5"/>
+  <!-- ear curls -->
+  <path d="M14 38 Q18 34 22 38" stroke="#b08838" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <path d="M12 46 Q16 42 20 46" stroke="#b08838" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <!-- legs -->
+  <rect x="62" y="104" width="14" height="24" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <rect x="80" y="106" width="14" height="22" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <rect x="106" y="104" width="14" height="24" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <rect x="122" y="106" width="14" height="22" rx="7" fill="#d4aa5a" stroke="#b89040" stroke-width="1.5"/>
+  <!-- paws -->
+  <ellipse cx="69" cy="128" rx="9" ry="5" fill="#c49848"/>
+  <ellipse cx="87" cy="127" rx="9" ry="5" fill="#c49848"/>
+  <ellipse cx="113" cy="128" rx="9" ry="5" fill="#c49848"/>
+  <ellipse cx="129" cy="127" rx="9" ry="5" fill="#c49848"/>
+  <!-- smile -->
+  <path d="M28 50 Q32 54 36 50" stroke="#3a2a1a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- tongue -->
+  <path d="M30 52 Q32 58 34 52" fill="#e87878" stroke="none"/>
+</svg>
+
+<!-- WAVE SVG at bottom -->
 <svg id="ico-wave" class="cutout" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
   <path d="M0 60 Q180 20 360 60 Q540 100 720 60 Q900 20 1080 60 Q1260 100 1440 60 L1440 120 L0 120Z" fill="#d98fa0" opacity="0.15"/>
   <path d="M0 80 Q180 50 360 80 Q540 110 720 80 Q900 50 1080 80 Q1260 110 1440 80 L1440 120 L0 120Z" fill="#c9a96e" opacity="0.12"/>
 </svg>
 
-<!-- AUDIO -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="./goin_in.mp3" type="audio/mpeg">
-</audio>
 
-<!-- ══════════════════════════════════════════════════
-     PAGE 1: MAIN BOARD
-══════════════════════════════════════════════════ -->
-<div id="page-board" class="page active">
-  <header class="hero">
-    <div class="hero-text">
-      <p class="hero-eyebrow">Bachelorette Edition</p>
-      <h1 class="hero-title">Francesca's Bach Jeopardy</h1>
-      <div class="hero-line"></div>
-      <p class="hero-sub">PJ's, Prosecco &amp; a whole lot of love</p>
-    </div>
-  </header>
+<!-- ════════════════════════════════════
+     PAGE CONTENT
+═════════════════════════════════════ -->
 
-  <div class="scoreboard">
-    <div class="team-panel">
-      <div class="team-tag">Team 1</div>
-      <div class="team-score" id="s1">0</div>
-      <div class="pts-wrap" id="pb1"></div>
-      <span class="reset-txt" onclick="resetScore(1)">Reset</span>
-    </div>
-    <div class="vs-sep">—</div>
-    <div class="team-panel">
-      <div class="team-tag">Team 2</div>
-      <div class="team-score" id="s2">0</div>
-      <div class="pts-wrap" id="pb2"></div>
-      <span class="reset-txt" onclick="resetScore(2)">Reset</span>
-    </div>
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Bachelorette Edition</p>
+    <h1 class="hero-title">Francesca's Bach Jeopardy</h1>
+    <div class="hero-line"></div>
+    <p class="hero-sub">PJ's, Prosecco &amp; a whole lot of love</p>
   </div>
+</header>
 
-  <main class="board-wrap">
-    <div class="board-label">Choose a category &amp; point value</div>
-    <div class="board" id="board"></div>
-  </main>
-
-  <div style="position:relative;z-index:1;text-align:center;padding:1.5rem 1rem 0.5rem;">
-    <button onclick="showPage('page-fj-hype')" style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;padding:1rem 2.8rem;border-radius:40px;border:none;cursor:pointer;background:linear-gradient(135deg,#b86478,#d98fa0);color:white;box-shadow:0 4px 22px rgba(184,100,120,0.35);transition:all 0.22s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">✦ &nbsp; Final Jeopardy &nbsp; ✦</button>
+<!-- SCOREBOARD -->
+<div class="scoreboard">
+  <div class="team-panel">
+    <div class="team-tag">Team 1</div>
+    <div class="team-score" id="s1">0</div>
+    <div class="pts-wrap" id="pb1"></div>
+    <span class="reset-txt" onclick="resetScore(1)">Reset</span>
   </div>
-  <footer>Cheers to Francesca &amp; Dom &mdash; forever starts here</footer>
+  <div class="vs-sep">—</div>
+  <div class="team-panel">
+    <div class="team-tag">Team 2</div>
+    <div class="team-score" id="s2">0</div>
+    <div class="pts-wrap" id="pb2"></div>
+    <span class="reset-txt" onclick="resetScore(2)">Reset</span>
+  </div>
 </div>
 
-<!-- QUESTION MODAL (outside page flow, always available) -->
+<!-- BOARD -->
+<main class="board-wrap">
+  <div class="board-label">Choose a category &amp; point value</div>
+  <div class="board" id="board"></div>
+</main>
+
+<!-- MODAL -->
 <div class="overlay" id="overlay" onclick="overlayClick(event)">
   <div class="modal">
     <div class="modal-top"></div>
@@ -475,280 +1013,105 @@
       <div class="modal-pts-badge" id="mBadge">$200</div>
       <span class="modal-cat-label" id="mCat"></span>
       <div class="modal-question" id="mQ"></div>
-      <div class="answer-box" id="answerBox">
-        <div class="ans-eyebrow">Answer</div>
-        <div class="ans-text" id="mA"></div>
-      </div>
       <div class="modal-btns">
-        <button class="mbtn mbtn-fill" onclick="showAnswer()">Reveal Answer</button>
+        <button class="mbtn mbtn-fill" id="startTimerBtn" onclick="beginTimer()">Start Timer</button>
         <button class="mbtn mbtn-outline" onclick="closeModal()">Close</button>
       </div>
     </div>
+    <div class="timer-bar-wrap">
+      <div class="timer-bar" id="timerBar"></div>
+    </div>
+    <div class="timer-countdown" id="timerCountdown">60</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     PAGE 2: FINAL JEOPARDY — HYPE
-══════════════════════════════════════════════════ -->
-<div id="page-fj-hype" class="page fj-page">
-  <p class="hype-eyebrow">Ladies &amp; Ladies</p>
-  <h1 class="hype-title">FINAL<br>JEOPARDY</h1>
-  <p class="hype-sub">it's about to get real</p>
-
-  <div class="score-chips">
-    <div class="score-chip">
-      <span class="chip-label">Team 1</span>
-      <span class="chip-score" id="hype-s1">—</span>
-    </div>
-    <div class="score-chip">
-      <span class="chip-label">Team 2</span>
-      <span class="chip-score" id="hype-s2">—</span>
-    </div>
-  </div>
-
-  <div class="hype-card">
-    <div class="hype-beat-label">how it works</div>
-    <ul class="hype-lines">
-      <li class="hype-line">There are <span class="accent">10 prompts</span> in Final Jeopardy</li>
-      <li class="hype-line">Choose your <span class="accent">wager</span> before the question drops</li>
-      <li class="hype-line"><span class="accent">10 correct</span> → win your wager <span class="accent">×3</span></li>
-      <li class="hype-line"><span class="accent">7–9 correct</span> → win your wager <span class="accent">×2</span></li>
-      <li class="hype-line"><span class="accent">5–6 correct</span> → win your <span class="accent">wager back</span></li>
-      <li class="hype-line"><span class="accent">under 5?</span> you <span class="accent">lose</span> your wager</li>
-    </ul>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-gold" onclick="goToWager()">Place Your Wagers →</button>
-    <button class="btn btn-outline" onclick="showPage('page-board')">← Back to Board</button>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     PAGE 3: FINAL JEOPARDY — WAGER
-══════════════════════════════════════════════════ -->
-<div id="page-fj-wager" class="page fj-page">
-  <p class="wager-subtitle">Final Jeopardy</p>
-  <h2 class="wager-title">Choose Your Wager</h2>
-  <div class="gold-line"></div>
-
-  <div class="wager-rules">
-    <div class="wager-rule"><span class="rule-badge">10 / 10</span> Win wager ×3</div>
-    <div class="wager-rule"><span class="rule-badge">7 – 9</span> Win wager ×2</div>
-    <div class="wager-rule"><span class="rule-badge">5 – 6</span> Win wager back</div>
-    <div class="wager-rule"><span class="rule-badge">&lt; 5</span> Lose your wager</div>
-  </div>
-
-  <div class="wager-teams">
-    <div class="wager-team-box">
-      <span class="wager-team-label">Team 1</span>
-      <div class="wager-current-score" id="w-score-1">0</div>
-      <div class="wager-input-wrap">
-        <span class="wager-currency">$</span>
-        <input class="wager-input" id="wager1" type="number" min="0" placeholder="0">
-      </div>
-    </div>
-    <div class="wager-team-box">
-      <span class="wager-team-label">Team 2</span>
-      <div class="wager-current-score" id="w-score-2">0</div>
-      <div class="wager-input-wrap">
-        <span class="wager-currency">$</span>
-        <input class="wager-input" id="wager2" type="number" min="0" placeholder="0">
+<!-- TIME'S UP OVERLAY -->
+<div class="timesup-overlay" id="timesupOverlay">
+  <div class="timesup-modal">
+    <div class="timesup-top"></div>
+    <div class="timesup-body">
+      <div class="timesup-emoji">⏰</div>
+      <h2 class="timesup-title">Time's Up!</h2>
+      <div class="timesup-divider"></div>
+      <p class="timesup-sub">Answer check time!</p>
+      <div class="timesup-q" id="timesupQ"></div>
+      <div class="modal-btns" style="margin-top:1.8rem;">
+        <button class="mbtn mbtn-fill" onclick="closeTimesUp()">Close</button>
       </div>
     </div>
   </div>
-
-  <div class="btn-row">
-    <button class="btn btn-gold" onclick="goToQuestion()">Lock It In — Show The Question →</button>
-  </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     PAGE 4: FINAL JEOPARDY — QUESTION
-══════════════════════════════════════════════════ -->
-<div id="page-fj-question" class="page fj-page" style="justify-content:flex-start;padding-top:3rem;">
-  <p class="q-eyebrow">Final Jeopardy — Fill in the Blanks</p>
-
-  <div class="music-status" id="musicStatus" style="display:none;">
-    <div class="music-dot"></div>
-    <span>Music Playing</span>
-  </div>
-
-  <p class="q-instructions">Fill in the 10 missing words. Reveal them one at a time when ready.</p>
-
-  <div class="lyric-block" id="lyricBlock"></div>
-
-  <div class="btn-row" style="margin-top:0;">
-    <button class="btn btn-rose" id="revealNextBtn" onclick="revealNextBlank()">Reveal Next Answer</button>
-    <button class="btn btn-outline" onclick="goToResults()">All Done → See Results</button>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════
-     PAGE 5: FINAL JEOPARDY — RESULTS
-══════════════════════════════════════════════════ -->
-<div id="page-fj-results" class="page fj-page">
-  <h2 class="results-title">Final Scores</h2>
-  <div class="gold-line"></div>
-
-  <div class="results-grid">
-    <div class="result-card">
-      <span class="result-team">Team 1</span>
-      <div class="result-wager-row">Wager: $<span id="res-wager-1">0</span></div>
-      <div class="correct-btn-group">
-        <span class="correct-label">Correct Answers</span>
-        <div class="correct-counter">
-          <button class="counter-btn" onclick="changeCorrect(0,-1)">−</button>
-          <span class="counter-val" id="correct-1">0</span>
-          <button class="counter-btn" onclick="changeCorrect(0,1)">+</button>
-        </div>
-      </div>
-      <span class="result-score-label">Final Score</span>
-      <div class="result-score-val" id="final-score-1">0</div>
-    </div>
-    <div class="result-card">
-      <span class="result-team">Team 2</span>
-      <div class="result-wager-row">Wager: $<span id="res-wager-2">0</span></div>
-      <div class="correct-btn-group">
-        <span class="correct-label">Correct Answers</span>
-        <div class="correct-counter">
-          <button class="counter-btn" onclick="changeCorrect(1,-1)">−</button>
-          <span class="counter-val" id="correct-2">0</span>
-          <button class="counter-btn" onclick="changeCorrect(1,1)">+</button>
-        </div>
-      </div>
-      <span class="result-score-label">Final Score</span>
-      <div class="result-score-val" id="final-score-2">0</div>
-    </div>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-gold" onclick="showPage('page-board')">Back to Main Board</button>
-  </div>
-</div>
+<div style="position:relative;z-index:1;text-align:center;padding:1.5rem 1rem 0.5rem;"><button id="finalJeopardyBtn" style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;padding:1rem 2.8rem;border-radius:40px;border:none;cursor:pointer;background:linear-gradient(135deg,#b86478,#d98fa0);color:white;box-shadow:0 4px 22px rgba(184,100,120,0.35);transition:all 0.22s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(184,100,120,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 22px rgba(184,100,120,0.35)'" onclick="goToFinal()">✦ &nbsp; Final Jeopardy &nbsp; ✦</button></div><footer>Cheers to Francesca &amp; Dom &mdash; forever starts here</footer>
 
 <script>
-// ═══════════════════════════════════════
-//  DATA — fill in your questions here!
-// ═══════════════════════════════════════
 const CATS = [
   {
     name: "Franny Knows Best",
     qs: [
-      { q: "Fill in question 1 about Franny", a: "Fill in answer 1" },
-      { q: "Fill in question 2 about Franny", a: "Fill in answer 2" },
-      { q: "Fill in question 3 about Franny", a: "Fill in answer 3" },
-      { q: "Fill in question 4 about Franny", a: "Fill in answer 4" },
-      { q: "Fill in question 5 about Franny", a: "Fill in answer 5" },
+      { q: "Is Franny more likely to dance or sing at a party?" },
+      { q: "What is Franny's favorite bar at the beach? (Seacrets, Fagers, Starboard, Bottle & Cork, Rusty Rudder)" },
+      { q: "What event/activity is Franny most excited for on this trip?" },
+      { q: "What is Franny's biggest fear?" },
+      { q: "What did Franny decide her first child's name is going to be?" },
     ]
   },
   {
-    name: "Dom",
+    name: "Dommy Mommy",
     qs: [
-      { q: "Fill in question 1 about Dom", a: "Fill in answer 1" },
-      { q: "Fill in question 2 about Dom", a: "Fill in answer 2" },
-      { q: "Fill in question 3 about Dom", a: "Fill in answer 3" },
-      { q: "Fill in question 4 about Dom", a: "Fill in answer 4" },
-      { q: "Fill in question 5 about Dom", a: "Fill in answer 5" },
+      { q: "What is Dom's favorite beer?" },
+      { q: "According to Dom, Franny's skincare routine takes: A) 5 minutes B) 10 minutes C) 20 minutes D) 45 minutes" },
+      { q: "According to Dom, Franny will fall asleep/pass out on her wedding night at: A) Midnight B) 2AM C) 4AM D) All nighter baby" },
+      { q: "What is Dom's favorite US Military aircraft? A) F-22 Raptor B) B-2 Stealth Bomber C) A-10 Warthog D) RQ-4 Global Hawk" },
+      { q: "According to Dom, what is his favorite experience he shared with Franny?" },
     ]
   },
   {
-    name: "Hot & Married",
+    name: "Hot & Married ;)",
     qs: [
-      { q: "Fill in question 1 about the couple", a: "Fill in answer 1" },
-      { q: "Fill in question 2 about the couple", a: "Fill in answer 2" },
-      { q: "Fill in question 3 about the couple", a: "Fill in answer 3" },
-      { q: "Fill in question 4 about the couple", a: "Fill in answer 4" },
-      { q: "Fill in question 5 about the couple", a: "Fill in answer 5" },
+      { q: "Who made the first move?" },
+      { q: "According to Franny, who is more likely to send a cheeky text first ;)" },
+      { q: "According to Franny, what is Bruno most likely doing when Fran & Dom are gettin' it on?" },
+      { q: "How long would Franny say her and Dom's \"honeymoon phase\" was?" },
+      { q: "According to Franny, what is the craziest (or funniest) place her and Dom have done the deed?" },
     ]
   },
   {
     name: "The Wild Card",
     qs: [
-      { q: "Fill in wild card question 1", a: "Fill in answer 1" },
-      { q: "Fill in wild card question 2", a: "Fill in answer 2" },
-      { q: "Fill in wild card question 3", a: "Fill in answer 3" },
-      { q: "Fill in wild card question 4", a: "Fill in answer 4" },
-      { q: "Fill in wild card question 5", a: "Fill in answer 5" },
+      { q: "What kind of dog is Bruno?" },
+      { q: "How many boyfriends has Franny had?" },
+      { q: "This is the couple's go-to takeout order when they can't agree on dinner" },
+      { q: "What position did Dom & Franny play in Lacrosse? (must get both correct!)" },
+      { q: "This is the show the couple has rewatched more times than they'd like to admit" },
     ]
   },
   {
     name: "The Venanzi Files",
     qs: [
-      { q: "Fill in question 1 from the Venanzi files", a: "Fill in answer 1" },
-      { q: "Fill in question 2 from the Venanzi files", a: "Fill in answer 2" },
-      { q: "Fill in question 3 from the Venanzi files", a: "Fill in answer 3" },
-      { q: "Fill in question 4 from the Venanzi files", a: "Fill in answer 4" },
-      { q: "Fill in question 5 from the Venanzi files", a: "Fill in answer 5" },
+      { q: "Where did Franny meet Dom?" },
+      { q: "How many years have Franny and Dom been dating?" },
+      { q: "What is Franny & Dom's first dance song?" },
+      { q: "What is Franny & Dom's most used emoji in texts?" },
+      { q: "Where and on what date did Dom propose?" },
     ]
   },
   {
-    name: "Wedding Trivia",
+    name: "Dommy Mommy 2",
     qs: [
-      { q: "Fill in wedding trivia question 1", a: "Fill in answer 1" },
-      { q: "Fill in wedding trivia question 2", a: "Fill in answer 2" },
-      { q: "Fill in wedding trivia question 3", a: "Fill in answer 3" },
-      { q: "Fill in wedding trivia question 4", a: "Fill in answer 4" },
-      { q: "Fill in wedding trivia question 5", a: "Fill in answer 5" },
+      { q: "According to Dom, who will be more nervous at the altar? A) Franny B) Dom C) Equal!!" },
+      { q: "On a scale of 1–10, how would Dom rate Franny's parallel parking ability? A) 1–2 B) 3–5 C) 6–7 D) 8–10" },
+      { q: "According to Dom, what is Franny's signature move on the dance floor? A) Twerking B) Can opener C) Juju on that beat D) Stanky leg" },
+      { q: "According to Dom, what is his favorite dish that Franny makes? A) Chili B) Spaghetti with peppers & Italian sausage C) Tortellini soup D) Salmon" },
+      { q: "According to Dom, the reality TV show he could most see Franny on is..." },
     ]
   }
 ];
 
 const PTS = [200, 400, 600, 800, 1000];
-
-// Final Jeopardy lyrics — {N:answer} marks a blank
-const LYRIC_LINES = [
-  "Hello {1:motherfucker} hey, hi, how ya durrn'?",
-  "It's {2:Weezy} F Baby come to take a shit and urine",
-  "On these {3:toilet} bowl bitches, pussy ass ni**as",
-  "Stomping on this {4:beat} like a motherfucking Sigma",
-  "",
-  "Bad to the bristle, hat to the rizzle",
-  "I'm so official all I need is a {5:whistle}",
-  "Bitch named Crystal let her suck my {6:pistol}",
-  "She opened up her {7:mouth} and then I blow her brains out",
-  "",
-  "You ain't met a ni**a like me, you probably never will",
-  "Riders rolling with me, like 11 wheels",
-  "Find out where you {8:living}, kill you in the kitchen",
-  "The feds trying to clip us but we ain't even tripping",
-  "",
-  "I'm {9:GOIN'} {10:IN}",
-];
-
-// ═══════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════
 let scores = [0, 0];
-let wagers = [0, 0];
-let correctCounts = [0, 0];
-let currentCard = null;
-let blankEls = [];
-let revealedCount = 0;
+let current = null;
 
-// ═══════════════════════════════════════
-//  PAGE NAVIGATION
-// ═══════════════════════════════════════
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-
-  // toggle cutouts — only show on main board
-  const onBoard = id === 'page-board';
-  document.querySelectorAll('.cutout').forEach(el => {
-    el.style.display = onBoard ? '' : 'none';
-  });
-
-  if (id === 'page-fj-hype') {
-    document.getElementById('hype-s1').textContent = scores[0].toLocaleString();
-    document.getElementById('hype-s2').textContent = scores[1].toLocaleString();
-    animateHypeLines();
-  }
-}
-
-// ═══════════════════════════════════════
-//  MAIN BOARD
-// ═══════════════════════════════════════
 function buildScoreBtns() {
   [0,1].forEach(i => {
     const wrap = document.getElementById('pb' + (i+1));
@@ -803,29 +1166,237 @@ function buildBoard() {
   });
 }
 
-// ═══════════════════════════════════════
-//  QUESTION MODAL
-// ═══════════════════════════════════════
+let timerInterval = null;
+let timerTimeout = null;
+
+let pendingQuestion = null;
+
 function openModal(col, row, pts, cat) {
-  currentCard = {col, row};
+  current = {col, row};
   document.getElementById('mBadge').textContent = '$' + pts;
   document.getElementById('mCat').textContent = cat.name;
-  document.getElementById('mQ').textContent = cat.qs[row].q;
-  document.getElementById('mA').textContent = cat.qs[row].a;
-  document.getElementById('answerBox').classList.remove('show');
+  const raw = cat.qs[row].q;
+  pendingQuestion = raw;
+  const parts = raw.split(/(?= [A-D]\))/);
+  const qEl = document.getElementById('mQ');
+  qEl.innerHTML = '';
+
+  const mainSpan = document.createElement('span');
+  mainSpan.className = 'q-main';
+  mainSpan.textContent = parts[0].trim();
+  qEl.appendChild(mainSpan);
+
+  if (parts.length > 1) {
+    const optWrap = document.createElement('span');
+    optWrap.className = 'q-options';
+    parts.slice(1).forEach(part => {
+      const line = document.createElement('span');
+      line.className = 'q-option';
+      line.textContent = part.trim();
+      optWrap.appendChild(line);
+    });
+    qEl.appendChild(optWrap);
+  }
+
+  // Reset timer bar to idle state
+  timerPaused = false;
+  timerStartedAt = null;
+  timerSecsLeft = 90;
+  const bar = document.getElementById('timerBar');
+  const countdown = document.getElementById('timerCountdown');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.classList.remove('running', 'urgent');
+  countdown.textContent = '90';
+  countdown.classList.remove('urgent');
+
+  const btn = document.getElementById('startTimerBtn');
+  btn.disabled = false;
+  btn.textContent = 'Start Timer';
+  btn.style.opacity = '1';
+  btn.style.background = '';
+  btn.style.border = '';
+  btn.style.color = '';
+  btn.className = 'mbtn mbtn-fill';
+
   document.getElementById('overlay').classList.add('open');
 }
 
-function showAnswer() {
-  document.getElementById('answerBox').classList.add('show');
+let timerPaused = false;
+let timerSecsLeft = 90;
+let timerStartedAt = null;
+let timerBarWidthAtPause = 100;
+
+function beginTimer() {
+  if (!pendingQuestion) return;
+  const btn = document.getElementById('startTimerBtn');
+  const runningLabel = 'Timer Running<br><span style="font-size:0.45rem;opacity:0.65;letter-spacing:0.15em;font-weight:400;">click to pause</span>';
+
+  if (!timerStartedAt && !timerPaused) {
+    // First start
+    timerPaused = false;
+    btn.disabled = false;
+    btn.innerHTML = runningLabel;
+    btn.style.opacity = '1';
+    btn.style.background = 'transparent';
+    btn.style.border = '1px solid var(--sand)';
+    btn.style.color = 'var(--text-soft)';
+    startTimer(pendingQuestion);
+  } else if (!timerPaused) {
+    // Pause
+    timerPaused = true;
+    pauseTimer();
+    btn.textContent = 'Resume Timer';
+    btn.style.background = '';
+    btn.style.border = '';
+    btn.style.color = '';
+    btn.className = 'mbtn mbtn-fill';
+  } else {
+    // Resume
+    timerPaused = false;
+    btn.innerHTML = runningLabel;
+    btn.style.background = 'transparent';
+    btn.style.border = '1px solid var(--sand)';
+    btn.style.color = 'var(--text-soft)';
+    resumeTimer(pendingQuestion);
+  }
+}
+
+function pauseTimer() {
+  clearTimeout(timerTimeout);
+  clearInterval(timerInterval);
+  const bar = document.getElementById('timerBar');
+  // Freeze bar visually
+  const computedWidth = bar.getBoundingClientRect().width;
+  const wrapWidth = bar.parentElement.getBoundingClientRect().width;
+  timerBarWidthAtPause = wrapWidth > 0 ? (computedWidth / wrapWidth) * 100 : timerBarWidthAtPause;
+  bar.style.transition = 'none';
+  bar.style.width = timerBarWidthAtPause + '%';
+  bar.classList.remove('running');
+}
+
+function resumeTimer(questionText) {
+  const bar = document.getElementById('timerBar');
+  const countdown = document.getElementById('timerCountdown');
+  const remaining = timerSecsLeft * 1000;
+  const URGENT_SECS = 15;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.classList.add('running');
+      bar.style.transition = 'width ' + remaining + 'ms linear';
+      bar.style.width = '0%';
+    });
+  });
+
+  timerInterval = setInterval(() => {
+    timerSecsLeft--;
+    countdown.textContent = timerSecsLeft;
+    if (timerSecsLeft <= URGENT_SECS) {
+      countdown.classList.add('urgent');
+      bar.classList.add('urgent');
+    }
+    if (timerSecsLeft <= 0) clearInterval(timerInterval);
+  }, 1000);
+
+  timerTimeout = setTimeout(() => {
+    clearTimer();
+    fireTimesUp(questionText);
+  }, remaining);
+}
+
+function startTimer(questionText) {
+  clearTimer();
+  timerPaused = false;
+  timerSecsLeft = 90;
+  timerStartedAt = Date.now();
+  const bar = document.getElementById('timerBar');
+  const countdown = document.getElementById('timerCountdown');
+  const DURATION = 90000;
+  const URGENT_SECS = 15;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.classList.remove('running', 'urgent');
+  countdown.textContent = '90';
+  countdown.classList.remove('urgent');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.classList.add('running');
+      bar.style.transition = 'width ' + DURATION + 'ms linear';
+      bar.style.width = '0%';
+    });
+  });
+
+  timerInterval = setInterval(() => {
+    timerSecsLeft--;
+    countdown.textContent = timerSecsLeft;
+    if (timerSecsLeft <= URGENT_SECS) {
+      countdown.classList.add('urgent');
+      bar.classList.add('urgent');
+    }
+    if (timerSecsLeft <= 0) clearInterval(timerInterval);
+  }, 1000);
+
+  timerTimeout = setTimeout(() => {
+    clearTimer();
+    fireTimesUp(questionText);
+  }, DURATION);
+}
+
+function clearTimer() {
+  clearTimeout(timerTimeout);
+  clearInterval(timerInterval);
+  timerPaused = false;
+  timerStartedAt = null;
+  timerSecsLeft = 90;
+  const bar = document.getElementById('timerBar');
+  const countdown = document.getElementById('timerCountdown');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  bar.classList.remove('running', 'urgent');
+  if (countdown) { countdown.textContent = '90'; countdown.classList.remove('urgent'); }
+}
+
+function fireTimesUp(questionText) {
+  document.getElementById('overlay').classList.remove('open');
+  if (current) {
+    const el = document.getElementById('c' + current.col + '_' + current.row);
+    if (el) el.classList.add('used');
+    current = null;
+  }
+  const tq = document.getElementById('timesupQ');
+  tq.innerHTML = '';
+  const tparts = questionText.split(/(?= [A-D]\))/);
+  const tmain = document.createElement('div');
+  tmain.textContent = tparts[0].trim();
+  tmain.style.marginBottom = tparts.length > 1 ? '0.6rem' : '0';
+  tq.appendChild(tmain);
+  if (tparts.length > 1) {
+    const optWrap = document.createElement('div');
+    optWrap.style.cssText = 'display:inline-block;text-align:left;';
+    tparts.slice(1).forEach(part => {
+      const line = document.createElement('div');
+      line.textContent = part.trim();
+      optWrap.appendChild(line);
+    });
+    tq.appendChild(optWrap);
+  }
+  document.getElementById('timesupOverlay').classList.add('open');
+}
+
+function closeTimesUp() {
+  document.getElementById('timesupOverlay').classList.remove('open');
 }
 
 function closeModal() {
+  clearTimer();
   document.getElementById('overlay').classList.remove('open');
-  if (currentCard) {
-    const el = document.getElementById('c' + currentCard.col + '_' + currentCard.row);
+  if (current) {
+    const el = document.getElementById('c' + current.col + '_' + current.row);
     if (el) el.classList.add('used');
-    currentCard = null;
+    current = null;
   }
 }
 
@@ -835,160 +1406,36 @@ function overlayClick(e) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// ═══════════════════════════════════════
-//  FINAL JEOPARDY
-// ═══════════════════════════════════════
-function goToWager() {
-  document.getElementById('w-score-1').textContent = scores[0].toLocaleString();
-  document.getElementById('w-score-2').textContent = scores[1].toLocaleString();
-  showPage('page-fj-wager');
-}
-
-function goToQuestion() {
-  wagers[0] = parseInt(document.getElementById('wager1').value || '0');
-  wagers[1] = parseInt(document.getElementById('wager2').value || '0');
-  buildLyrics();
-  showPage('page-fj-question');
-
-  const music = document.getElementById('bgMusic');
-  music.play().then(() => {
-    document.getElementById('musicStatus').style.display = 'flex';
-  }).catch(() => {
-    document.getElementById('musicStatus').style.display = 'flex';
-    document.getElementById('musicStatus').innerHTML =
-      '<button class="btn btn-outline" style="font-size:0.55rem;padding:0.5rem 1.2rem;" onclick="document.getElementById(\'bgMusic\').play();this.parentElement.innerHTML=\'<div class=music-dot></div><span>Music Playing</span>\'">▶ Play Music</button>';
-  });
-}
-
-function goToResults() {
-  document.getElementById('bgMusic').pause();
-  document.getElementById('bgMusic').currentTime = 0;
-  document.getElementById('res-wager-1').textContent = wagers[0].toLocaleString();
-  document.getElementById('res-wager-2').textContent = wagers[1].toLocaleString();
-  correctCounts = [0, 0];
-  document.getElementById('correct-1').textContent = '0';
-  document.getElementById('correct-2').textContent = '0';
-  updateFinalScores();
-  showPage('page-fj-results');
-}
-
-function buildLyrics() {
-  blankEls = [];
-  revealedCount = 0;
-  const block = document.getElementById('lyricBlock');
-  block.innerHTML = '';
-
-  LYRIC_LINES.forEach(line => {
-    const p = document.createElement('p');
-    p.className = 'lyric-line';
-
-    if (line === '') {
-      p.innerHTML = '&nbsp;';
-      p.style.lineHeight = '0.6';
-      block.appendChild(p);
-      return;
-    }
-
-    const parts = line.split(/(\{\d+:[^}]+\})/g);
-    parts.forEach(part => {
-      const match = part.match(/^\{(\d+):([^}]+)\}$/);
-      if (match) {
-        const num = match[1];
-        const answer = match[2];
-        const wrap = document.createElement('span');
-        wrap.className = 'blank-wrap';
-        const numEl = document.createElement('span');
-        numEl.className = 'blank-num';
-        numEl.textContent = num + ')';
-        const span = document.createElement('span');
-        span.className = 'blank';
-        span.dataset.answer = answer;
-        span.textContent = answer;
-        wrap.appendChild(numEl);
-        wrap.appendChild(span);
-        blankEls.push(span);
-        p.appendChild(wrap);
-      } else {
-        p.appendChild(document.createTextNode(part));
-      }
-    });
-    block.appendChild(p);
-  });
-
-  const btn = document.getElementById('revealNextBtn');
-  btn.textContent = 'Reveal Next Answer';
-  btn.disabled = false;
-  btn.style.opacity = '1';
-}
-
-function revealNextBlank() {
-  if (revealedCount >= blankEls.length) return;
-  blankEls[revealedCount].classList.add('revealed');
-  revealedCount++;
-  if (revealedCount >= blankEls.length) {
-    const btn = document.getElementById('revealNextBtn');
-    btn.textContent = 'All Revealed!';
-    btn.disabled = true;
-    btn.style.opacity = '0.5';
-  }
-  popConfetti();
-}
-
-function changeCorrect(teamIdx, delta) {
-  correctCounts[teamIdx] = Math.max(0, Math.min(10, correctCounts[teamIdx] + delta));
-  document.getElementById('correct-' + (teamIdx+1)).textContent = correctCounts[teamIdx];
-  updateFinalScores();
-  if (delta > 0) popConfetti();
-}
-
-function updateFinalScores() {
-  [0,1].forEach(i => {
-    const base = scores[i];
-    const wager = wagers[i];
-    const correct = correctCounts[i];
-    let finalScore;
-    if (correct === 10)    finalScore = base + (wager * 3);
-    else if (correct >= 7) finalScore = base + (wager * 2);
-    else if (correct >= 5) finalScore = base + wager;
-    else                   finalScore = base - wager;
-    document.getElementById('final-score-' + (i+1)).textContent = Math.max(0, finalScore).toLocaleString();
-  });
-}
-
-function animateHypeLines() {
-  const lines = document.querySelectorAll('.hype-line');
-  lines.forEach(l => l.classList.remove('visible'));
-  lines.forEach((line, i) => {
-    setTimeout(() => line.classList.add('visible'), 300 + i * 250);
-  });
-}
-
-// ═══════════════════════════════════════
-//  CONFETTI
-// ═══════════════════════════════════════
 function popConfetti() {
   const palette = ['#f2c4c4','#e8d4a8','#d98fa0','#c9a96e','#f5cdb4','#b86478','#e8ddd0','#f5dda8'];
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 30; i++) {
     setTimeout(() => {
       const p = document.createElement('div');
       p.className = 'spark';
       const sz = 5 + Math.random() * 7;
       p.style.cssText =
-        'left:'+(Math.random()*100)+'vw;top:-12px;width:'+sz+'px;height:'+sz+'px;' +
-        'background:'+palette[Math.floor(Math.random()*palette.length)]+';' +
-        'border-radius:'+(Math.random()>0.4?'50%':'3px')+';' +
-        'animation-duration:'+(2+Math.random()*2.5)+'s;';
+        'left:' + (Math.random()*100) + 'vw;' +
+        'top:-12px;' +
+        'width:' + sz + 'px;' +
+        'height:' + sz + 'px;' +
+        'background:' + palette[Math.floor(Math.random()*palette.length)] + ';' +
+        'border-radius:' + (Math.random()>0.4?'50%':'3px') + ';' +
+        'animation-duration:' + (2+Math.random()*2.5) + 's;';
       document.body.appendChild(p);
       setTimeout(() => p.remove(), 5000);
     }, i * 50);
   }
 }
 
-// ═══════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════
 buildScoreBtns();
 buildBoard();
+
+function goToFinal() {
+  const s1 = scores[0] || 0;
+  const s2 = scores[1] || 0;
+  window.location.href = 'final-jeopardy.html?s1=' + s1 + '&s2=' + s2;
+}
+
 </script>
 </body>
 </html>
