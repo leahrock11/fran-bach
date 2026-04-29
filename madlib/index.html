@@ -278,12 +278,12 @@
 
     <div class="form-group">
       <label>Select your name</label>
-      <select id="name-select">
+      <select id="name-select" onchange="document.getElementById('get-prompts-btn').disabled = !this.value;">
         <option value="">— Choose your name —</option>
       </select>
     </div>
 
-    <button class="btn" onclick="confirmName()">Get my prompts</button>
+    <button class="btn" id="get-prompts-btn" onclick="confirmName()" disabled>Get my prompts</button>
 
     <div class="home-actions">
       <button class="btn btn-secondary btn-tiny" onclick="goToMadlib()">Go to Mad Lib 🔒</button>
@@ -344,7 +344,8 @@
   // ============================================
   const BIN_ID = "69f17ca336566621a803c166";
   const ACCESS_KEY = "$2a$10$Y6zMWf7IHt2l2aJkIbHf1O2915H.rcv42B7bb9cjTPOO/CxhsS6CS";
-  const PASSWORD = "123";
+  const PASSWORD_MADLIB = "fran2026";
+  const PASSWORD_RESET = "reset";
   // ============================================
 
   const PEOPLE = [
@@ -403,9 +404,9 @@
     "Francesca and Dominic's love story officially began at St. Mary's College of Maryland, where Franny spent most of her first year {7}. Their first spark happened at a freshman year party… Franny made the first move on Dom when she {8}.",
     "From that night on, Franny and Dom were inseparable in a way that only makes sense when you're powered by {9} and a mutual love for {10}.",
     "After graduation, they balanced life in two cities. When Franny wasn't in Annapolis, Dom was usually at Battery Ave {11}, and living with Franny meant never being surprised by {12}.",
-    "They eventually made Pasadena home and brought home their first son, Bruno, who really put their parenting skills to the test by {13}. Now most days involve long walks with him, bingewatching {14}, and dealing with Bruno {15}.",
-    "Their wedding day will kick off with Dom seeing Franny in her dress and immediately {16}. After the newlyweds have said their \"I do's\", it's time to freakin celebrate. At least {17} squishy pants will be consumed, and when {18} comes on, everyone including {19} will be on the dancefloor! Inevitably, the \"drunkest guest\" award will probably go to {20}.",
-    "Their future will likely include Franny {21} and Dom {22}. They'll raise at least {23} kids who'll inherit Franny's {24} and Dom's {25}. And they'll inevitably become known around Baltimore for {26}.",
+    "They eventually made Pasadena home and welcomed their first son, Bruno, who really put their parenting skills to the test by {13}. Now most days involve long walks with him, bingewatching {14}, and dealing with Bruno {15}.",
+    "Their wedding day will kick off with Dom seeing Franny in her dress and immediately {16}. After the newlyweds have said their \"I do's\", it's time to freakin celebrate! At least {17} squishy pants will be consumed, and when {18} comes on, everyone including {19} will be shaking their booty on the dancefloor! Inevitably, the \"drunkest guest\" award will probably go to {20}.",
+    "Their future will likely include Franny {21} and Dom {22}. They'll raise at least {23} kids who'll inherit Franny's {24} and Dom's {25}. And they will inevitably be known around Baltimore as {26}.",
     "No matter what comes next, one thing is guaranteed: the love that these two share is even stronger than {27}, and this story ends exactly how it should — happily ever after. 🥂"
   ];
 
@@ -511,12 +512,26 @@
     }
     currentName = sel.value;
     answers = await loadAllAnswers();
+
+    // Check if this person has already submitted (all their prompts are filled)
+    const myPromptIds = ASSIGNMENTS[currentName] || [];
+    const alreadySubmitted = myPromptIds.every(n => answers[n] && String(answers[n]).trim().length > 0);
+
+    if (alreadySubmitted) {
+      document.getElementById("thanks-name").textContent = currentName;
+      document.getElementById("step-thanks").querySelector("p.thanks-body").textContent =
+        "Your answers have already been submitted! Please wait to see how your prompts fit into the final story 🥂";
+      showStep("step-thanks");
+      return;
+    }
+
     renderPrompts();
     showStep("step-prompts");
   }
 
   function goBackToName() {
     document.getElementById("name-select").value = "";
+    document.getElementById("get-prompts-btn").disabled = true;
     currentName = null;
     const ss = document.getElementById("save-status");
     ss.textContent = ""; ss.className = "save-status";
@@ -599,7 +614,7 @@
   async function goToMadlib() {
     const pw = window.prompt("Enter password to view the mad lib:");
     if (pw === null) return;
-    if (pw !== PASSWORD) { alert("Incorrect password."); return; }
+    if (pw !== PASSWORD_MADLIB) { alert("Incorrect password."); return; }
     answers = await loadAllAnswers();
     renderStory();
     showStep("step-story");
@@ -630,13 +645,15 @@
   async function resetAll() {
     const pw = window.prompt("Enter password to reset all responses:");
     if (pw === null) return;
-    if (pw !== PASSWORD) { alert("Incorrect password."); return; }
+    if (pw !== PASSWORD_RESET) { alert("Incorrect password."); return; }
     if (!confirm("This clears EVERY person's answers. Are you sure?")) return;
 
     answers = {};
+    // Clear localStorage too so no stale answers linger locally
+    try { localStorage.removeItem("franny_dom_madlib"); } catch (e) {}
     const ok = await saveAllAnswers({ initialized: true });
     if (ok || !isCloudConfigured()) {
-      alert("All responses have been cleared.");
+      alert("All responses have been cleared. Everyone can now re-submit.");
     } else {
       alert("Could not clear cloud responses. Check your connection.");
     }
