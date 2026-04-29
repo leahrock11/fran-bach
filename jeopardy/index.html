@@ -272,6 +272,24 @@
     .hero { height: 240px; }
     .cutout { display: none; }
   }
+
+  /* ── PASSWORD MODAL ── */
+  .pw-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(30,10,8,0.55); backdrop-filter: blur(12px) saturate(0.8); display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .pw-overlay.open { opacity: 1; pointer-events: all; }
+  .pw-modal { background: #fde8e8; border: 2.5px solid #c0392b; border-radius: 22px; width: 100%; max-width: 400px; padding: 2.5rem 2.2rem 2.2rem; text-align: center; transform: scale(0.93) translateY(18px); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1); box-shadow: 0 30px 80px rgba(192,57,43,0.2); }
+  .pw-overlay.open .pw-modal { transform: scale(1) translateY(0); }
+  .pw-modal-title { font-family: 'Dancing Script', cursive; font-size: 2rem; font-weight: 700; color: #c0392b; margin-bottom: 0.3rem; }
+  .pw-modal-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.88rem; color: #922b21; opacity: 0.75; margin-bottom: 1.6rem; }
+  .pw-input-wrap { display: flex; align-items: center; background: white; border: 2px solid rgba(192,57,43,0.3); border-radius: 10px; overflow: hidden; margin-bottom: 0.6rem; transition: border-color 0.2s; }
+  .pw-input-wrap:focus-within { border-color: #c0392b; }
+  .pw-input-wrap.error { border-color: #e74c3c; animation: pwShake 0.4s ease; }
+  @keyframes pwShake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+  .pw-input { flex: 1; border: none; outline: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 500; color: #3d2620; padding: 0.75rem 0.9rem; letter-spacing: 0.12em; }
+  .pw-toggle { background: none; border: none; cursor: pointer; padding: 0 0.9rem; color: rgba(192,57,43,0.5); font-size: 1rem; transition: color 0.2s; }
+  .pw-toggle:hover { color: #c0392b; }
+  .pw-error-msg { font-size: 0.65rem; letter-spacing: 0.1em; color: #e74c3c; height: 1rem; margin-bottom: 1.2rem; transition: opacity 0.2s; }
+  .pw-submit { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.9rem; border-radius: 40px; border: 2.5px solid #c0392b; background: #fde8e8; color: #c0392b; cursor: pointer; transition: all 0.22s; }
+  .pw-submit:hover { background: #c0392b; color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(192,57,43,0.35); }
 </style>
 </head>
 <body>
@@ -519,6 +537,20 @@
   <source src="goin_in.mp3" type="audio/mpeg">
 </audio>
 
+
+<!-- PASSWORD MODAL -->
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-modal">
+    <div class="pw-modal-title">One sec, babe &#x1F48B;</div>
+    <p class="pw-modal-sub">enter the password to get this party started</p>
+    <div class="pw-input-wrap" id="pwInputWrap">
+      <input class="pw-input" id="pwInput" type="password" placeholder="password" autocomplete="off" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="pw-toggle" id="pwToggle" onclick="togglePwVisibility()" tabindex="-1">&#x1F441;</button>
+    </div>
+    <div class="pw-error-msg" id="pwError"></div>
+    <button class="pw-submit" onclick="checkPassword()">✦ &nbsp; Let's Go &nbsp; ✦</button>
+  </div>
+</div>
 <!-- ════════════════════════════════════
      LANDING PAGE
 ═════════════════════════════════════ -->
@@ -976,13 +1008,36 @@ let timerStartedAt = null;
 let timerBarWidthAtPause = 100;
 
 // ═══════════════════════════════════════
-//  LANDING
+//  LANDING & PASSWORD
 // ═══════════════════════════════════════
 function startGame() {
-  document.getElementById('page-landing').classList.add('hidden');
-  setTimeout(() => {
-    document.getElementById('page-landing').style.display = 'none';
-  }, 650);
+  // Show the password modal instead of going straight to the game
+  const overlay = document.getElementById('pwOverlay');
+  overlay.classList.add('open');
+  setTimeout(() => document.getElementById('pwInput').focus(), 350);
+}
+
+function checkPassword() {
+  const input = document.getElementById('pwInput');
+  const wrap = document.getElementById('pwInputWrap');
+  const errEl = document.getElementById('pwError');
+  if (input.value === 'fran2026') {
+    document.getElementById('pwOverlay').classList.remove('open');
+    document.getElementById('page-landing').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('page-landing').style.display = 'none';
+    }, 650);
+  } else {
+    wrap.classList.add('error');
+    errEl.textContent = 'wrong password — try again!';
+    input.value = '';
+    setTimeout(() => { wrap.classList.remove('error'); }, 450);
+  }
+}
+
+function togglePwVisibility() {
+  const input = document.getElementById('pwInput');
+  input.type = input.type === 'password' ? 'text' : 'password';
 }
 
 // ═══════════════════════════════════════
