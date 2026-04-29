@@ -527,7 +527,7 @@ const TEST_MODE = true; // ← flip to false when done testing
 const ALL_AUTHORS = [
   'Francesca','Camila','Leah','Maggie',
   'Hannah','Carmella','Jordie','Annie','Morgan',
-  'Dom','Corinne','Luisa','Abbey','Lucy','Diana'
+  'Dom','Corinne','Abbey','Lucy','Diana'
 ];
 
 const POSTS = [
@@ -556,15 +556,13 @@ const POSTS = [
   {text:"Who wants to come over and swim ? Text me if u want to.",date:"May 27, 2012",author:"Dominic Venanzi",likes:11,comments:"1 comment",tagged:null},
   {text:"At the airport bored someone text me.",date:"Mar 17, 2012",author:"Dominic Venanzi",likes:3,comments:"2 comments",tagged:null},
   {text:"to the people above me: thank you for keeping me up all night with the bed shaking and moaning. sounded like two rhinos have sex. congrats",date:"Feb 11, 2011",author:"Corinne Ziccardi Maddux",likes:17,comments:"2 comments",tagged:null},
-  {text:"treats and snoozin. snoozin and treats. lol",date:"Jan 8, 2012",author:"Luisa Mangione",likes:null,comments:null,tagged:null},
-  {text:"my lunch box smells like honey mustard everywhere......",date:"Apr 30, 2011",author:"Luisa Mangione",likes:1,comments:null,tagged:null},
 ];
 
 const EMOJI = {
   'Francesca Ziccardi':'👰','Camila Ranta McWright':'💃','Leah Rock':'🥩',
   'Maggie Sudek':'🐾','Hannah Sefton':'💉','Carmella Ziccardi Ellis':'🐦',
   'Jordie Lopez':'👑','Annie Brown':'🥂','Morgan Blasetto':'💊',
-  'Dominic Venanzi':'🌊','Corinne Ziccardi Maddux':'😂','Luisa Mangione':'🍱',
+  'Dominic Venanzi':'🌊','Corinne Ziccardi Maddux':'😂',
 };
 
 const FIRST_TO_FULL = {
@@ -579,7 +577,6 @@ const FIRST_TO_FULL = {
   'Morgan':'Morgan Blasetto',
   'Dom':'Dominic Venanzi',
   'Corinne':'Corinne Ziccardi Maddux',
-  'Luisa':'Luisa Mangione',
   'Abbey':'Abbey Murphy',
   'Lucy':'Lucy Marshall',
   'Diana':'Diana Ready',
@@ -652,13 +649,13 @@ const HARDCODED_CHOICES = [
   // 4: "some people just really get on my nerves."
   ['Francesca','Hannah','Corinne','Leah'],
   // 5: "italian job <333333333333333333"
-  ['Camila','Francesca','Luisa','Lucy'],
+  ['Camila','Francesca','Annie','Lucy'],
   // 6: "Burping is my passion"
   ['Camila','Abbey','Jordie','Maggie'],
   // 7: "i just choked on water and peanut butter"
   ['Camila','Corinne','Hannah','Leah'],
   // 8: "Eatin a juicy ribeye steak!!!!!!! Mmmmmmm"
-  ['Leah','Dom','Luisa','Jordie'],
+  ['Leah','Dom','Corinne','Jordie'],
   // 9: "Lets make the most of the night like we're gonna die young!"
   ['Leah','Annie','Carmella','Francesca'],
   // 10: "does anyione know who to friend people on wekinz"
@@ -666,9 +663,9 @@ const HARDCODED_CHOICES = [
   // 11: "LIVE LIFE AS IF YOU'LL DIE TOMORROW..."
   ['Maggie','Morgan','Corinne','Diana'],
   // 12: "Abbey Murphy is actually so cute....why do i love her so much"
-  ['Maggie','Annie','Luisa','Lucy'],
+  ['Maggie','Annie','Camila','Lucy'],
   // 13: "I absolutley hate shots!......"
-  ['Hannah','Abbey','Luisa','Carmella'],
+  ['Hannah','Abbey','Francesca','Carmella'],
   // 14: "theres nothing like getting shitted on by a bird..."
   ['Carmella','Camila','Dom','Maggie'],
   // 15: "bachelorette... craziness but predictable"
@@ -676,13 +673,13 @@ const HARDCODED_CHOICES = [
   // 16: "IM THE SHIT"
   ['Jordie','Diana','Dom','Corinne'],
   // 17: "I love my girllsssssss <3 mixerrrrr partyyyy"
-  ['Annie','Maggie','Abbey','Luisa'],
+  ['Annie','Maggie','Abbey','Morgan'],
   // 18: "Where there is love there is life"
   ['Carmella','Maggie','Morgan','Abbey'],
   // 19: "girls need to start looking for guys who have goals..."
   ['Morgan','Lucy','Hannah','Carmella'],
   // 20: "dancing isn't a hobby, its a dream"
-  ['Morgan','Luisa','Maggie','Diana'],
+  ['Morgan','Corinne','Maggie','Diana'],
   // 21: "Every one should go to legends of the fog tonite."
   ['Dom','Jordie','Carmella','Annie'],
   // 22: "Who wants to come over and swim ? Text me if u want to."
@@ -691,10 +688,6 @@ const HARDCODED_CHOICES = [
   ['Dom','Jordie','Morgan','Hannah'],
   // 24: "two rhinos have sex. congrats"
   ['Corinne','Carmella','Jordie','Abbey'],
-  // 25: "treats and snoozin. snoozin and treats. lol"
-  ['Luisa','Maggie','Francesca','Diana'],
-  // 26: "my lunch box smells like honey mustard everywhere......"
-  ['Luisa','Camila','Maggie','Diana'],
 ];
 
 function generateChoices(shuffledDeck) {
