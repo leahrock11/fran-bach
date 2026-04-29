@@ -464,11 +464,9 @@
 
   async function loadAllAnswers() {
     const cloud = await cloudLoad();
-    if (cloud !== null) {
-      const local = localLoad();
-      return { ...local, ...cloud };
-    }
-    return localLoad();
+    let data = cloud !== null ? { ...localLoad(), ...cloud } : localLoad();
+    delete data.initialized;
+    return data;
   }
 
   async function saveAllAnswers(allAnswers) {
@@ -636,7 +634,7 @@
     if (!confirm("This clears EVERY person's answers. Are you sure?")) return;
 
     answers = {};
-    const ok = await saveAllAnswers({});
+    const ok = await saveAllAnswers({ initialized: true });
     if (ok || !isCloudConfigured()) {
       alert("All responses have been cleared.");
     } else {
