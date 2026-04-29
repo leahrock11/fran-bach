@@ -20,9 +20,7 @@
     --rose: #b56576;
     --shadow: rgba(43, 31, 26, 0.08);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html, body {
     background: var(--cream);
     color: var(--ink);
@@ -31,7 +29,6 @@
     line-height: 1.6;
     min-height: 100vh;
   }
-
   body {
     background:
       radial-gradient(ellipse at top left, rgba(232, 200, 192, 0.35) 0%, transparent 50%),
@@ -40,8 +37,6 @@
     background-attachment: fixed;
     padding: 40px 20px 80px;
   }
-
-  /* Subtle grain overlay */
   body::before {
     content: '';
     position: fixed;
@@ -51,318 +46,212 @@
     z-index: 1;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.7 0 0 0 0 0.6 0 0 0 0 0.5 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* HEADER */
-  .hero {
-    text-align: center;
-    padding: 30px 20px 50px;
-    position: relative;
-  }
-
+  .container { max-width: 760px; margin: 0 auto; position: relative; z-index: 2; }
+  .hero { text-align: center; padding: 30px 20px 50px; position: relative; }
   .hero-mark {
     font-family: 'Italiana', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.5em;
-    color: var(--champagne-deep);
-    text-transform: uppercase;
+    font-size: 0.7rem; letter-spacing: 0.5em;
+    color: var(--champagne-deep); text-transform: uppercase;
     margin-bottom: 24px;
   }
-
   .hero h1 {
     font-family: 'Italiana', serif;
-    font-size: clamp(3rem, 9vw, 5.5rem);
-    font-weight: 400;
-    line-height: 0.95;
-    color: var(--ink);
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
+    font-size: clamp(3rem, 9vw, 5.5rem); font-weight: 400;
+    line-height: 0.95; color: var(--ink);
+    margin-bottom: 8px; letter-spacing: -0.01em;
   }
-
   .hero .amp {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
-    color: var(--rose);
-    font-size: 1.1em;
-    display: inline-block;
-    transform: translateY(-4px);
-    margin: 0 8px;
+    font-style: italic; font-weight: 400;
+    color: var(--rose); font-size: 1.1em;
+    display: inline-block; transform: translateY(-4px); margin: 0 8px;
   }
-
   .hero h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 400;
+    font-style: italic; font-weight: 400;
     font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    color: var(--ink-soft);
-    margin-top: 24px;
-    margin-bottom: 16px;
+    color: var(--ink-soft); margin-top: 24px; margin-bottom: 16px;
   }
-
   .ornament {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin: 24px auto;
-    color: var(--champagne-deep);
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin: 24px auto; color: var(--champagne-deep);
   }
-
-  .ornament .line {
-    width: 60px;
-    height: 1px;
-    background: var(--champagne);
-  }
-
-  .ornament .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--champagne);
-  }
-
-  /* CARDS */
+  .ornament .line { width: 60px; height: 1px; background: var(--champagne); }
+  .ornament .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--champagne); }
   .card {
     background: rgba(255, 251, 245, 0.85);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(201, 169, 110, 0.25);
-    border-radius: 4px;
-    padding: 48px 40px;
-    margin-bottom: 24px;
-    box-shadow: 0 8px 32px var(--shadow);
-    position: relative;
+    border-radius: 4px; padding: 48px 40px; margin-bottom: 24px;
+    box-shadow: 0 8px 32px var(--shadow); position: relative;
   }
-
   .card::before {
-    content: '';
-    position: absolute;
+    content: ''; position: absolute;
     top: 8px; left: 8px; right: 8px; bottom: 8px;
     border: 1px solid rgba(201, 169, 110, 0.15);
-    border-radius: 2px;
-    pointer-events: none;
+    border-radius: 2px; pointer-events: none;
   }
-
   .card-label {
     font-family: 'Italiana', serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.4em;
-    color: var(--champagne-deep);
-    text-transform: uppercase;
+    font-size: 0.7rem; letter-spacing: 0.4em;
+    color: var(--champagne-deep); text-transform: uppercase;
     margin-bottom: 12px;
   }
-
   .card h3 {
-    font-family: 'Italiana', serif;
-    font-weight: 400;
+    font-family: 'Italiana', serif; font-weight: 400;
     font-size: clamp(1.6rem, 4vw, 2.2rem);
-    color: var(--ink);
-    margin-bottom: 8px;
-    line-height: 1.1;
+    color: var(--ink); margin-bottom: 8px; line-height: 1.1;
   }
-
   .card p.subtitle {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--ink-soft);
-    font-size: 1.1rem;
-    margin-bottom: 32px;
+    font-style: italic; color: var(--ink-soft);
+    font-size: 1.1rem; margin-bottom: 32px;
   }
-
-  /* FORM ELEMENTS */
-  .form-group {
-    margin-bottom: 28px;
-  }
-
+  .form-group { margin-bottom: 28px; }
   label {
-    display: block;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 10px;
+    display: block; font-family: 'Inter', sans-serif;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 10px;
   }
-
   label .num {
-    color: var(--rose);
-    font-family: 'Italiana', serif;
-    font-size: 1rem;
-    margin-right: 8px;
+    color: var(--rose); font-family: 'Italiana', serif;
+    font-size: 1rem; margin-right: 8px;
   }
-
   .prompt {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--ink);
-    line-height: 1.5;
-    margin-bottom: 12px;
-    text-transform: none;
-    letter-spacing: 0;
-    font-weight: 500;
+    font-style: italic; font-size: 1.1rem;
+    color: var(--ink); line-height: 1.5;
+    margin-bottom: 12px; text-transform: none;
+    letter-spacing: 0; font-weight: 500;
   }
-
   input[type="text"], select {
-    width: 100%;
-    padding: 14px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ink);
-    background: rgba(246, 239, 229, 0.6);
-    border: none;
-    border-bottom: 1px solid var(--blush-deep);
-    border-radius: 0;
-    transition: all 0.3s ease;
-    outline: none;
+    width: 100%; padding: 14px 16px;
+    font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 400;
+    color: var(--ink); background: rgba(246, 239, 229, 0.6);
+    border: none; border-bottom: 1px solid var(--blush-deep);
+    border-radius: 0; transition: all 0.3s ease; outline: none;
   }
-
   input[type="text"]:focus, select:focus {
     border-bottom: 1px solid var(--rose);
     background: rgba(246, 239, 229, 0.9);
   }
-
   select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a8864a' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
-    cursor: pointer;
+    background-repeat: no-repeat; background-position: right 16px center;
+    padding-right: 40px; cursor: pointer;
   }
-
-  /* BUTTONS */
   .btn {
-    display: inline-block;
-    padding: 16px 40px;
-    font-family: 'Italiana', serif;
-    font-size: 0.85rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--cream);
-    background: var(--ink);
-    border: none;
-    border-radius: 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 16px;
+    display: inline-block; padding: 16px 40px;
+    font-family: 'Italiana', serif; font-size: 0.85rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--cream); background: var(--ink);
+    border: none; border-radius: 0; cursor: pointer;
+    transition: all 0.3s ease; margin-top: 16px;
   }
-
-  .btn:hover {
-    background: var(--rose);
-    transform: translateY(-2px);
+  .btn:hover:not(:disabled) {
+    background: var(--rose); transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(181, 101, 118, 0.3);
   }
-
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-secondary {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--ink);
+    background: transparent; color: var(--ink); border: 1px solid var(--ink);
   }
-
-  .btn-secondary:hover {
-    background: var(--cream-deep);
-    color: var(--ink);
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--cream-deep); color: var(--ink);
   }
-
+  .btn-tiny {
+    padding: 10px 20px; font-size: 0.7rem; letter-spacing: 0.25em;
+  }
   .btn-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 24px;
+    display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;
   }
-
-  /* ASSIGNMENT BADGE */
+  .home-actions {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    justify-content: center; margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(201, 169, 110, 0.3);
+  }
   .assignment-badge {
-    display: inline-block;
-    padding: 6px 14px;
-    background: var(--blush);
-    color: var(--ink);
+    display: inline-block; padding: 6px 14px;
+    background: var(--blush); color: var(--ink);
     font-family: 'Italiana', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    border-radius: 2px;
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; border-radius: 2px;
     margin-bottom: 16px;
   }
-
-  /* PROGRESS PILL */
   .progress-info {
     background: rgba(232, 200, 192, 0.3);
     border-left: 3px solid var(--rose);
-    padding: 16px 20px;
-    margin-bottom: 32px;
+    padding: 16px 20px; margin-bottom: 32px;
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--ink);
+    font-style: italic; font-size: 1.05rem; color: var(--ink);
   }
-
-  /* STORY VIEW */
-  .story {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    line-height: 1.85;
-    color: var(--ink);
-  }
-
-  .story p {
+  .status-pill {
+    display: inline-block; padding: 4px 12px;
+    background: var(--cream-deep);
+    border: 1px solid var(--champagne);
+    color: var(--champagne-deep);
+    font-family: 'Italiana', serif;
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; border-radius: 999px;
     margin-bottom: 24px;
   }
-
+  .status-pill.live {
+    background: rgba(181, 101, 118, 0.12);
+    border-color: var(--rose); color: var(--rose);
+  }
+  .story {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; line-height: 1.85; color: var(--ink);
+  }
+  .story p { margin-bottom: 24px; }
   .story .blank {
     background: linear-gradient(180deg, transparent 60%, var(--blush) 60%, var(--blush) 90%, transparent 90%);
-    color: var(--ink);
-    font-weight: 600;
-    padding: 0 4px;
+    color: var(--ink); font-weight: 600; padding: 0 4px;
   }
-
   .story .blank.empty {
-    color: var(--ink-soft);
-    font-style: italic;
+    color: var(--ink-soft); font-style: italic;
     background: linear-gradient(180deg, transparent 60%, var(--cream-deep) 60%, var(--cream-deep) 90%, transparent 90%);
     font-weight: 400;
   }
-
-  .hidden { display: none !important; }
-
-  .stack-divider {
-    text-align: center;
-    margin: 40px 0 32px;
-    color: var(--champagne-deep);
-    font-family: 'Italiana', serif;
-    letter-spacing: 0.4em;
-    font-size: 0.7rem;
+  .thanks-card { text-align: center; padding: 80px 40px; }
+  .thanks-card .ornament { margin-bottom: 32px; }
+  .thanks-card h3 {
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    margin-bottom: 24px;
   }
-
-  .stack-divider::before, .stack-divider::after {
-    content: '— ';
-  }
-  .stack-divider::after { content: ' —'; }
-
-  .footer-note {
-    text-align: center;
+  .thanks-card p.thanks-body {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--ink-soft);
-    margin-top: 40px;
-    font-size: 0.95rem;
+    font-size: 1.3rem; line-height: 1.7;
+    color: var(--ink-soft); max-width: 480px;
+    margin: 0 auto 32px; font-style: italic;
   }
-
-  /* Mobile */
+  .thanks-name {
+    font-family: 'Italiana', serif;
+    color: var(--rose); font-size: 1.6rem;
+    display: block; margin-bottom: 24px; letter-spacing: 0.05em;
+  }
+  .hidden { display: none !important; }
+  .footer-note {
+    text-align: center; font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--ink-soft);
+    margin-top: 40px; font-size: 0.95rem;
+  }
+  .save-status {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; color: var(--ink-soft);
+    font-size: 0.95rem; margin-top: 12px; min-height: 1.4em;
+  }
+  .save-status.success { color: #6b8e5a; }
+  .save-status.error { color: var(--rose); }
   @media (max-width: 600px) {
     body { padding: 20px 12px 60px; }
     .card { padding: 32px 24px; }
     .card::before { top: 6px; left: 6px; right: 6px; bottom: 6px; }
     .hero { padding: 20px 10px 30px; }
+    .thanks-card { padding: 60px 24px; }
   }
 </style>
 </head>
@@ -370,35 +259,39 @@
 
 <div class="container">
 
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-mark">A Mad Lib Celebration</div>
     <h1>Francesca <span class="amp">&amp;</span> Dominic</h1>
     <div class="ornament">
-      <span class="line"></span>
-      <span class="dot"></span>
-      <span class="line"></span>
+      <span class="line"></span><span class="dot"></span><span class="line"></span>
     </div>
     <h2>A love story, told by the people who lived it with them</h2>
   </div>
 
-  <!-- STEP 1: Pick name -->
+  <!-- HOME -->
   <div class="card" id="step-name">
     <div class="card-label">Step One</div>
     <h3>Who are you?</h3>
     <p class="subtitle">Find your name below to receive your prompts.</p>
 
+    <div id="cloud-status-pill"></div>
+
     <div class="form-group">
-      <label>Q1 — Select your name</label>
+      <label>Select your name</label>
       <select id="name-select">
         <option value="">— Choose your name —</option>
       </select>
     </div>
 
     <button class="btn" onclick="confirmName()">Get my prompts</button>
+
+    <div class="home-actions">
+      <button class="btn btn-secondary btn-tiny" onclick="goToMadlib()">Go to Mad Lib 🔒</button>
+      <button class="btn btn-secondary btn-tiny" onclick="resetAll()">Reset all responses 🔒</button>
+    </div>
   </div>
 
-  <!-- STEP 2: Fill prompts -->
+  <!-- PROMPTS -->
   <div class="card hidden" id="step-prompts">
     <div class="card-label">Step Two</div>
     <h3>Your prompts</h3>
@@ -411,11 +304,24 @@
 
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="goBackToName()">← Change name</button>
-      <button class="btn" onclick="goToMadlib()">Go to Mad Lib →</button>
+      <button class="btn" id="submit-btn" onclick="submitAnswers()">Submit my answers ✦</button>
     </div>
+    <div class="save-status" id="save-status"></div>
   </div>
 
-  <!-- STEP 3: Story -->
+  <!-- THANKS -->
+  <div class="card thanks-card hidden" id="step-thanks">
+    <div class="card-label">All Set</div>
+    <div class="ornament">
+      <span class="line"></span><span class="dot"></span><span class="line"></span>
+    </div>
+    <h3>Thank you!</h3>
+    <span class="thanks-name" id="thanks-name"></span>
+    <p class="thanks-body">Your answers have been saved 💌 The bride-to-be can't wait to read them at the celebration.</p>
+    <button class="btn btn-secondary btn-tiny" onclick="goBackToName()">← Back to home</button>
+  </div>
+
+  <!-- STORY -->
   <div class="card hidden" id="step-story">
     <div class="card-label">The Final Reading</div>
     <h3>The Story of Franny &amp; Dom</h3>
@@ -424,8 +330,7 @@
     <div class="story" id="story-container"></div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goBackToPrompts()">← Edit my answers</button>
-      <button class="btn" onclick="resetAll()">Start over</button>
+      <button class="btn btn-secondary" onclick="goBackToName()">← Back to home</button>
     </div>
   </div>
 
@@ -434,63 +339,64 @@
 </div>
 
 <script>
-  // ============ DATA ============
+  // ============================================
+  //  ⚙️  CONFIG — fill these in, see README below
+  // ============================================
+  const BIN_ID = "69f17ca336566621a803c166";
+  const ACCESS_KEY = "$2a$10$Y6zMWf7IHt2l2aJkIbHf1O2915H.rcv42B7bb9cjTPOO/CxhsS6CS";
+  const PASSWORD = "123";
+  // ============================================
+
   const PEOPLE = [
-    "Abbey", "Leah", "Cameron", "Mom", "Dad",
-    "Ava", "Marco", "Luca", "Sofia", "Rachel",
-    "Emily", "Kate"
+    "Abbey", "Annie", "Camila", "Carmella", "Diana", "Franny",
+    "Hannah", "Jordie", "Leah", "Lucy", "Maggie", "Morgan"
   ];
 
-  // 27 prompts, indexed 1-27
   const PROMPTS = {
     1: "Funny personality trait of Franny when she was a kid",
     2: "Funny / ridiculous thing Franny used to do as a kid",
     3: "Mischievous thing Franny pulled off as a kid",
     4: "Classic thing Franny would be doing at a high school party",
-    5: "Classic 'Franny' thing to say (Abbey)",
-    6: "Something you can always count on Franny to do",
+    5: "Classic 'Franny' thing to say",
+    6: "Something you can always count on Franny to do as a friend",
     7: "A Franny hobby from freshman year of college",
     8: "Predict how you think Franny made the first move on Dom",
     9: "Shared hobby or interest Franny & Dom have",
-    10: "Another shared hobby or interest Franny & Dom have",
+    10: "Shared hobby or interest Franny & Dom have",
     11: "Funny thing Dom was usually doing when he visited Battery Ave",
     12: "Classic Franny roommate habit/activity at Battery Ave",
     13: "Most annoying thing Bruno did as a puppy",
     14: "Funny show for Fran & Dom to watch daily",
     15: "Something annoying Bruno probably does daily",
     16: "Dom's first reaction when he sees Franny in her wedding dress",
-    17: "A random VERY large number",
+    17: "A random very large number",
     18: "Artist that will get people dancing at the wedding",
     19: "A person who would probably NOT be on the dancefloor at the wedding",
     20: "Funny person to be the drunkest at the wedding",
     21: "Future-Franny behavior or hobby everyone can picture",
-    22: "Inevitable Dom behavior or hobby",
-    23: "Random number (of kids)",
-    24: "A Franny trait the kids will inherit",
-    25: "A Dom trait the kids will inherit",
-    26: "What the kids will be known for around Baltimore",
+    22: "Inevitable Dom behavior or hobby he'll be doing in 10 years",
+    23: "Random number",
+    24: "A trait of Franny her kids will definitely inherit",
+    25: "A trait of Dom his kids will definitely inherit",
+    26: "What Franny and Dom's future kids will be known for around Bmore",
     27: "Something impossible to break"
   };
 
-  // Assignment: 12 people, 27 prompts
-  // 3 people get 3 prompts (9), 9 people get 2 prompts (18) → total 27 ✓
-  // Random starting assignment — Leah can edit later in the code below
   const ASSIGNMENTS = {
-    "Abbey":   [5, 6, 8],
-    "Leah":    [1, 14, 19],
-    "Cameron": [11, 22, 25],
-    "Mom":     [2, 24],
-    "Dad":     [3, 21],
-    "Ava":     [4, 20],
-    "Marco":   [7, 17],
-    "Luca":    [9, 16],
-    "Sofia":   [10, 27],
-    "Rachel":  [12, 18],
-    "Emily":   [13, 23],
-    "Kate":    [15, 26]
+    "Abbey":    [5, 6, 8],
+    "Annie":    [1, 14, 19],
+    "Camila":   [11, 22, 25],
+    "Carmella": [2, 24],
+    "Diana":    [3, 21],
+    "Franny":   [4, 20],
+    "Hannah":   [7, 17],
+    "Jordie":   [9, 16],
+    "Leah":     [10, 27],
+    "Lucy":     [12, 18],
+    "Maggie":   [13, 23],
+    "Morgan":   [15, 26]
   };
 
-  // The story template — {N} is replaced with the answer for prompt N
   const STORY = [
     "As a child, Francesca was already known for being {1}, constantly {2}, and somehow getting away with {3}. Honestly, this explains a lot about what came next.",
     "In high school, she became known for {4}, saying things like \"{5}\", and being the friend you could always count on to {6}.",
@@ -504,27 +410,73 @@
   ];
 
   // ============ STATE ============
-  const STORAGE_KEY = "franny_dom_madlib_v1";
-  let answers = {};   // { 1: "string", 2: "string", ... }
+  let answers = {};
   let currentName = null;
+  const isCloudConfigured = () => BIN_ID !== "REPLACE_ME_BIN_ID" && ACCESS_KEY !== "REPLACE_ME_ACCESS_KEY";
 
-  // ============ STORAGE ============
-  async function loadState() {
+  // ============ STORAGE — Cloud (JSONBin.io) + localStorage fallback ============
+  async function cloudLoad() {
+    if (!isCloudConfigured()) return null;
     try {
-      const r = await window.storage.get("answers", true);
-      if (r && r.value) answers = JSON.parse(r.value);
-    } catch (e) { /* no data yet */ }
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+        headers: { "X-Access-Key": ACCESS_KEY }
+      });
+      if (!r.ok) throw new Error("Load failed: " + r.status);
+      const data = await r.json();
+      return data.record || {};
+    } catch (e) {
+      console.error("Cloud load error:", e);
+      return null;
+    }
   }
 
-  async function saveState() {
+  async function cloudSave(allAnswers) {
+    if (!isCloudConfigured()) return false;
     try {
-      await window.storage.set("answers", JSON.stringify(answers), true);
-    } catch (e) { console.error("Save failed:", e); }
+      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Access-Key": ACCESS_KEY
+        },
+        body: JSON.stringify(allAnswers)
+      });
+      if (!r.ok) throw new Error("Save failed: " + r.status);
+      return true;
+    } catch (e) {
+      console.error("Cloud save error:", e);
+      return false;
+    }
+  }
+
+  function localLoad() {
+    try {
+      const raw = localStorage.getItem("franny_dom_madlib");
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  }
+
+  function localSave(allAnswers) {
+    try { localStorage.setItem("franny_dom_madlib", JSON.stringify(allAnswers)); }
+    catch (e) { console.error(e); }
+  }
+
+  async function loadAllAnswers() {
+    const cloud = await cloudLoad();
+    if (cloud !== null) {
+      const local = localLoad();
+      return { ...local, ...cloud };
+    }
+    return localLoad();
+  }
+
+  async function saveAllAnswers(allAnswers) {
+    localSave(allAnswers);
+    return await cloudSave(allAnswers);
   }
 
   // ============ INIT ============
   async function init() {
-    await loadState();
     const sel = document.getElementById("name-select");
     PEOPLE.forEach(name => {
       const opt = document.createElement("option");
@@ -532,32 +484,47 @@
       opt.textContent = name;
       sel.appendChild(opt);
     });
+
+    const pill = document.getElementById("cloud-status-pill");
+    if (isCloudConfigured()) {
+      pill.innerHTML = '<span class="status-pill live">✦ Live — answers shared across everyone</span>';
+    } else {
+      pill.innerHTML = '<span class="status-pill">⚠ Local-only mode — set up cloud</span>';
+    }
+
+    answers = await loadAllAnswers();
   }
 
-  // ============ STEP NAVIGATION ============
+  // ============ NAVIGATION ============
   function showStep(stepId) {
-    ["step-name", "step-prompts", "step-story"].forEach(id => {
+    ["step-name", "step-prompts", "step-thanks", "step-story"].forEach(id => {
       document.getElementById(id).classList.add("hidden");
     });
     document.getElementById(stepId).classList.remove("hidden");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function confirmName() {
+  async function confirmName() {
     const sel = document.getElementById("name-select");
     if (!sel.value) {
       alert("Please pick your name first 💌");
       return;
     }
     currentName = sel.value;
+    answers = await loadAllAnswers();
     renderPrompts();
     showStep("step-prompts");
   }
 
-  function goBackToName() { showStep("step-name"); }
-  function goBackToPrompts() { showStep("step-prompts"); }
+  function goBackToName() {
+    document.getElementById("name-select").value = "";
+    currentName = null;
+    const ss = document.getElementById("save-status");
+    ss.textContent = ""; ss.className = "save-status";
+    showStep("step-name");
+  }
 
-  // ============ RENDER PROMPTS ============
+  // ============ PROMPTS ============
   function renderPrompts() {
     const myPromptIds = ASSIGNMENTS[currentName] || [];
     document.getElementById("assignment-badge").textContent =
@@ -565,7 +532,7 @@
 
     const promptList = myPromptIds.map(n => `Q${n}`).join(", ");
     document.getElementById("progress-info").innerHTML =
-      `You're answering: <strong>${promptList}</strong>. Take your time, then hit "Go to Mad Lib" to see the full story.`;
+      `You're answering: <strong>${promptList}</strong>. Take your time, then hit "Submit my answers" when you're done.`;
 
     const container = document.getElementById("prompts-container");
     container.innerHTML = "";
@@ -580,21 +547,61 @@
       `;
       container.appendChild(wrapper);
     });
+
+    const ss = document.getElementById("save-status");
+    ss.textContent = ""; ss.className = "save-status";
   }
 
-  // ============ SAVE ANSWERS ============
-  async function captureAnswers() {
+  // ============ SUBMIT ============
+  async function submitAnswers() {
     const myPromptIds = ASSIGNMENTS[currentName] || [];
+    const submitBtn = document.getElementById("submit-btn");
+    const status = document.getElementById("save-status");
+
+    let anyFilled = false;
+    myPromptIds.forEach(n => {
+      const input = document.getElementById(`ans-${n}`);
+      if (input && input.value.trim()) anyFilled = true;
+    });
+    if (!anyFilled) {
+      status.textContent = "Please fill in at least one answer before submitting.";
+      status.className = "save-status error";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving...";
+    status.textContent = "Saving to the cloud...";
+    status.className = "save-status";
+
+    // Pull latest first so we don't overwrite anyone else's edits
+    const latest = await loadAllAnswers();
+    answers = { ...latest };
+
     myPromptIds.forEach(n => {
       const input = document.getElementById(`ans-${n}`);
       if (input) answers[n] = input.value.trim();
     });
-    await saveState();
+
+    const ok = await saveAllAnswers(answers);
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit my answers ✦";
+
+    if (ok || !isCloudConfigured()) {
+      document.getElementById("thanks-name").textContent = currentName;
+      showStep("step-thanks");
+    } else {
+      status.textContent = "Couldn't save to the cloud. Check your connection and try again.";
+      status.className = "save-status error";
+    }
   }
 
-  // ============ STORY ============
+  // ============ MAD LIB (password-gated) ============
   async function goToMadlib() {
-    await captureAnswers();
+    const pw = window.prompt("Enter password to view the mad lib:");
+    if (pw === null) return;
+    if (pw !== PASSWORD) { alert("Incorrect password."); return; }
+    answers = await loadAllAnswers();
     renderStory();
     showStep("step-story");
   }
@@ -613,21 +620,27 @@
     return text.replace(/\{(\d+)\}/g, (_, num) => {
       const n = parseInt(num);
       const val = answers[n];
-      if (val && val.length) {
+      if (val && String(val).length) {
         return `<span class="blank">${escapeHtml(val)}</span>`;
       }
       return `<span class="blank empty">[Q${n} — ${escapeHtml(PROMPTS[n])}]</span>`;
     });
   }
 
-  // ============ RESET ============
+  // ============ RESET (password-gated) ============
   async function resetAll() {
-    if (!confirm("Clear all answers and start over?")) return;
+    const pw = window.prompt("Enter password to reset all responses:");
+    if (pw === null) return;
+    if (pw !== PASSWORD) { alert("Incorrect password."); return; }
+    if (!confirm("This clears EVERY person's answers. Are you sure?")) return;
+
     answers = {};
-    currentName = null;
-    await saveState();
-    document.getElementById("name-select").value = "";
-    showStep("step-name");
+    const ok = await saveAllAnswers({});
+    if (ok || !isCloudConfigured()) {
+      alert("All responses have been cleared.");
+    } else {
+      alert("Could not clear cloud responses. Check your connection.");
+    }
   }
 
   // ============ UTILS ============
@@ -640,7 +653,6 @@
       .replace(/'/g, "&#039;");
   }
 
-  // ============ GO ============
   init();
 </script>
 
