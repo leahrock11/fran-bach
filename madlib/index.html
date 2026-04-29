@@ -336,6 +336,27 @@
 
   <p class="footer-note">Made with love, prosecco, and questionable judgment.</p>
 
+  <!-- RESET PANEL (admin only) -->
+  <div class="card hidden" id="step-reset">
+    <div class="card-label">Admin — Reset Responses</div>
+    <h3>Reset responses</h3>
+    <p class="subtitle">Select whose answers to clear. They'll be able to re-submit after.</p>
+
+    <div style="margin-bottom: 24px;">
+      <label style="display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom:18px; text-transform:none; letter-spacing:0; font-size:0.85rem; font-weight:500; color:var(--rose);">
+        <input type="checkbox" id="reset-select-all" onchange="toggleSelectAll(this.checked)" style="width:18px;height:18px;cursor:pointer;accent-color:var(--rose);" />
+        Select / deselect all
+      </label>
+      <div id="reset-checkboxes" style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goBackToName()">← Cancel</button>
+      <button class="btn" id="reset-confirm-btn" onclick="confirmReset()">Clear selected ✦</button>
+    </div>
+    <div class="save-status" id="reset-status"></div>
+  </div>
+
 </div>
 
 <script>
@@ -470,6 +491,18 @@
     return data;
   }
 
+  // Load from cloud in background and merge into local cache silently
+  function syncFromCloudInBackground() {
+    cloudLoad().then(cloud => {
+      if (cloud !== null) {
+        const merged = { ...localLoad(), ...cloud };
+        delete merged.initialized;
+        answers = merged;
+        localSave(merged);
+      }
+    }).catch(() => {});
+  }
+
   async function saveAllAnswers(allAnswers) {
     localSave(allAnswers);
     return await cloudSave(allAnswers);
@@ -492,12 +525,17 @@
       pill.innerHTML = '<span class="status-pill">⚠ Local-only mode — set up cloud</span>';
     }
 
-    answers = await loadAllAnswers();
+    // Load instantly from localStorage — no waiting
+    answers = localLoad();
+    delete answers.initialized;
+
+    // Then sync cloud in background silently
+    syncFromCloudInBackground();
   }
 
   // ============ NAVIGATION ============
   function showStep(stepId) {
-    ["step-name", "step-prompts", "step-thanks", "step-story"].forEach(id => {
+    ["step-name", "step-prompts", "step-thanks", "step-story", "step-reset"].forEach(id => {
       document.getElementById(id).classList.add("hidden");
     });
     document.getElementById(stepId).classList.remove("hidden");
@@ -506,14 +544,10 @@
 
   async function confirmName() {
     const sel = document.getElementById("name-select");
-    if (!sel.value) {
-      alert("Please pick your name first 💌");
-      return;
-    }
+    if (!sel.value) return;
     currentName = sel.value;
-    answers = await loadAllAnswers();
 
-    // Check if this person has already submitted (all their prompts are filled)
+    // Use whatever answers we have cached — instant, no wait
     const myPromptIds = ASSIGNMENTS[currentName] || [];
     const alreadySubmitted = myPromptIds.every(n => answers[n] && String(answers[n]).trim().length > 0);
 
@@ -527,6 +561,9 @@
 
     renderPrompts();
     showStep("step-prompts");
+
+    // Sync cloud quietly in background in case answers updated since page load
+    syncFromCloudInBackground();
   }
 
   function goBackToName() {
@@ -588,10 +625,8 @@
     status.textContent = "Saving to the cloud...";
     status.className = "save-status";
 
-    // Pull latest first so we don't overwrite anyone else's edits
-    const latest = await loadAllAnswers();
-    answers = { ...latest };
-
+    // Merge this user's new answers into the locally cached answers object
+    // (don't await a cloud fetch here — it causes the lag)
     myPromptIds.forEach(n => {
       const input = document.getElementById(`ans-${n}`);
       if (input) answers[n] = input.value.trim();
@@ -615,7 +650,11 @@
     const pw = window.prompt("Enter password to view the mad lib:");
     if (pw === null) return;
     if (pw !== PASSWORD_MADLIB) { alert("Incorrect password."); return; }
+    // For the final story we do want the freshest data — show a quick status
+    const btn = document.querySelector("button[onclick='goToMadlib()']");
+    if (btn) { btn.disabled = true; btn.textContent = "Loading..."; }
     answers = await loadAllAnswers();
+    if (btn) { btn.disabled = false; btn.textContent = "Go to Mad Lib 🔒"; }
     renderStory();
     showStep("step-story");
   }
@@ -643,19 +682,77 @@
 
   // ============ RESET (password-gated) ============
   async function resetAll() {
-    const pw = window.prompt("Enter password to reset all responses:");
+    const pw = window.prompt("Enter password to reset responses:");
     if (pw === null) return;
     if (pw !== PASSWORD_RESET) { alert("Incorrect password."); return; }
-    if (!confirm("This clears EVERY person's answers. Are you sure?")) return;
 
-    answers = {};
-    // Clear localStorage too so no stale answers linger locally
+    // Build checkboxes for each person
+    const container = document.getElementById("reset-checkboxes");
+    container.innerHTML = "";
+    document.getElementById("reset-select-all").checked = false;
+    document.getElementById("reset-status").textContent = "";
+    document.getElementById("reset-status").className = "save-status";
+
+    PEOPLE.forEach(name => {
+      const promptIds = ASSIGNMENTS[name] || [];
+      const hasAnswers = promptIds.some(n => answers[n] && String(answers[n]).trim().length > 0);
+      const label = document.createElement("label");
+      label.style.cssText = "display:flex; align-items:center; gap:10px; cursor:pointer; text-transform:none; letter-spacing:0; font-size:0.9rem; font-weight:400; color:var(--ink);";
+      label.innerHTML = `
+        <input type="checkbox" class="reset-person-cb" value="${name}"
+          style="width:16px;height:16px;cursor:pointer;accent-color:var(--rose);"
+          ${hasAnswers ? "" : "disabled"} />
+        ${name}${hasAnswers ? "" : ' <span style="color:var(--ink-soft);font-size:0.75rem;font-style:italic;">(not submitted)</span>'}
+      `;
+      container.appendChild(label);
+    });
+
+    showStep("step-reset");
+  }
+
+  function toggleSelectAll(checked) {
+    document.querySelectorAll(".reset-person-cb:not(:disabled)").forEach(cb => cb.checked = checked);
+  }
+
+  async function confirmReset() {
+    const selected = [...document.querySelectorAll(".reset-person-cb:checked")].map(cb => cb.value);
+    if (selected.length === 0) {
+      const s = document.getElementById("reset-status");
+      s.textContent = "Please select at least one person.";
+      s.className = "save-status error";
+      return;
+    }
+
+    const names = selected.join(", ");
+    if (!confirm(`Clear answers for: ${names}?`)) return;
+
+    const btn = document.getElementById("reset-confirm-btn");
+    const status = document.getElementById("reset-status");
+    btn.disabled = true;
+    btn.textContent = "Clearing...";
+    status.textContent = "Saving to cloud...";
+    status.className = "save-status";
+
+    // Remove prompt answers for selected people
+    selected.forEach(name => {
+      const promptIds = ASSIGNMENTS[name] || [];
+      promptIds.forEach(n => { delete answers[n]; });
+    });
+
+    // Make sure we never save a completely empty object
+    const toSave = Object.keys(answers).length > 0 ? answers : { initialized: true };
     try { localStorage.removeItem("franny_dom_madlib"); } catch (e) {}
-    const ok = await saveAllAnswers({ initialized: true });
+    const ok = await saveAllAnswers(toSave);
+
+    btn.disabled = false;
+    btn.textContent = "Clear selected ✦";
+
     if (ok || !isCloudConfigured()) {
-      alert("All responses have been cleared. Everyone can now re-submit.");
+      alert(`Cleared! ${selected.length === PEOPLE.length ? "Everyone" : selected.join(", ")} can now re-submit.`);
+      goBackToName();
     } else {
-      alert("Could not clear cloud responses. Check your connection.");
+      status.textContent = "Could not save to cloud. Check your connection.";
+      status.className = "save-status error";
     }
   }
 
