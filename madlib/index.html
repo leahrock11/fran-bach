@@ -437,7 +437,8 @@
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "X-Access-Key": ACCESS_KEY
+          "X-Access-Key": ACCESS_KEY,
+          "X-Bin-Versioning": "false"
         },
         body: JSON.stringify(allAnswers)
       });
