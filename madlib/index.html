@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Italiana&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
   :root {
     --cream: #f6efe5;
@@ -360,14 +362,25 @@
 </div>
 
 <script>
-  // ============================================
-  //  ⚙️  CONFIG — fill these in, see README below
-  // ============================================
-  const BIN_ID = "69f17ca336566621a803c166";
-  const ACCESS_KEY = "$2a$10$Y6zMWf7IHt2l2aJkIbHf1O2915H.rcv42B7bb9cjTPOO/CxhsS6CS";
+  // ─────────────────────────────────────────────
+  // FIREBASE CONFIG
+  // ─────────────────────────────────────────────
+  const firebaseConfig = {
+    apiKey: "AIzaSyCvu_sz4GkRipzNy1Ut_07y56Unazh-Foo",
+    authDomain: "fran-bach-who-said-it.firebaseapp.com",
+    databaseURL: "https://fran-bach-who-said-it-default-rtdb.firebaseio.com",
+    projectId: "fran-bach-who-said-it",
+    storageBucket: "fran-bach-who-said-it.firebasestorage.app",
+    messagingSenderId: "372525733290",
+    appId: "1:372525733290:web:76045e73336cc7087e07d3"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const madlibRef = db.ref("madlib");
+  // ─────────────────────────────────────────────
+
   const PASSWORD_MADLIB = "fran2026";
   const PASSWORD_RESET = "fran2026";
-  // ============================================
 
   const PEOPLE = [
     "Abbey", "Annie", "Camila", "Carmella", "Diana", "Franny",
@@ -434,18 +447,12 @@
   // ============ STATE ============
   let answers = {};
   let currentName = null;
-  const isCloudConfigured = () => BIN_ID !== "REPLACE_ME_BIN_ID" && ACCESS_KEY !== "REPLACE_ME_ACCESS_KEY";
 
-  // ============ STORAGE — Cloud (JSONBin.io) + localStorage fallback ============
+  // ============ STORAGE — Firebase Realtime Database ============
   async function cloudLoad() {
-    if (!isCloudConfigured()) return null;
     try {
-      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-        headers: { "X-Access-Key": ACCESS_KEY }
-      });
-      if (!r.ok) throw new Error("Load failed: " + r.status);
-      const data = await r.json();
-      return data.record || {};
+      const snapshot = await madlibRef.once("value");
+      return snapshot.val() || {};
     } catch (e) {
       console.error("Cloud load error:", e);
       return null;
@@ -453,21 +460,23 @@
   }
 
   async function cloudSave(allAnswers) {
-    if (!isCloudConfigured()) return false;
     try {
-      const r = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Access-Key": ACCESS_KEY,
-          "X-Bin-Versioning": "false"
-        },
-        body: JSON.stringify(allAnswers)
-      });
-      if (!r.ok) throw new Error("Save failed: " + r.status);
+      await madlibRef.update(allAnswers);
       return true;
     } catch (e) {
       console.error("Cloud save error:", e);
+      return false;
+    }
+  }
+
+  async function cloudDeleteFields(fieldKeys) {
+    try {
+      const updates = {};
+      fieldKeys.forEach(k => { updates[k] = null; }); // null = delete in RTDB
+      await madlibRef.update(updates);
+      return true;
+    } catch (e) {
+      console.error("Cloud delete error:", e);
       return false;
     }
   }
@@ -486,9 +495,7 @@
 
   async function loadAllAnswers() {
     const cloud = await cloudLoad();
-    let data = cloud !== null ? { ...localLoad(), ...cloud } : localLoad();
-    delete data.initialized;
-    return data;
+    return cloud !== null ? { ...localLoad(), ...cloud } : localLoad();
   }
 
   // Load from cloud in background and merge into local cache silently
@@ -496,7 +503,6 @@
     cloudLoad().then(cloud => {
       if (cloud !== null) {
         const merged = { ...localLoad(), ...cloud };
-        delete merged.initialized;
         answers = merged;
         localSave(merged);
       }
@@ -518,16 +524,11 @@
       sel.appendChild(opt);
     });
 
-    const pill = document.getElementById("cloud-status-pill");
-    if (isCloudConfigured()) {
-      pill.innerHTML = '<span class="status-pill live">✦ Live — answers shared across everyone</span>';
-    } else {
-      pill.innerHTML = '<span class="status-pill">⚠ Local-only mode — set up cloud</span>';
-    }
+    document.getElementById("cloud-status-pill").innerHTML =
+      '<span class="status-pill live">✦ Live — answers shared across everyone</span>';
 
     // Load instantly from localStorage — no waiting
     answers = localLoad();
-    delete answers.initialized;
 
     // Then sync cloud in background silently
     syncFromCloudInBackground();
@@ -733,21 +734,25 @@
     status.textContent = "Saving to cloud...";
     status.className = "save-status";
 
-    // Remove prompt answers for selected people
+    // Collect all prompt keys to delete
+    const keysToDelete = [];
     selected.forEach(name => {
-      const promptIds = ASSIGNMENTS[name] || [];
-      promptIds.forEach(n => { delete answers[n]; });
+      (ASSIGNMENTS[name] || []).forEach(n => {
+        keysToDelete.push(String(n));
+        delete answers[n];
+      });
     });
 
-    // Make sure we never save a completely empty object
-    const toSave = Object.keys(answers).length > 0 ? answers : { initialized: true };
-    try { localStorage.removeItem("franny_dom_madlib"); } catch (e) {}
-    const ok = await saveAllAnswers(toSave);
+    // Update localStorage
+    try { localSave(answers); } catch (e) {}
+
+    // Delete those fields from Firestore
+    const ok = await cloudDeleteFields(keysToDelete);
 
     btn.disabled = false;
     btn.textContent = "Clear selected ✦";
 
-    if (ok || !isCloudConfigured()) {
+    if (ok) {
       alert(`Cleared! ${selected.length === PEOPLE.length ? "Everyone" : selected.join(", ")} can now re-submit.`);
       goBackToName();
     } else {
