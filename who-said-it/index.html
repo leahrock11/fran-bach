@@ -559,9 +559,9 @@ const POSTS = [
 ];
 
 const EMOJI = {
-  'Francesca Ziccardi':'👰','Camila Ranta McWright':'💃','Leah Rock':'🥩',
+  'Francesca Ziccardi':'👰','Camila Ranta McWright':'🍝','Leah Rock':'🥩',
   'Maggie Sudek':'🐾','Hannah Sefton':'💉','Carmella Ziccardi Ellis':'🐦',
-  'Jordie Lopez':'👑','Annie Brown':'🥂','Morgan Blasetto':'💊',
+  'Jordie Lopez':'👑','Annie Brown':'🥂','Morgan Blasetto':'💃',
   'Dominic Venanzi':'🌊','Corinne Ziccardi Maddux':'😂',
 };
 
@@ -839,7 +839,6 @@ function renderModCard() {
   const area = document.getElementById('modCardArea');
   const p = POSTS[deck[modCurrent]];
   const isRev = modRevealedState[modCurrent];
-  const revLabel = isRev ? '✅ Revealed!' : '👀 Reveal Who Said It';
   const correctFirst = p.author.split(' ')[0];
   const questionChoices = (choices && choices[modCurrent]) || HARDCODED_CHOICES[deck[modCurrent]];
   setModProgress(modCurrent);
@@ -871,9 +870,14 @@ function renderModCard() {
   fixedNav.innerHTML = `
     <div class="nav-inner">
       <button class="btn-ghost" onclick="modPrev()" ${modCurrent===0?'disabled':''}>←</button>
-      <button class="btn-primary" id="modRevBtn" onclick="modReveal()" ${isRev?'disabled':''} style="${isRev?'opacity:.45':''}">
-        ${revLabel}
-      </button>
+      ${isRev
+        ? `<button class="btn-primary" onclick="modNext()" ${modCurrent>=deck.length-1?'disabled':''}>
+            ${modCurrent>=deck.length-1?'Done ✅':'Next Question →'}
+           </button>`
+        : `<button class="btn-primary" id="modRevBtn" onclick="modReveal()">
+            👀 Reveal Who Said It
+           </button>`
+      }
       <button class="btn-ghost" onclick="modNext()" ${modCurrent>=deck.length-1?'disabled':''}>→</button>
     </div>
     <div class="post-ctr">${modCurrent+1} / ${deck.length}</div>`;
