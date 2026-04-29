@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Franny &amp; Dom — A Love Story Mad Lib</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Italiana&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f6efe5;
+    --cream-deep: #ede2d0;
+    --blush: #e8c8c0;
+    --blush-deep: #d4a59a;
+    --champagne: #c9a96e;
+    --champagne-deep: #a8864a;
+    --ink: #2b1f1a;
+    --ink-soft: #5a4a42;
+    --rose: #b56576;
+    --shadow: rgba(43, 31, 26, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top left, rgba(232, 200, 192, 0.35) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(201, 169, 110, 0.25) 0%, transparent 55%),
+      var(--cream);
+    background-attachment: fixed;
+    padding: 40px 20px 80px;
+  }
+
+  /* Subtle grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.7 0 0 0 0 0.6 0 0 0 0 0.5 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HEADER */
+  .hero {
+    text-align: center;
+    padding: 30px 20px 50px;
+    position: relative;
+  }
+
+  .hero-mark {
+    font-family: 'Italiana', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    color: var(--champagne-deep);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Italiana', serif;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero .amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--rose);
+    font-size: 1.1em;
+    display: inline-block;
+    transform: translateY(-4px);
+    margin: 0 8px;
+  }
+
+  .hero h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: var(--ink-soft);
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px auto;
+    color: var(--champagne-deep);
+  }
+
+  .ornament .line {
+    width: 60px;
+    height: 1px;
+    background: var(--champagne);
+  }
+
+  .ornament .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--champagne);
+  }
+
+  /* CARDS */
+  .card {
+    background: rgba(255, 251, 245, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    border-radius: 4px;
+    padding: 48px 40px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px var(--shadow);
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border: 1px solid rgba(201, 169, 110, 0.15);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .card-label {
+    font-family: 'Italiana', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--champagne-deep);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .card h3 {
+    font-family: 'Italiana', serif;
+    font-weight: 400;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .card p.subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin-bottom: 32px;
+  }
+
+  /* FORM ELEMENTS */
+  .form-group {
+    margin-bottom: 28px;
+  }
+
+  label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+
+  label .num {
+    color: var(--rose);
+    font-family: 'Italiana', serif;
+    font-size: 1rem;
+    margin-right: 8px;
+  }
+
+  .prompt {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
+  input[type="text"], select {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ink);
+    background: rgba(246, 239, 229, 0.6);
+    border: none;
+    border-bottom: 1px solid var(--blush-deep);
+    border-radius: 0;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  input[type="text"]:focus, select:focus {
+    border-bottom: 1px solid var(--rose);
+    background: rgba(246, 239, 229, 0.9);
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a8864a' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-block;
+    padding: 16px 40px;
+    font-family: 'Italiana', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--ink);
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 16px;
+  }
+
+  .btn:hover {
+    background: var(--rose);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(181, 101, 118, 0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+
+  .btn-secondary:hover {
+    background: var(--cream-deep);
+    color: var(--ink);
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  /* ASSIGNMENT BADGE */
+  .assignment-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--blush);
+    color: var(--ink);
+    font-family: 'Italiana', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+
+  /* PROGRESS PILL */
+  .progress-info {
+    background: rgba(232, 200, 192, 0.3);
+    border-left: 3px solid var(--rose);
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+
+  /* STORY VIEW */
+  .story {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .story p {
+    margin-bottom: 24px;
+  }
+
+  .story .blank {
+    background: linear-gradient(180deg, transparent 60%, var(--blush) 60%, var(--blush) 90%, transparent 90%);
+    color: var(--ink);
+    font-weight: 600;
+    padding: 0 4px;
+  }
+
+  .story .blank.empty {
+    color: var(--ink-soft);
+    font-style: italic;
+    background: linear-gradient(180deg, transparent 60%, var(--cream-deep) 60%, var(--cream-deep) 90%, transparent 90%);
+    font-weight: 400;
+  }
+
+  .hidden { display: none !important; }
+
+  .stack-divider {
+    text-align: center;
+    margin: 40px 0 32px;
+    color: var(--champagne-deep);
+    font-family: 'Italiana', serif;
+    letter-spacing: 0.4em;
+    font-size: 0.7rem;
+  }
+
+  .stack-divider::before, .stack-divider::after {
+    content: '— ';
+  }
+  .stack-divider::after { content: ' —'; }
+
+  .footer-note {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 40px;
+    font-size: 0.95rem;
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    body { padding: 20px 12px 60px; }
+    .card { padding: 32px 24px; }
+    .card::before { top: 6px; left: 6px; right: 6px; bottom: 6px; }
+    .hero { padding: 20px 10px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-mark">A Mad Lib Celebration</div>
+    <h1>Francesca <span class="amp">&amp;</span> Dominic</h1>
+    <div class="ornament">
+      <span class="line"></span>
+      <span class="dot"></span>
+      <span class="line"></span>
+    </div>
+    <h2>A love story, told by the people who lived it with them</h2>
+  </div>
+
+  <!-- STEP 1: Pick name -->
+  <div class="card" id="step-name">
+    <div class="card-label">Step One</div>
+    <h3>Who are you?</h3>
+    <p class="subtitle">Find your name below to receive your prompts.</p>
+
+    <div class="form-group">
+      <label>Q1 — Select your name</label>
+      <select id="name-select">
+        <option value="">— Choose your name —</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="confirmName()">Get my prompts</button>
+  </div>
+
+  <!-- STEP 2: Fill prompts -->
+  <div class="card hidden" id="step-prompts">
+    <div class="card-label">Step Two</div>
+    <h3>Your prompts</h3>
+    <p class="subtitle">Be funny. Be specific. Be a little unhinged.</p>
+
+    <div class="assignment-badge" id="assignment-badge"></div>
+    <div class="progress-info" id="progress-info"></div>
+
+    <div id="prompts-container"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goBackToName()">← Change name</button>
+      <button class="btn" onclick="goToMadlib()">Go to Mad Lib →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Story -->
+  <div class="card hidden" id="step-story">
+    <div class="card-label">The Final Reading</div>
+    <h3>The Story of Franny &amp; Dom</h3>
+    <p class="subtitle">As told by their nearest and dearest.</p>
+
+    <div class="story" id="story-container"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goBackToPrompts()">← Edit my answers</button>
+      <button class="btn" onclick="resetAll()">Start over</button>
+    </div>
+  </div>
+
+  <p class="footer-note">Made with love, prosecco, and questionable judgment.</p>
+
+</div>
+
+<script>
+  // ============ DATA ============
+  const PEOPLE = [
+    "Abbey", "Leah", "Cameron", "Mom", "Dad",
+    "Ava", "Marco", "Luca", "Sofia", "Rachel",
+    "Emily", "Kate"
+  ];
+
+  // 27 prompts, indexed 1-27
+  const PROMPTS = {
+    1: "Funny personality trait of Franny when she was a kid",
+    2: "Funny / ridiculous thing Franny used to do as a kid",
+    3: "Mischievous thing Franny pulled off as a kid",
+    4: "Classic thing Franny would be doing at a high school party",
+    5: "Classic 'Franny' thing to say (Abbey)",
+    6: "Something you can always count on Franny to do",
+    7: "A Franny hobby from freshman year of college",
+    8: "Predict how you think Franny made the first move on Dom",
+    9: "Shared hobby or interest Franny & Dom have",
+    10: "Another shared hobby or interest Franny & Dom have",
+    11: "Funny thing Dom was usually doing when he visited Battery Ave",
+    12: "Classic Franny roommate habit/activity at Battery Ave",
+    13: "Most annoying thing Bruno did as a puppy",
+    14: "Funny show for Fran & Dom to watch daily",
+    15: "Something annoying Bruno probably does daily",
+    16: "Dom's first reaction when he sees Franny in her wedding dress",
+    17: "A random VERY large number",
+    18: "Artist that will get people dancing at the wedding",
+    19: "A person who would probably NOT be on the dancefloor at the wedding",
+    20: "Funny person to be the drunkest at the wedding",
+    21: "Future-Franny behavior or hobby everyone can picture",
+    22: "Inevitable Dom behavior or hobby",
+    23: "Random number (of kids)",
+    24: "A Franny trait the kids will inherit",
+    25: "A Dom trait the kids will inherit",
+    26: "What the kids will be known for around Baltimore",
+    27: "Something impossible to break"
+  };
+
+  // Assignment: 12 people, 27 prompts
+  // 3 people get 3 prompts (9), 9 people get 2 prompts (18) → total 27 ✓
+  // Random starting assignment — Leah can edit later in the code below
+  const ASSIGNMENTS = {
+    "Abbey":   [5, 6, 8],
+    "Leah":    [1, 14, 19],
+    "Cameron": [11, 22, 25],
+    "Mom":     [2, 24],
+    "Dad":     [3, 21],
+    "Ava":     [4, 20],
+    "Marco":   [7, 17],
+    "Luca":    [9, 16],
+    "Sofia":   [10, 27],
+    "Rachel":  [12, 18],
+    "Emily":   [13, 23],
+    "Kate":    [15, 26]
+  };
+
+  // The story template — {N} is replaced with the answer for prompt N
+  const STORY = [
+    "As a child, Francesca was already known for being {1}, constantly {2}, and somehow getting away with {3}. Honestly, this explains a lot about what came next.",
+    "In high school, she became known for {4}, saying things like \"{5}\", and being the friend you could always count on to {6}.",
+    "Francesca and Dominic's love story officially began at St. Mary's College of Maryland, where Franny spent most of her first year {7}. Their first spark happened at a freshman year party… Franny made the first move on Dom when she {8}.",
+    "From that night on, Franny and Dom were inseparable in a way that only makes sense when you're powered by {9} and a mutual love for {10}.",
+    "After graduation, they balanced life in two cities. When Franny wasn't in Annapolis, Dom was usually at Battery Ave {11}, and living with Franny meant never being surprised by {12}.",
+    "They eventually made Pasadena home and brought home their first son, Bruno, who really put their parenting skills to the test by {13}. Now most days involve long walks with him, bingewatching {14}, and dealing with Bruno {15}.",
+    "Their wedding day will kick off with Dom seeing Franny in her dress and immediately {16}. After the newlyweds have said their \"I do's\", it's time to freakin celebrate. At least {17} squishy pants will be consumed, and when {18} comes on, everyone including {19} will be on the dancefloor! Inevitably, the \"drunkest guest\" award will probably go to {20}.",
+    "Their future will likely include Franny {21} and Dom {22}. They'll raise at least {23} kids who'll inherit Franny's {24} and Dom's {25}. And they'll inevitably become known around Baltimore for {26}.",
+    "No matter what comes next, one thing is guaranteed: the love that these two share is even stronger than {27}, and this story ends exactly how it should — happily ever after. 🥂"
+  ];
+
+  // ============ STATE ============
+  const STORAGE_KEY = "franny_dom_madlib_v1";
+  let answers = {};   // { 1: "string", 2: "string", ... }
+  let currentName = null;
+
+  // ============ STORAGE ============
+  async function loadState() {
+    try {
+      const r = await window.storage.get("answers", true);
+      if (r && r.value) answers = JSON.parse(r.value);
+    } catch (e) { /* no data yet */ }
+  }
+
+  async function saveState() {
+    try {
+      await window.storage.set("answers", JSON.stringify(answers), true);
+    } catch (e) { console.error("Save failed:", e); }
+  }
+
+  // ============ INIT ============
+  async function init() {
+    await loadState();
+    const sel = document.getElementById("name-select");
+    PEOPLE.forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      sel.appendChild(opt);
+    });
+  }
+
+  // ============ STEP NAVIGATION ============
+  function showStep(stepId) {
+    ["step-name", "step-prompts", "step-story"].forEach(id => {
+      document.getElementById(id).classList.add("hidden");
+    });
+    document.getElementById(stepId).classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function confirmName() {
+    const sel = document.getElementById("name-select");
+    if (!sel.value) {
+      alert("Please pick your name first 💌");
+      return;
+    }
+    currentName = sel.value;
+    renderPrompts();
+    showStep("step-prompts");
+  }
+
+  function goBackToName() { showStep("step-name"); }
+  function goBackToPrompts() { showStep("step-prompts"); }
+
+  // ============ RENDER PROMPTS ============
+  function renderPrompts() {
+    const myPromptIds = ASSIGNMENTS[currentName] || [];
+    document.getElementById("assignment-badge").textContent =
+      `Hi ${currentName} ✦ ${myPromptIds.length} prompt${myPromptIds.length !== 1 ? "s" : ""} for you`;
+
+    const promptList = myPromptIds.map(n => `Q${n}`).join(", ");
+    document.getElementById("progress-info").innerHTML =
+      `You're answering: <strong>${promptList}</strong>. Take your time, then hit "Go to Mad Lib" to see the full story.`;
+
+    const container = document.getElementById("prompts-container");
+    container.innerHTML = "";
+
+    myPromptIds.forEach(n => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "form-group";
+      wrapper.innerHTML = `
+        <label><span class="num">Q${n}.</span> Prompt ${n} of 27</label>
+        <p class="prompt">${PROMPTS[n]}</p>
+        <input type="text" id="ans-${n}" value="${escapeHtml(answers[n] || "")}" placeholder="Your answer..." />
+      `;
+      container.appendChild(wrapper);
+    });
+  }
+
+  // ============ SAVE ANSWERS ============
+  async function captureAnswers() {
+    const myPromptIds = ASSIGNMENTS[currentName] || [];
+    myPromptIds.forEach(n => {
+      const input = document.getElementById(`ans-${n}`);
+      if (input) answers[n] = input.value.trim();
+    });
+    await saveState();
+  }
+
+  // ============ STORY ============
+  async function goToMadlib() {
+    await captureAnswers();
+    renderStory();
+    showStep("step-story");
+  }
+
+  function renderStory() {
+    const container = document.getElementById("story-container");
+    container.innerHTML = "";
+    STORY.forEach(para => {
+      const p = document.createElement("p");
+      p.innerHTML = fillBlanks(para);
+      container.appendChild(p);
+    });
+  }
+
+  function fillBlanks(text) {
+    return text.replace(/\{(\d+)\}/g, (_, num) => {
+      const n = parseInt(num);
+      const val = answers[n];
+      if (val && val.length) {
+        return `<span class="blank">${escapeHtml(val)}</span>`;
+      }
+      return `<span class="blank empty">[Q${n} — ${escapeHtml(PROMPTS[n])}]</span>`;
+    });
+  }
+
+  // ============ RESET ============
+  async function resetAll() {
+    if (!confirm("Clear all answers and start over?")) return;
+    answers = {};
+    currentName = null;
+    await saveState();
+    document.getElementById("name-select").value = "";
+    showStep("step-name");
+  }
+
+  // ============ UTILS ============
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // ============ GO ============
+  init();
+</script>
+
+</body>
+</html>
