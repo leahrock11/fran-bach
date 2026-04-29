@@ -762,9 +762,9 @@
       <li class="hype-line">There are <span class="accent">10 prompts</span> in Final Jeopardy</li>
       <li class="hype-line">Choose your <span class="accent">wager</span> before the question drops</li>
       <li class="hype-line"><span class="accent">10 correct</span> → win your wager <span class="accent">×3</span></li>
-      <li class="hype-line"><span class="accent">7–9 correct</span> → win your wager <span class="accent">×2</span></li>
-      <li class="hype-line"><span class="accent">5–6 correct</span> → win your <span class="accent">wager back</span></li>
-      <li class="hype-line"><span class="accent">under 5?</span> you <span class="accent">lose</span> your wager</li>
+      <li class="hype-line"><span class="accent">8–9 correct</span> → win your wager <span class="accent">×2</span></li>
+      <li class="hype-line"><span class="accent">7 correct</span> → win your <span class="accent">wager back</span></li>
+      <li class="hype-line"><span class="accent">under 7?</span> you <span class="accent">lose</span> your wager</li>
     </ul>
   </div>
   <div class="btn-row">
@@ -782,9 +782,9 @@
   <div class="gold-line"></div>
   <div class="wager-rules">
     <div class="wager-rule"><span class="rule-badge">10 / 10</span> Win wager ×3</div>
-    <div class="wager-rule"><span class="rule-badge">7 – 9</span> Win wager ×2</div>
-    <div class="wager-rule"><span class="rule-badge">5 – 6</span> Win wager back</div>
-    <div class="wager-rule"><span class="rule-badge">&lt; 5</span> Lose your wager</div>
+    <div class="wager-rule"><span class="rule-badge">8 – 9</span> Win wager ×2</div>
+    <div class="wager-rule"><span class="rule-badge">7</span> Win wager back</div>
+    <div class="wager-rule"><span class="rule-badge">&lt; 7</span> Lose your wager</div>
   </div>
   <div class="wager-teams">
     <div class="wager-team-box">
@@ -991,18 +991,14 @@ function startGame() {
 const FJ_PAGES = ['page-fj-hype','page-fj-wager','page-fj-question','page-fj-results'];
 
 function showFJPage(id) {
-  // Hide main board
   document.getElementById('page-board').style.display = 'none';
   document.querySelectorAll('.cutout').forEach(el => el.style.display = 'none');
-  // Hide all FJ pages then show the right one
   FJ_PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
 function hideFJ() {
-  // Hide all FJ pages
   FJ_PAGES.forEach(p => document.getElementById(p).classList.remove('active'));
-  // Show main board
   document.getElementById('page-board').style.display = '';
   document.querySelectorAll('.cutout').forEach(el => el.style.display = '');
 }
@@ -1121,10 +1117,10 @@ function updateFinalScores() {
     const wager = wagers[i];
     const correct = correctCounts[i];
     let finalScore;
-    if (correct === 10)    finalScore = base + (wager * 3);
-    else if (correct >= 7) finalScore = base + (wager * 2);
-    else if (correct >= 5) finalScore = base + wager;
-    else                   finalScore = base - wager;
+    if (correct === 10)     finalScore = base + (wager * 3);
+    else if (correct >= 8)  finalScore = base + (wager * 2);
+    else if (correct === 7) finalScore = base + wager;
+    else                    finalScore = base - wager;
     document.getElementById('final-score-' + (i+1)).textContent = Math.max(0, finalScore).toLocaleString();
   });
 }
